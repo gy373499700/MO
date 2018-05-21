@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: b0c43dab5484f2941a5a54f33e342049
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - LookupTexture: {instanceID: 0}
+  - _PreviewRT: {instanceID: 0}
+  - Shader2D: {fileID: 4800000, guid: 20e2b712927837b4f86bb925084738d8, type: 3}
+  - Shader3D: {fileID: 4800000, guid: 30ba3c42dc104544592901ee18ea2903, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 

@@ -1,0 +1,8 @@
+1.0.2
+- Fixed: Small garbage allocation.
+
+1.0.1
+- Fixed: Unity 4.7 compatibility.
+
+1.0
+- Misc: Initial release.
