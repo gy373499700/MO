@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Monster
+  - Mine
+  - MainChar
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - ServerData
+  - Monster
+  - Trigger
+  - NGUI
+  - AvatarNode
+  - ViewCollider
+  - Collider
+  - Player
+  - Pet
+  - DropItem
+  - NoMonster
+  - Door
+  - PetNoMonster
+  - PetNode
+  - PetStrongNode
+  - Worldmap
+  - Maincity
+  - Npc
+  - LevelLoading
+  - HPBAR
+  - MainChar
+  - 
+  - T4M
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0

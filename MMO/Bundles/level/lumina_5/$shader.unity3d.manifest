@@ -1,0 +1,61 @@
+ManifestFileVersion: 0
+CRC: 4232267227
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: e49fc29b0d9d9303dfb738b77c8f42eb
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 80729077cb39806c86b5c10073f074fb
+HashAppended: 0
+ClassTypes:
+- Class: 48
+  Script: {instanceID: 0}
+Assets:
+- Assets/Level/lumina_5/$Shader/SDShaders/AddOneOne.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/StaticTree.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/StaticObjectNoLightMap.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/AlphaBlend.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/SDEnergyBall.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/AlphaBlendZTest.shader
+- Assets/Level/lumina_5/$Shader/FXMaker_Mask Additive.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/SDAlphaBlended.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/ShaderCommonDiffuse.shader
+- Assets/Level/lumina_5/$Shader/Trail Additive Turbulence.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/ShaderCommonBlendDouble.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/StaticObject.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/ShaderPlayerBlend.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/ShaderAdditiveCulleFront.shader
+- Assets/Level/lumina_5/$Shader/Additive Turbulence.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/SelfIllum.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/ShaderPlayerDiffuse.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/SDAdditiveTint.shader
+- Assets/Level/lumina_5/$Shader/Alpha Blended Turbulence.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/DepthOnly.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/ShaderAlphaBlendedFront.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/ShaderCmBlendNoLightDouble.shader
+- Assets/Level/lumina_5/$Shader/Energy Ball.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/SelfIllumNoFog.shader
+- Assets/Level/lumina_5/$Shader/FXMaker_Mask Cutout.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/ShaderBubbleDamage.shader
+- Assets/Level/lumina_5/$Shader/Dissolve_TexturCoords.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/ShaderCommonBlendNoLight.shader
+- Assets/Level/lumina_5/$Shader/FXMaker_Mask_Additive_Tint_NoZTest.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/uishader/Particle Add.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/ShaderCommonClipDouble.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/uishader/Particle Alpha Blend.shader
+- Assets/Level/lumina_5/$Shader/FXMaker_Mask Alpha Blended.shader
+- Assets/Level/lumina_5/$Shader/Distortion.shader
+- Assets/Level/lumina_5/$Shader/Dissolve_WorldCoords.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/ShaderCommonDiffuseDouble.shader
+- Assets/Level/lumina_5/$Shader/FXMaker_Mask Additive Tint.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/ShaderPlayerDouble.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/AddOneOneZTest.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/Sky.shader
+- Assets/Level/lumina_5/$Shader/FXMaker_Mask Alpha Blended Tint.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/Terrain.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/SDAlphaBlendedTint.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/TerrainDecal.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/ShaderCommonBlend.shader
+- Assets/Level/lumina_5/$Shader/SDShaders/ShaderCommonClip.shader
+Dependencies: []
