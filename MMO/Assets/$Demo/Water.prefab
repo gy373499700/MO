@@ -1,0 +1,122 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &154944
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 471146}
+  - 114: {fileID: 11475746}
+  m_Layer: 0
+  m_Name: Water
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &471146
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 154944}
+  m_LocalRotation: {x: 0.7071069, y: 0, z: 0, w: 0.70710677}
+  m_LocalPosition: {x: -25.8, y: 0.97, z: -141.1}
+  m_LocalScale: {x: 426.0302, y: 400, z: 116.31491}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+--- !u!114 &11475746
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 154944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6eb8f38a6f40f64c82522db62c65241, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: {r: 0.5441177, g: 0.9622718, b: 1, a: 1}
+  deepcolor: {r: 0.0099481065, g: 0.40066817, b: 0.6764706, a: 0.5}
+  reflectColor: {r: 0.102941155, g: 1, b: 0.96288043, a: 1}
+  renderMesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+  _NormalTex: {fileID: 2800000, guid: 10552f228793e214f8a86b6f9d9f94ba, type: 3}
+  _CausticsTex:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  refract_scale: 1.41
+  water_fog_distance: 6
+  water_fog_y_depth: 2
+  water_refract_y_depth: 2
+  frenel_scale: 1.82
+  first_wave_scale: 0.1
+  first_wave_speed: 2
+  second_wave_scale: 0.6
+  second_wave_speed: 2
+  wave_dir: {x: 1.5, y: 2}
+  use_mesh_normal: 0
+  enableRefl: 0
+  enableReflShield: 0
+  cylinderList: []
+  sphereList: []
+  enableWave: 0
+  enableSubWater: 0
+  type: 1
+  ScreenDistort: 1
+  ScreenWaterMaxDis: 20
+  ScreenWaterMinDis: 10
+  _GerstnerIntensity: 1
+  _GSpeed: {x: 2.33, y: 2.38, z: 2.7, w: 2.42}
+  _GAmplitude: {x: 0.13, y: 0.06, z: 0.12, w: 0.12}
+  _GFrequency: {x: 1.72, y: 1.02, z: 1.95, w: 1.46}
+  _GSteepness: {x: 1, y: 1, z: 1, w: 1}
+  _GDirectionAB: {x: 1, y: 0, z: 0.51, w: -1.39}
+  _GDirectionCD: {x: -0.29, y: 0.44, z: -0.77, w: 0.14}
+  _OceanParams0: {x: 1, y: 1, z: 1, w: 1}
+  _AnimGenParams: 1
+  _FlowDir: {x: 1, y: 1, z: 3, w: 4}
+  customMesh: 0
+  dirMode: 0
+  row: 70
+  column: 70
+  followMode: 2
+  bActiveFollowCam: 0
+  validSize: 50
+  extendEdge: 1
+  noWaveSize: 300
+  xMove: 1
+  yMove: 1
+  zMove: 0
+  reflectionPlaneOffset: 0.07
+  customWaterNormal: 0
+  waterNormal: {x: 0, y: 1, z: 0}
+  debugMesh: 0
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 154944}
+  m_IsPrefabParent: 1
