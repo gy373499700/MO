@@ -1,0 +1,68 @@
+ManifestFileVersion: 0
+CRC: 1542532692
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 6ecd05f59fdffb31fd64500b75e478b7
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 17c4f51fe468a219d4e026e396d4ed1b
+HashAppended: 0
+ClassTypes:
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 84
+  Script: {instanceID: 0}
+Assets:
+- Assets/$Shader/DistortBlend.shader
+- Assets/$Shader/GDShaders/AlphaBlend.shader
+- Assets/$Shader/GDShaders/uishader/Particle Alpha Blend.shader
+- Assets/$Shader/GDShaders/SelfIllum.shader
+- Assets/$Shader/GDShaders/AddOneOne.shader
+- Assets/$Shader/GDShaders/SDAlphaBlended.shader
+- Assets/$Shader/GDShaders/ShaderBubbleDamage.shader
+- Assets/$Shader/GDShaders/DepthOnly.shader
+- Assets/$Shader/New Render Texture.renderTexture
+- Assets/$Shader/GDShaders/SDEnergyBall.shader
+- Assets/$Shader/FXMaker_MaskAdditiveTint_AlphaFromGrayScale.shader
+- Assets/$Shader/GDShaders/AddOneOneZTestColor.shader
+- Assets/$Shader/GDShaders/AlphaBlendZTest.shader
+- Assets/$Shader/Alpha Blended Turbulence.shader
+- Assets/$Shader/Distortion.shader
+- Assets/$Shader/GDShaders/Sky.shader
+- Assets/$Shader/GDShaders/ShaderAlphaBlendedFront.shader
+- Assets/$Shader/GDShaders/SDAlphaBlendedTint.shader
+- Assets/$Shader/MyMobile Dissolve Add.shader
+- Assets/$Shader/FXMaker_Mask_Additive_Tint_NoZTest.shader
+- Assets/$Shader/GDShaders/ShaderAdditiveCulleFront.shader
+- Assets/$Shader/GDShaders/SDAdditiveTint.shader
+- Assets/$Shader/GDShaders/SelfIllum_ObjectClip.shader
+- Assets/$Shader/GDShaders/AlphaBlendTimeTest.shader
+- Assets/$Shader/GDShaders/AlphaBlendZTestVertexColor.shader
+- Assets/$Shader/FXMaker_Mask Alpha Blended.shader
+- Assets/$Shader/GDShaders/AddOneOneZTestVertexColor.shader
+- Assets/$Shader/GDShaders/AlphaBlendZTestGammaCorrect.shader
+- Assets/$Shader/GDShaders/testshader.shader
+- Assets/$Shader/FXMaker_Mask Additive.shader
+- Assets/$Shader/Trail Additive Turbulence.shader
+- Assets/$Shader/Energy Ball.shader
+- Assets/$Shader/GDShaders/uishader/Particle Add.shader
+- Assets/$Shader/FXMaker_Mask Cutout.shader
+- Assets/$Shader/GDShaders/AddOneOneZTest.shader
+- Assets/$Shader/FXMaker_Mask Alpha Blended Tint.shader
+- Assets/$Shader/GDShaders/ShaderCmBlendNoLightDouble.shader
+- Assets/$Shader/FXMaker_Mask Additive Tint.shader
+- Assets/$Shader/Additive Turbulence.shader
+- Assets/$Shader/Dissolve_TexturCoords.shader
+- Assets/$Shader/GDShaders/Billboard.shader
+- Assets/$Shader/GDShaders/SelfIllumNoFog.shader
+- Assets/$Shader/GDShaders/SDAlphaBlendedTintAlphaFromScale.shader
+- Assets/$Shader/MyMobile Dissolve Blend.shader
+- Assets/$Shader/Effect_Distort2.shader
+- Assets/$Shader/GDShaders/Distortadd.shader
+- Assets/$Shader/FXMaker_MaskAlphaBlendedTint_AlphaFromGrayScale.shader
+- Assets/$Shader/GDShaders/Dissolve.shader
+- Assets/$Shader/Dissolve_WorldCoords.shader
+- Assets/$Shader/GDShaders/QuadImage.shader
+- Assets/$Shader/GDShaders/BgAlphaBlend.shader
+Dependencies: []

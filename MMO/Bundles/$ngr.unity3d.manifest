@@ -1,0 +1,96 @@
+ManifestFileVersion: 0
+CRC: 0
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 4f69d22cf0b3fc533f01e908f713354f
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 31d6cfe0d16ae931b73c59d7e0c089c0
+HashAppended: 0
+ClassTypes: []
+Assets:
+- Assets/$NGR/Texture/sun.png
+- Assets/$NGR/Materials/ds3.mat
+- Assets/$NGR/Cubemaps/cityspec.cubemap.png
+- Assets/$NGR/Texture/cloud.png
+- Assets/$NGR/Materials/matGenCubemap.mat
+- Assets/$NGR/Texture/water_normal.jpg
+- Assets/$NGR/mat/pbr10.mat
+- Assets/$NGR/mat/pbr3.mat
+- Assets/$NGR/Cubemaps/Pirate.jpg
+- Assets/$NGR/Texture/rain13.jpg
+- Assets/$NGR/Texture/random256_2.png
+- 'Assets/$NGR/Materials/Material #1.mat'
+- Assets/$NGR/Materials/DS.mat
+- Assets/$NGR/Texture/shaft.png
+- Assets/$NGR/Materials/ds4.mat
+- Assets/$NGR/Texture/sky.jpg
+- Assets/$NGR/mat/grass.mat
+- Assets/$NGR/Materials/DeferredLight.mat
+- Assets/$NGR/Materials/CubeToSphere.mat
+- Assets/$NGR/Texture/rimlight.png
+- Assets/$NGR/mat/ground.mat
+- Assets/$NGR/lutify.txt
+- Assets/$NGR/Materials/TestView.mat
+- Assets/$NGR/Texture/rain7.jpg
+- Assets/$NGR/Materials/Materials/No Name.mat
+- Assets/$NGR/Texture/rain5.jpg
+- Assets/$NGR/Materials/NormalTest2.mat
+- Assets/$NGR/mat/grass2.mat
+- Assets/$NGR/Texture/Grass.psd
+- Assets/$NGR/Cubemaps/forest.cubemap.png
+- Assets/$NGR/Texture/shadowmask.png
+- Assets/$NGR/Texture/oit_3x3.png
+- Assets/$NGR/Texture/rain6.jpg
+- Assets/$NGR/Texture/rain1.jpg
+- Assets/$NGR/Texture/2x2.png
+- Assets/$NGR/Materials/SS.mat
+- Assets/$NGR/Materials/cylinder_plane.FBX
+- Assets/$NGR/Texture/rain2.jpg
+- Assets/$NGR/mat/pbr5.mat
+- Assets/$NGR/Cubemaps/Defaultdiff.cubemap.png
+- Assets/$NGR/Texture/rotate4x4.png
+- Assets/$NGR/Texture/2x2_inv.tga
+- Assets/$NGR/Texture/rain_waterfall.png
+- Assets/$NGR/mat/pbr7.mat
+- Assets/$NGR/Texture/2x2.tga
+- Assets/$NGR/mat/pbr9.mat
+- Assets/$NGR/Cubemaps/spec.cubemap.png
+- Assets/$NGR/Texture/water.jpg
+- Assets/$NGR/mat/pbr2.mat
+- Assets/$NGR/Texture/rain12.jpg
+- Assets/$NGR/mat/pbr1.mat
+- Assets/$NGR/Texture/2x2step_inv.png
+- Assets/$NGR/Texture/rain14.jpg
+- Assets/$NGR/Cubemaps/diffuse.cubemap.png
+- Assets/$NGR/Texture/rotate_kernel.png
+- Assets/$NGR/Texture/rain4.jpg
+- Assets/$NGR/Materials/Ground.mat
+- Assets/$NGR/Texture/rain3.jpg
+- Assets/$NGR/Effect/RainFall.prefab
+- Assets/$NGR/Texture/SKYSPEC.jpg
+- Assets/$NGR/Prefab/RenderPipeline.prefab
+- Assets/$NGR/Cubemaps/Default.cubemap.png
+- Assets/$NGR/Materials/WaterMat.mat
+- Assets/$NGR/Texture/oit_2x2_inv.png
+- Assets/$NGR/mat/pbr6.mat
+- Assets/$NGR/Cubemaps/citydiff.cubemap.png
+- Assets/$NGR/mat/pbr0.mat
+- Assets/$NGR/Texture/noise_kernel.png
+- Assets/$NGR/Texture/rain0.jpg
+- Assets/$NGR/Texture/rain8.jpg
+- Assets/$NGR/Materials/waterfall.mat
+- Assets/$NGR/mat/pbr4.mat
+- Assets/$NGR/mat/pbr8.mat
+- Assets/$NGR/Texture/rain15.jpg
+- Assets/$NGR/Materials/DS2.mat
+- Assets/$NGR/Cubemaps/forestdiff.cubemap.png
+- Assets/$NGR/Texture/rain11.jpg
+- Assets/$NGR/Texture/random256.png
+- Assets/$NGR/Texture/rain9.jpg
+- Assets/$NGR/Texture/oit_2x2.png
+- Assets/$NGR/Texture/rain10.jpg
+- Assets/$NGR/Materials/Sky.mat
+- Assets/$NGR/Texture/decal.png
+Dependencies: []

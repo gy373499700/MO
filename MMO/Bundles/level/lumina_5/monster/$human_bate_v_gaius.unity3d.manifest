@@ -1,0 +1,35 @@
+ManifestFileVersion: 0
+CRC: 4265939624
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: cd1bb0a191c2d02493b2cbb8bbc48494
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: d0e3d1c8e4fc313edcb8484219d25482
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 111
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+Assets:
+- Assets/Level/lumina_5/Monster/$human_bate_v_gaius/Materials/human_bate_v_qaius_02_M.mat
+- Assets/Level/lumina_5/Monster/$human_bate_v_gaius/human_bate_v_gaius.FBX
+- Assets/Level/lumina_5/Monster/$human_bate_v_gaius/human_bate_v_qaius_01_M.png
+- Assets/Level/lumina_5/Monster/$human_bate_v_gaius/human_bate_v_qaius_02_M.png
+- Assets/Level/lumina_5/Monster/$human_bate_v_gaius/Materials/human_bate_v_qaius_01_M.mat
+- Assets/Level/lumina_5/Monster/$human_bate_v_gaius/human_bate_v_gaius_idle01.FBX
+Dependencies: []

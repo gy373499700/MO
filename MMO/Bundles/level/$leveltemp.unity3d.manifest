@@ -1,0 +1,39 @@
+ManifestFileVersion: 0
+CRC: 2873421400
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 1a6aa4784e063bde7a0626f31e7686cd
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: dc6fc4d4411df637b235c885b02d200d
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 20
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+Assets:
+- Assets/Level/$LevelTemp/@Scene_test01.prefab
+- Assets/Level/$LevelTemp/human_erlich_test01.prefab
+- Assets/Level/$LevelTemp/@Scene.prefab
+- Assets/Level/$LevelTemp/human_erlich.prefab
+Dependencies: []

@@ -1,0 +1,90 @@
+ManifestFileVersion: 0
+CRC: 2250970183
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: level/lumina_5/$lumina_5f.unity.unity3d
+      Dependencies:
+        Dependency_0: $demo.unity3d
+        Dependency_1: lutify/luts/$standard.unity3d
+        Dependency_2: $ngr.unity3d
+        Dependency_3: level/lumina_5/$mdl_lumina_1.unity3d
+        Dependency_4: level/lumina_5/monster/$barrel01.unity3d
+        Dependency_5: level/lumina_5/monster/$caterpillar_imp.unity3d
+        Dependency_6: level/lumina_5/monster/$human_male_troopers 3.unity3d
+        Dependency_7: level/lumina_5/monster/$elkus.unity3d
+        Dependency_8: level/lumina_5/monster/$human_gilliam.unity3d
+        Dependency_9: level/lumina_5/monster/$human_male_troopers.unity3d
+        Dependency_10: level/lumina_5/monster/$human_male_troopers 2.unity3d
+        Dependency_11: level/lumina_5/$lumina_5f.unity3d
+        Dependency_12: level/lumina_5/monster/$human_male_troopers 1.unity3d
+        Dependency_13: level/lumina_5/$mdl_common_0.unity3d
+        Dependency_14: $font.unity3d
+    Info_1:
+      Name: $demo.unity3d
+      Dependencies:
+        Dependency_0: $ngr.unity3d
+    Info_2:
+      Name: lutify/luts/$standard.unity3d
+      Dependencies: {}
+    Info_3:
+      Name: $ngr.unity3d
+      Dependencies: {}
+    Info_4:
+      Name: level/lumina_5/$mdl_lumina_1.unity3d
+      Dependencies:
+        Dependency_0: $demo.unity3d
+    Info_5:
+      Name: level/lumina_5/monster/$barrel01.unity3d
+      Dependencies:
+        Dependency_0: $ngr.unity3d
+    Info_6:
+      Name: level/lumina_5/monster/$barrel03.unity3d
+      Dependencies:
+        Dependency_0: $demo.unity3d
+    Info_7:
+      Name: level/lumina_5/monster/$caterpillar_imp.unity3d
+      Dependencies: {}
+    Info_8:
+      Name: level/lumina_5/monster/$human_bate_v_gaius.unity3d
+      Dependencies: {}
+    Info_9:
+      Name: level/lumina_5/monster/$human_male_troopers 3.unity3d
+      Dependencies:
+        Dependency_0: level/lumina_5/monster/$human_male_troopers.unity3d
+        Dependency_1: level/lumina_5/monster/$human_male_troopers 2.unity3d
+    Info_10:
+      Name: level/lumina_5/monster/$elkus.unity3d
+      Dependencies: {}
+    Info_11:
+      Name: level/lumina_5/monster/$human_gilliam.unity3d
+      Dependencies:
+        Dependency_0: $demo.unity3d
+    Info_12:
+      Name: level/lumina_5/monster/$human_male_troopers.unity3d
+      Dependencies:
+        Dependency_0: $demo.unity3d
+    Info_13:
+      Name: level/lumina_5/monster/$human_male_troopers 2.unity3d
+      Dependencies:
+        Dependency_0: $demo.unity3d
+        Dependency_1: level/lumina_5/monster/$human_male_troopers.unity3d
+    Info_14:
+      Name: level/lumina_5/monster/$barrel02.unity3d
+      Dependencies:
+        Dependency_0: $demo.unity3d
+        Dependency_1: level/lumina_5/monster/$barrel01.unity3d
+    Info_15:
+      Name: level/lumina_5/$lumina_5f.unity3d
+      Dependencies: {}
+    Info_16:
+      Name: level/lumina_5/monster/$human_male_troopers 1.unity3d
+      Dependencies:
+        Dependency_0: $demo.unity3d
+        Dependency_1: level/lumina_5/monster/$human_male_troopers.unity3d
+    Info_17:
+      Name: level/lumina_5/$mdl_common_0.unity3d
+      Dependencies: {}
+    Info_18:
+      Name: $font.unity3d
+      Dependencies: {}

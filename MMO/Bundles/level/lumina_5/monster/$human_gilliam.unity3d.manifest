@@ -1,0 +1,42 @@
+ManifestFileVersion: 0
+CRC: 2353421038
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: eb6e202474c76d9b08df399699f68ace
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 43cce5ff9319da244aa39cdf95ed1b75
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 90
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+Assets:
+- Assets/Level/lumina_5/Monster/$human_gilliam/human_gilliam.prefab
+- Assets/Level/lumina_5/Monster/$human_gilliam/human_gilliam.controller
+- Assets/Level/lumina_5/Monster/$human_gilliam/human_gilliam.FBX
+- Assets/Level/lumina_5/Monster/$human_gilliam/human_gilliam.png
+- Assets/Level/lumina_5/Monster/$human_gilliam/Materials/human_gilliam.mat
+- Assets/Level/lumina_5/Monster/$human_gilliam/human_gilliam_idle.FBX
+Dependencies:
+- E:/Github/trunk/MMO/Bundles/$demo.unity3d

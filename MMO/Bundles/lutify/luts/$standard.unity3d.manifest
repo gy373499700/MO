@@ -1,0 +1,165 @@
+ManifestFileVersion: 0
+CRC: 4058370450
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: fe450a9615a039acb86b03c65e48ecbf
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: eb6b06b1b3e2dbe026521de7a467fcd7
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 49
+  Script: {instanceID: 0}
+Assets:
+- Assets/Lutify/Luts/$Standard/Cine Pack 3/Military.png
+- Assets/Lutify/Luts/$Standard/Retro Pack/Andrae.png
+- Assets/Lutify/Luts/$Standard/Retro Pack/SpeedyCube.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 2/Dust.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 2/Vision.png
+- Assets/Lutify/Luts/$Standard/Insta Pack/Perpetua.png
+- Assets/Lutify/Luts/$Standard/Insta Pack/Inkwell.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 1/Mexico.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 2/Freedom.png
+- Assets/Lutify/Luts/$Standard/Retro Pack/Commodore Plus.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 1/Prime.png
+- Assets/Lutify/Luts/$Standard/Retro Pack/Windows 256.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 3/Industrial.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 1/Hollywood.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 3/Force.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 3/Vivid.png
+- Assets/Lutify/Luts/$Standard/Insta Pack/Valencia.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 3/Burn.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 3/Moonlight.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 3/Clarity.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 3/Fury.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 1/Deep Dream.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 3/Dry.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 3/Anxiety.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 1/Ocean.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 1/Lust.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 3/Vintage.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 3/Machine.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 3/Glory.png
+- Assets/Lutify/Luts/$Standard/Insta Pack/Earlybird.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 2/Red Winter.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 3/Haunted.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 2/Harsh.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 1/Bank Job.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 2/Sunset.png
+- Assets/Lutify/Luts/$Standard/Insta Pack/X-Pro II.png
+- Assets/Lutify/Luts/$Standard/Retro Pack/Filtering.txt
+- Assets/Lutify/Luts/$Standard/Cine Pack 1/Undead.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 2/Magical.png
+- Assets/Lutify/Luts/$Standard/Retro Pack/Pavanz B.png
+- Assets/Lutify/Luts/$Standard/Retro Pack/CGA.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 2/Nature.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 2/Charm.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 1/Noir Extreme.png
+- Assets/Lutify/Luts/$Standard/Insta Pack/1977.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 2/Purple Haze.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 1/Kodachrome.png
+- Assets/Lutify/Luts/$Standard/Retro Pack/Commodore 64.png
+- Assets/Lutify/Luts/$Standard/Insta Pack/Brannan.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 1/Monster.png
+- Assets/Lutify/Luts/$Standard/Retro Pack/Finlal A.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 2/Blockbuster.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 1/Noir.png
+- Assets/Lutify/Luts/$Standard/Retro Pack/Crayolo.png
+- Assets/Lutify/Luts/$Standard/Retro Pack/DJinn.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 3/Sand Storm.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 1/Sunburn.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 1/1800.png
+- Assets/Lutify/Luts/$Standard/Retro Pack/MacOS 16.png
+- Assets/Lutify/Luts/$Standard/Insta Pack/Willow.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 3/Dali.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 3/Old Chap.png
+- Assets/Lutify/Luts/$Standard/Retro Pack/Drazile C.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 1/Noir Deep.png
+- Assets/Lutify/Luts/$Standard/Insta Pack/Aden.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 1/Living In Color.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 1/Play Time.png
+- Assets/Lutify/Luts/$Standard/Retro Pack/Peyton.png
+- Assets/Lutify/Luts/$Standard/Retro Pack/Master System.png
+- Assets/Lutify/Luts/$Standard/Retro Pack/DB16.png
+- Assets/Lutify/Luts/$Standard/Insta Pack/Hudson.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 2/Punch.png
+- Assets/Lutify/Luts/$Standard/Retro Pack/MacOS 256.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 3/Sunny Day.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 3/Polka.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 2/Parchment.png
+- Assets/Lutify/Luts/$Standard/Retro Pack/Drazile B.png
+- Assets/Lutify/Luts/$Standard/Insta Pack/Sierra.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 3/Village.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 3/Arctic.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 2/Aquamarine.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 1/Soft Breeze.png
+- Assets/Lutify/Luts/$Standard/Retro Pack/Hapiel.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 3/Expired.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 1/Grunge.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 3/Hope.png
+- Assets/Lutify/Luts/$Standard/Insta Pack/Hefe.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 2/Joy.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 2/Teal.png
+- Assets/Lutify/Luts/$Standard/Retro Pack/Eggy.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 2/Wedding.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 2/Desert.png
+- Assets/Lutify/Luts/$Standard/Insta Pack/Kelvin.png
+- Assets/Lutify/Luts/$Standard/Insta Pack/Amaro.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 2/No Man's Land.png
+- Assets/Lutify/Luts/$Standard/Insta Pack/Crema.png
+- Assets/Lutify/Luts/$Standard/Insta Pack/Walden.png
+- Assets/Lutify/Luts/$Standard/Insta Pack/Juno.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 1/Cold Pop.png
+- Assets/Lutify/Luts/$Standard/Retro Pack/RiscOS 16.png
+- Assets/Lutify/Luts/$Standard/Insta Pack/Mayfair.png
+- Assets/Lutify/Luts/$Standard/Retro Pack/Drazile A.png
+- Assets/Lutify/Luts/$Standard/Insta Pack/Rise.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 1/Green Tea.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 1/Optimus.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 2/Crusher.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 2/Morning.png
+- Assets/Lutify/Luts/$Standard/Retro Pack/ZX Spectrum.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 2/Mist.png
+- Assets/Lutify/Luts/$Standard/Retro Pack/Windows 16.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 1/Ethereal.png
+- Assets/Lutify/Luts/$Standard/Retro Pack/Amstrad CPC.png
+- Assets/Lutify/Luts/$Standard/Retro Pack/Anodomani.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 2/Vespa.png
+- Assets/Lutify/Luts/$Standard/Insta Pack/Sutro.png
+- Assets/Lutify/Luts/$Standard/Insta Pack/Lark.png
+- Assets/Lutify/Luts/$Standard/Retro Pack/DB32.png
+- Assets/Lutify/Luts/$Standard/Insta Pack/Slumber.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 3/Wonder.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 3/Suspense.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 1/Tin Man.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 2/Danger.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 3/Meadow.png
+- Assets/Lutify/Luts/$Standard/Insta Pack/Reyes.png
+- Assets/Lutify/Luts/$Standard/Insta Pack/Ludwig.png
+- Assets/Lutify/Luts/$Standard/Retro Pack/GameBoy.png
+- Assets/Lutify/Luts/$Standard/Insta Pack/Nashville.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 2/Sea Side.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 1/Ghost.png
+- Assets/Lutify/Luts/$Standard/Retro Pack/Pavanz A.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 3/Discovery.png
+- Assets/Lutify/Luts/$Standard/Insta Pack/Toaster.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 2/Trench Warfare.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 1/Terror.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 1/Dark Times.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 1/Post Apo.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 3/Summer.png
+- Assets/Lutify/Luts/$Standard/Insta Pack/Lo-Fi.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 1/Cavern.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 2/Overcast.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 3/Clear Sky.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 2/West.png
+- Assets/Lutify/Luts/$Standard/Retro Pack/Finlal B.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 3/MI6.png
+- Assets/Lutify/Luts/$Standard/Retro Pack/EGA.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 2/Lava.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 2/Draught.png
+- Assets/Lutify/Luts/$Standard/Cine Pack 1/Indie.png
+Dependencies: []

@@ -1,0 +1,43 @@
+ManifestFileVersion: 0
+CRC: 2451747038
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: de6aa9cc4ed6ccdab5f380e01b9bf3bb
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: d0e3d1c8e4fc313edcb8484219d25482
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 111
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+Assets:
+- Assets/Level/lumina_5/Monster/$caterpillar_imp/caterpillar_imp_walk01_003.FBX
+- Assets/Level/lumina_5/Monster/$caterpillar_imp/caterpillar_imp_skill02.FBX
+- Assets/Level/lumina_5/Monster/$caterpillar_imp/caterpillar_imp_knockback_death01_006.FBX
+- Assets/Level/lumina_5/Monster/$caterpillar_imp/Materials/imp_caterpillar.mat
+- Assets/Level/lumina_5/Monster/$caterpillar_imp/caterpillar_imp_knockback01_010.FBX
+- Assets/Level/lumina_5/Monster/$caterpillar_imp/caterpillar_imp_skill_attack01_010.FBX
+- Assets/Level/lumina_5/Monster/$caterpillar_imp/caterpillar_imp_stun01_005.FBX
+- Assets/Level/lumina_5/Monster/$caterpillar_imp/Materials/imp_caterpillar_M.mat
+- Assets/Level/lumina_5/Monster/$caterpillar_imp/caterpillar_imp_idle01_009.FBX
+- Assets/Level/lumina_5/Monster/$caterpillar_imp/caterpillar_imp_death01_008.FBX
+- Assets/Level/lumina_5/Monster/$caterpillar_imp/caterpillar_imp.FBX
+- Assets/Level/lumina_5/Monster/$caterpillar_imp/caterpillar_imp_born01.FBX
+- Assets/Level/lumina_5/Monster/$caterpillar_imp/imp_caterpillar_M.png
+- Assets/Level/lumina_5/Monster/$caterpillar_imp/caterpillar_imp_run01.FBX
+Dependencies: []
