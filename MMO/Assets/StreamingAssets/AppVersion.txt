@@ -1,0 +1,15 @@
+BundleTest=1
+BundlePath=E:/Github/trunk/MMO/Bundles/
+StreamAssetsCompress=0
+appName=tencent_qyds_
+Area=18
+AreaUrl=
+versionCode=50
+versionName=0.5.50.49693
+BreakJail=1
+BundleIdentifier=com.tencent.test
+ProductName=test
+FullResource=1
+Is64=0
+Plugin=0
+iosCompress=1
