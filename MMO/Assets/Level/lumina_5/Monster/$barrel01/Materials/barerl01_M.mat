@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: barerl01_M
+  m_Shader: {fileID: 4800000, guid: 1607bd7ac3800db4e9e783c158194bb8, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+    - first:
+        name: _HairDetail
+      second:
+        m_Texture: {fileID: 2800000, guid: c23e8ab017bbbcc4980f125292ef35c9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _MainTex
+      second:
+        m_Texture: {fileID: 2800000, guid: 1aa80b1cdd464a34a9bc4eaee1d9cd24, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - first:
+        name: CullMode
+      second: 2
+    - first:
+        name: _Metal
+      second: 0.576
+    - first:
+        name: _RoughnessX
+      second: 0.647
+    - first:
+        name: _RoughnessY
+      second: 0.707
+    - first:
+        name: _SmoothBase
+      second: 0
+    m_Colors:
+    - first:
+        name: _AddColor
+      second: {r: 0, g: 0, b: 0, a: 1}
+    - first:
+        name: _Color
+      second: {r: 1, g: 1, b: 1, a: 1}

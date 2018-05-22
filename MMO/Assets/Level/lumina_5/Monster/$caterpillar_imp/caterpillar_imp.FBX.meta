@@ -1,0 +1,208 @@
+fileFormatVersion: 2
+guid: 27251d8a3e16f764f9476c370942d02f
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: back_body
+    100002: Bip01
+    100004: Bip01 Footsteps
+    100006: Bip01 Head
+    100008: Bip01 HeadNub
+    100010: Bip01 L Calf
+    100012: Bip01 L Clavicle
+    100014: Bip01 L Finger0
+    100016: Bip01 L Finger01
+    100018: Bip01 L Finger0Nub
+    100020: Bip01 L Finger1
+    100022: Bip01 L Finger11
+    100024: Bip01 L Finger1Nub
+    100026: Bip01 L Foot
+    100028: Bip01 L Forearm
+    100030: Bip01 L Hand
+    100032: Bip01 L Thigh
+    100034: Bip01 L Toe0
+    100036: Bip01 L Toe0Nub
+    100038: Bip01 L UpperArm
+    100040: Bip01 Neck
+    100042: Bip01 Pelvis
+    100044: Bip01 Ponytail1
+    100046: Bip01 Ponytail1Nub
+    100048: Bip01 R Calf
+    100050: Bip01 R Clavicle
+    100052: Bip01 R Finger0
+    100054: Bip01 R Finger01
+    100056: Bip01 R Finger0Nub
+    100058: Bip01 R Finger1
+    100060: Bip01 R Finger11
+    100062: Bip01 R Finger1Nub
+    100064: Bip01 R Foot
+    100066: Bip01 R Forearm
+    100068: Bip01 R Hand
+    100070: Bip01 R Thigh
+    100072: Bip01 R Toe0
+    100074: Bip01 R Toe0Nub
+    100076: Bip01 R UpperArm
+    100078: Bip01 Spine
+    100080: Bip01 Spine1
+    100082: Bip02
+    100084: Bone01
+    100086: Bone02
+    100088: Bone_eyeblow
+    100090: //RootNode
+    100092: caterpillar_imp
+    100094: caterpillar_imp_weapon
+    100096: con_back
+    100098: con_front
+    100100: con_p
+    100102: con_p01
+    100104: cont_body
+    100106: cont_body01
+    100108: front_body
+    100110: head
+    100112: jaw
+    100114: Point01
+    100116: Point02
+    100118: Point03
+    100120: tail
+    100122: weapon
+    100124: caterpillar
+    100126: weapon001
+    400000: back_body
+    400002: Bip01
+    400004: Bip01 Footsteps
+    400006: Bip01 Head
+    400008: Bip01 HeadNub
+    400010: Bip01 L Calf
+    400012: Bip01 L Clavicle
+    400014: Bip01 L Finger0
+    400016: Bip01 L Finger01
+    400018: Bip01 L Finger0Nub
+    400020: Bip01 L Finger1
+    400022: Bip01 L Finger11
+    400024: Bip01 L Finger1Nub
+    400026: Bip01 L Foot
+    400028: Bip01 L Forearm
+    400030: Bip01 L Hand
+    400032: Bip01 L Thigh
+    400034: Bip01 L Toe0
+    400036: Bip01 L Toe0Nub
+    400038: Bip01 L UpperArm
+    400040: Bip01 Neck
+    400042: Bip01 Pelvis
+    400044: Bip01 Ponytail1
+    400046: Bip01 Ponytail1Nub
+    400048: Bip01 R Calf
+    400050: Bip01 R Clavicle
+    400052: Bip01 R Finger0
+    400054: Bip01 R Finger01
+    400056: Bip01 R Finger0Nub
+    400058: Bip01 R Finger1
+    400060: Bip01 R Finger11
+    400062: Bip01 R Finger1Nub
+    400064: Bip01 R Foot
+    400066: Bip01 R Forearm
+    400068: Bip01 R Hand
+    400070: Bip01 R Thigh
+    400072: Bip01 R Toe0
+    400074: Bip01 R Toe0Nub
+    400076: Bip01 R UpperArm
+    400078: Bip01 Spine
+    400080: Bip01 Spine1
+    400082: Bip02
+    400084: Bone01
+    400086: Bone02
+    400088: Bone_eyeblow
+    400090: caterpillar_imp
+    400092: //RootNode
+    400094: caterpillar_imp_weapon
+    400096: con_back
+    400098: con_front
+    400100: con_p
+    400102: con_p01
+    400104: cont_body
+    400106: cont_body01
+    400108: front_body
+    400110: head
+    400112: jaw
+    400114: Point01
+    400116: Point02
+    400118: Point03
+    400120: tail
+    400122: weapon
+    400124: caterpillar
+    400126: weapon001
+    4300000: caterpillar_imp_weapon
+    4300002: caterpillar_imp
+    4300004: caterpillar
+    4300006: weapon001
+    7400000: Take 001
+    9500000: //RootNode
+    11100000: //RootNode
+    13700000: caterpillar_imp
+    13700002: caterpillar_imp_weapon
+    13700004: caterpillar
+    13700006: weapon001
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: Bip01
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 1
+  humanoidOversampling: 1
+  additionalBone: 1
+  userData: 
+  assetBundleName: level/lumina_5/monster/$caterpillar_imp.unity3d
+  assetBundleVariant: 
