@@ -1312,7 +1312,11 @@ public class RenderPipeline : MonoBehaviour
     }
     public void OnRenderImage(RenderTexture source2, RenderTexture destination)
     {
-        
+        if (!Application.isPlaying)
+        {
+            Graphics.Blit(GetColorBuffer(), destination);
+            return;
+        }
         if (SceneRenderSetting._Setting == null)
         {
 
@@ -1323,6 +1327,7 @@ public class RenderPipeline : MonoBehaviour
         //根据画质级别  检查阴影分辨率
         CheckShadowResolution();
         GetCheckerBoardTexture();
+
         if (quality.mode == GlobalQualitySetting.Mode.Fast ||
             UnityEngine.SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.OpenGLES2)
         {
