@@ -1312,11 +1312,7 @@ public class RenderPipeline : MonoBehaviour
     }
     public void OnRenderImage(RenderTexture source2, RenderTexture destination)
     {
-        if (!Application.isPlaying)
-        {
-            Graphics.Blit(GetColorBuffer(), destination);
-            return;
-        }
+
         if (SceneRenderSetting._Setting == null)
         {
 

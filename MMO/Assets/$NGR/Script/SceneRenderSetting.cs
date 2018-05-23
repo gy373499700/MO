@@ -267,13 +267,14 @@ public class SceneRenderSetting : MonoBehaviour {
             DestroyPipeline();
 
 #if UNITY_EDITOR
-            if (privatePipeline == null)
+            StartCoroutine(Load());
+           /* if (privatePipeline == null)
             {
                 GameObject RenderPipelineObj = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/$NGR/Prefab/RenderPipeline.prefab") as GameObject;
                 privatePipeline = GameObject.Instantiate(RenderPipelineObj) as GameObject;
                 SetDontSave(privatePipeline);
 
-            }
+            }*/
 #endif
         }
         else
@@ -307,6 +308,53 @@ public class SceneRenderSetting : MonoBehaviour {
         }
 #endif
 
+    }
+    IEnumerator Load()
+    {
+        yield return null;
+        yield return null;
+        string path = Application.dataPath.Replace("Assets", "") + "Bundles/";
+        string MainBunldes = path + "Bundles";
+        AssetBundle manifestBundle = AssetBundle.LoadFromFile(MainBunldes);
+        AssetBundleManifest manifest = (AssetBundleManifest)manifestBundle.LoadAsset("AssetBundleManifest");
+        string bundleName = "$ngr.unity3d";//"ui/$scene.prefab.unity3d";//
+
+        string resname = "RenderPipeline";//"$scene.prefab";// 
+
+        string[] dependents = manifest.GetAllDependencies(bundleName.ToLower());
+
+
+
+        Debug.Log(dependents.Length); 
+        AssetBundle[] dependsAssetbundle = new AssetBundle[dependents.Length];
+        for (int index = 0; index < dependents.Length; index++)
+        {  //加载所有的依赖文件;  
+
+            dependsAssetbundle[index] = AssetBundle.LoadFromFile(path + dependents[index]);
+            Debug.Log(dependsAssetbundle[index]);
+
+        }
+        AssetBundle item = AssetBundle.LoadFromFile(path + bundleName);
+        Debug.Log(item);
+
+
+        Object abr2 = item.LoadAsset(resname.ToLower());
+        privatePipeline = GameObject.Instantiate(abr2) as GameObject;
+        SetDontSave(privatePipeline);
+        Debug.Log(abr2);
+        manifestBundle.Unload(false); 
+        item.Unload(false);
+        if (RenderPipeline._instance != null)
+        {
+            RenderPipeline._instance.quality.mode = GlobalQualitySetting.Mode.Merge;
+        }
+        for (int index = 0; index < dependents.Length; index++)
+        {  //加载所有的依赖文件;  
+
+            dependsAssetbundle[index].Unload(false);
+
+        }
+        yield return null;
     }
     void OnDisable()
     {
