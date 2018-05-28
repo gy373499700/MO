@@ -377,7 +377,7 @@
 				float2 XY_DEPTH = float2(1.0f, 0.003921568627451)*invShadowViewport.w;
 				float occ = CalcShadow3X3(shadowuv, i.sview.z, XY_DEPTH, invShadowViewport.xyz, _ShadowDepth);
              //  return float4(spec,1);
-             	return float4(lightcolor.xyz*col.xyz*(diff*occ + spec) + ambient_spec, 1);//here1/2.2 willbe wrong
+             	return pow(float4(lightcolor.xyz*col.xyz*(diff*occ + spec) + ambient_spec, 1),1);//here1/2.2 willbe wrong
 
 			}
 
