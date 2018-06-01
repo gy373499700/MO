@@ -68,7 +68,7 @@
 				float fn = inRoughness*inRoughness;
 				float f0   =   (1-fn)/(1+fn);
 		
-				return Diffuse_Lambert(DiffuseColor)*(dot(L, N)*0.5 + 0.5)*(saturate(2 - f0*f0-Metal*Metal));
+				return Diffuse_Lambert(DiffuseColor)*(dot(L, N)*0.5 + 0.5)*(saturate(2 - f0*f0-Metal));
 			}
 			half3 SimplePointLightDiffuse( half3 DiffuseColor ,float inRoughness,float3 L,float3 N)
 			{
