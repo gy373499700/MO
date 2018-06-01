@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: grass
-  m_Shader: {fileID: 4800000, guid: 31d9c25444146d84bb5a5d132ccafc39, type: 3}
+  m_Shader: {fileID: 4800000, guid: bf128bce181cf2b469fec90d69866adf, type: 3}
   m_ShaderKeywords: _EMISSION
   m_LightmapFlags: 1
   m_CustomRenderQueue: -1
@@ -48,7 +48,7 @@ Material:
     - first:
         name: _MainTex
       second:
-        m_Texture: {fileID: 2800000, guid: f4ababdb5d9ea78438f9fc1d7571724a, type: 3}
+        m_Texture: {fileID: 2800000, guid: 5aeb8501a8998b6498381c149edfb280, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
@@ -148,7 +148,7 @@ Material:
     m_Colors:
     - first:
         name: _Color
-      second: {r: 0.25, g: 0.24448529, b: 0.24448529, a: 0.703}
+      second: {r: 0.9117647, g: 0.9050605, b: 0.9050605, a: 0.703}
     - first:
         name: _EmissionColor
       second: {r: 0, g: 0, b: 0, a: 1}

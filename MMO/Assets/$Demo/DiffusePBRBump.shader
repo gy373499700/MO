@@ -188,7 +188,7 @@
              	float3 spec =(1 + metal * 3);//金属控制高光强度
              	 
      			 
-             	PBR(roughness, -lightdir.xyz, e, normal, diff, spec,i.tangent);
+             	PBR(roughness, _Metal, -lightdir.xyz, e, normal, diff, spec,i.tangent);
              	//outspec=lightcolor*(col+metal)*outspec;
              	float3 ambient_spec = 0;   
                 float3 R = reflect(-e,normal)*float3(1,1,-1); 
@@ -200,7 +200,7 @@
 	
 				float2 shadowuv = i.sview.xy;
 				float2 XY_DEPTH = float2(1.0f, 0.003921568627451)*invShadowViewport.w;
-				float occ = CalcShadow3X3(shadowuv, i.sview.z, XY_DEPTH, invShadowViewport.xyz, _ShadowDepth);
+				float occ =max(0.2, CalcShadow3X3(shadowuv, i.sview.z, XY_DEPTH, invShadowViewport.xyz, _ShadowDepth));
              //  return float4(spec,1);
 			//	return pow(float4(col.xyz,1),1/2.2);
              	return pow(float4(lightcolor.xyz*col.xyz*(diff*occ + spec) + ambient_spec, 1),1/1);//here1/2.2 willbe wrong
