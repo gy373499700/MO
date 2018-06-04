@@ -70,15 +70,21 @@
 #if SHADER_API_GLES|| SHADER_API_GLES3
 
 #else
-				o.view_pos_nor.x *= -1;
-				o.view_pos_nor.z *= -1;
-				o.view.y *= -1;
+				o.view_pos_nor.z *= -1;//坐标系问题
+				o.view.z *= -1;
+			//	shadowproj.y *= -1;
 #endif
 				return o;
 			}
 		
+			struct PS_OUTPUT
+			{
+				float4 diffuse_roughness	: COLOR0;
+				float4 depth_normal			: COLOR1;
 
-			fixed4 frag (v2f i) : SV_Target
+			};
+
+			PS_OUTPUT frag (v2f i) : SV_Target
 			{
 				fixed4 col = tex2D(_MainTex, i.uv.xy);	
 		
@@ -98,7 +104,7 @@
 
 				//return float4(normal.xy,0,1); 
                	col =retc;// tex2D(_Diffuse, proj_uv);
-             	float3 e =normalize(i.view);//viewspace
+             	float3 e =-normalize(i.view);//viewspace
              	float3 diff = 1;
              	float metal =  col.w >= 0.497f;//__Metal
 				float roughness = 1 - _SmoothBase;//  saturate(1 - (col.w*2.0f) + metal);//1-_SmoothBase
@@ -115,8 +121,15 @@
 				ambient_spec = env*env*(metal + 1);
 				
               //  return float4(spec,1);
-             	return float4(lightcolor.xyz*col.xyz*(diff + spec+ambientcolor), 1);//here1/2.2 willbe wrong
-
+             	float4 color= float4(lightcolor.xyz*col.xyz*(diff + spec+ambientcolor), 1);//here1/2.2 willbe wrong
+				PS_OUTPUT output;
+				color.w = col.w;
+				output.diffuse_roughness = color;
+				float4 ret;
+				ret.xy = EncodeDepth(i.view_pos_nor.w);
+				ret.zw = EncodeNormal(normalize(normal));
+				output.depth_normal = ret;
+				return output;
 			}
 
 			ENDCG 

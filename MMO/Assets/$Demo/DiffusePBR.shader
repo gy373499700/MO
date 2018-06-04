@@ -147,7 +147,13 @@
 
 				return o;
 			}
-			fixed4 frag (v2f i) : SV_Target
+			struct PS_OUTPUT
+			{
+				float4 diffuse_roughness	: COLOR0;
+				float4 depth_normal			: COLOR1;
+
+			};
+			PS_OUTPUT frag (v2f i) : SV_Target
 			{
 				fixed4 col = tex2D(_MainTex, i.uv.xy);	
 			
@@ -188,8 +194,16 @@
 				float2 XY_DEPTH = float2(1.0f, 0.003921568627451)*invShadowViewport.w;
 				float occ =max(0.2, CalcShadow3X3(shadowuv, i.sview.z, XY_DEPTH, invShadowViewport.xyz, _ShadowDepth));
 				//return float4(spec , 1);
-             	return pow(float4(lightcolor.xyz*col.xyz*(diff*occ + spec) + ambient_spec, 1),1);//here1/2.2 willbe wrong
+				float4 color = float4(lightcolor.xyz*col.xyz*(diff*occ + spec) + ambient_spec, 1);//here1/2.2 willbe wrong
 
+				PS_OUTPUT output;
+				color.w = col.w;
+				output.diffuse_roughness = color;
+				float4 ret;
+				ret.xy = EncodeDepth(i.view_pos_nor.w);
+				ret.zw = EncodeNormal(normalize(normal));
+				output.depth_normal = ret;
+				return output;
 			}
 
 			ENDCG 
