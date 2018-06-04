@@ -2115,13 +2115,13 @@ public class RenderPipeline : MonoBehaviour
         else if (quality.mode == GlobalQualitySetting.Mode.Merge)
         {//光照和阴影前面算 其他后处理 后面算
             //按照材质本身shader渲染 场景中同时存在PBR和Lambert，如果要规范化就用perfect的MRt渲染 给不同材质不同shader定义不同的rendertype去分开计算光照模型
-            Matrix4x4 MainViewMatrix =   Matrix4x4.identity;
+            Matrix4x4 MainViewMatrix = Matrix4x4.identity;
             ViewMatrix(GetComponent<Camera>(), ref MainViewMatrix);
             Vector4 MainLightDir_WorldSpace = shadowCameraNear.transform.TransformDirection(Vector3.forward);
-             
+
             Vector4 MainLightDir = MainViewMatrix.MultiplyVector(MainLightDir_WorldSpace).normalized;
             MainLightDir.w = SceneRenderSetting._Setting.MainLightBias.x;
-   
+
 
             Shader.SetGlobalTexture("_Depth", GetGbuffer());
             Shader.SetGlobalVector("lightdir", MainLightDir);
@@ -2137,11 +2137,20 @@ public class RenderPipeline : MonoBehaviour
             RenderTexture depthbuffer = GetGbuffer();
 
             cloneCamera.clearFlags = CameraClearFlags.SolidColor;
-            cloneCamera.SetTargetBuffers(cbuffer.colorBuffer, cbuffer.depthBuffer);//可以分分布渲染，
-         //   cloneCamera.Render();//无法支持MRT，到时候估计要分layer渲染
-            cloneCamera.RenderWithShader(PBRShader, "RenderType");
-            cloneCamera.SetTargetBuffers(depthbuffer.colorBuffer, cbuffer.depthBuffer);
-            cloneCamera.RenderWithShader(gbuffer, "RenderType");//不过最好还是统一渲染MRT
+            if (bMRT)
+            {
+                renderbuffs[0] = cbuffer.colorBuffer;
+                renderbuffs[1] = depthbuffer.colorBuffer;
+                cloneCamera.SetTargetBuffers(renderbuffs, cbuffer.depthBuffer);
+                cloneCamera.Render();//无法支持MRT，到时候估计要分layer渲染
+            }
+            else
+            {
+                cloneCamera.SetTargetBuffers(cbuffer.colorBuffer, cbuffer.depthBuffer);
+                cloneCamera.Render();
+                cloneCamera.SetTargetBuffers(depthbuffer.colorBuffer, cbuffer.depthBuffer);
+                cloneCamera.RenderWithShader(gbuffer, "RenderType");//不过最好还是统一渲染MRT
+            }
             //cloneCamera.clearFlags = CameraClearFlags.Nothing;
             // cloneCamera.SetTargetBuffers(cbuffer.colorBuffer, cbuffer.depthBuffer);
             // cloneCamera.RenderWithShader(PBRShader, "RenderType");颜色渲染放在相机自己里边

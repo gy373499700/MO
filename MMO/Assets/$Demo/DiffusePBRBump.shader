@@ -152,7 +152,13 @@
 
 				return o;
 			}
-			fixed4 frag (v2f i) : SV_Target
+			struct PS_OUTPUT
+			{
+				float4 diffuse_roughness	: COLOR0;
+				float4 depth_normal			: COLOR1;
+
+			};
+			PS_OUTPUT frag (v2f i) 
 			{
 				fixed4 col = tex2D(_MainTex, i.uv.xy);	
 			
@@ -207,8 +213,17 @@
 				//return float4(ret_normal, 1); 
            //  return float4(spec+ 0,1);
 			//	return pow(float4(col.xyz,1),1/2.2);
-             	return pow(float4(lightcolor.xyz*col.xyz*(diff*occ + spec) + ambient_spec, 1),1/1);//here1/2.2 willbe wrong
+             	float4 color= float4(lightcolor.xyz*col.xyz*(diff*occ + spec) + ambient_spec, 1);//here1/2.2 willbe wrong
 
+				PS_OUTPUT output;
+			
+				color.w = col.w;
+				output.diffuse_roughness = color;
+				float4 ret;
+				ret.xy = EncodeDepth(i.view_pos_nor.w);
+				ret.zw = EncodeNormal(normalize(ret_normal));
+				output.depth_normal = ret;
+				return output;
 			}
 
 			ENDCG 
