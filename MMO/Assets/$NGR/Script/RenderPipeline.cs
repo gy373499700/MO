@@ -1605,7 +1605,7 @@ public class RenderPipeline : MonoBehaviour
                         DrawShadowCheckerBoard(currentColorBuffer, currentDepthBuffer, MainViewMatrix, farcorner, invViewport_main, diffuseRT, shadowCameraNear, SceneRenderSetting._Setting.MainLightBias.x, 4 - quality.ShadowLevel);
                     }
                     else
-                    {
+                    {//blend one one  后效果更佳明亮
                         DrawShadow(MainViewMatrix, farcorner, invViewport_main, diffuseRT, shadowCameraNear, SceneRenderSetting._Setting.MainLightBias.x, 4 - quality.ShadowLevel);
                         DrawShadow(MainViewMatrix, farcorner, invViewport_main, diffuseRT, shadowCameraSuperFar, SceneRenderSetting._Setting.MainLightBias.z, 4);
                     }
@@ -2121,7 +2121,7 @@ public class RenderPipeline : MonoBehaviour
              
             Vector4 MainLightDir = MainViewMatrix.MultiplyVector(MainLightDir_WorldSpace).normalized;
             MainLightDir.w = SceneRenderSetting._Setting.MainLightBias.x;
-            MainLightDir.x *= -1;//坐标系问题
+   
 
             Shader.SetGlobalTexture("_Depth", GetGbuffer());
             Shader.SetGlobalVector("lightdir", MainLightDir);

@@ -141,10 +141,8 @@
 #if SHADER_API_GLES|| SHADER_API_GLES3
 
 #else
-				o.view_pos_nor.x *= -1;
 				o.view_pos_nor.z *= -1;//坐标系问题
-			
-				o.view.y *= -1;
+				o.view.z *= -1;
 				shadowproj.y *= -1;
 #endif
 
@@ -186,7 +184,7 @@
 
 				//return float4(normal.xy,0,1); 
                	col =retc;// tex2D(_Diffuse, proj_uv);
-             	float3 e =normalize(i.view);//viewspace
+             	float3 e =-normalize(i.view);//viewspace
              	float3 diff = 1;
              	float metal =  col.w >= 0.497f;//__Metal
 				float roughness =  saturate(1 - (col.w*2.0f) + metal);//1-_SmoothBase
@@ -206,8 +204,8 @@
 				float2 shadowuv = i.sview.xy;
 				float2 XY_DEPTH = float2(1.0f, 0.003921568627451)*invShadowViewport.w;
 				float occ =max(0.2, CalcShadow3X3(shadowuv, i.sview.z, XY_DEPTH, invShadowViewport.xyz, _ShadowDepth));
-			//	return float4(ret_normal, 1); 
-           //   return float4(spec+ 0,1);
+				//return float4(ret_normal, 1); 
+           //  return float4(spec+ 0,1);
 			//	return pow(float4(col.xyz,1),1/2.2);
              	return pow(float4(lightcolor.xyz*col.xyz*(diff*occ + spec) + ambient_spec, 1),1/1);//here1/2.2 willbe wrong
 

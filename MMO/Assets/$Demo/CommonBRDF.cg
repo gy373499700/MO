@@ -250,3 +250,65 @@
 				spec	=	SimplePointLightSpecularLambert(spec,inRoughness,UnitL,V,N,tangent);
 
 			}
+
+
+
+
+
+/////////////////////////
+half2 EncodeNormal (half3 n)
+{
+	if(n.z<-0.999f)
+    {
+       return half2(0.5f,0.5f);
+    }
+    else
+    {
+       half2 enc = normalize(n.xy) * (sqrt(-n.z*0.5+0.5));
+       return enc*0.5+0.5;
+    }
+}
+half3 DecodeNormal (half2 enc)
+{
+
+	half4 nn = enc.xyxy*half4(2,2,0,0) + half4(-1,-1,1,-1);
+
+	half l = dot(nn.xyz,-nn.xyw);
+
+	nn.z = -l;
+
+	nn.xy *= sqrt(l);
+
+	return nn.xyz * 2 + half3(0,0,1);
+
+}
+
+float3 Sphere2Normal(float2 texCoord)
+{
+   float2 uv   =   (float2(2,1))*(texCoord+float2(0.5,0))*3.14159265;
+   return   float3(cos(uv.x)*sin(uv.y),cos(uv.y),sin(uv.x)*sin(uv.y));
+}
+float2 Normal2Sphere(float3 n)
+{
+   return frac(float2(atan(n.z/n.x)*0.5,acos(n.y)) /3.14159265f +float2(n.x>0 ,0)*0.5);
+}
+float2 EncodeDepth(float depth)
+{
+	//float2 ret;
+	//ret.x   =   floor(depth*255.0f)/255.0f;
+	//ret.y   =   (depth-ret.x)*255.0f;
+	//return ret;
+
+	float2 kEncodeMul = float2(1.0, 255.0);
+	float kEncodeBit = 1.0/255.0;
+	float2 enc = kEncodeMul * depth;
+	enc = frac (enc);
+	enc.x -= enc.y * kEncodeBit;
+	return enc;
+}
+float DecodeDepth(float2 depthxy)
+{
+	float2 kDecodeDot = float2(1.0, 1/255.0);
+	return dot( depthxy, kDecodeDot );
+	//return dot(depthxy.xy,float2(1.0f,0.003921568627451));
+}
