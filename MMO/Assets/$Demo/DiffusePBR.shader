@@ -122,8 +122,8 @@ Shader "Unlit/DiffusePBR"
 				float3 view_dir = normalize(mul(UNITY_MATRIX_MV, v.vertex).xyz);//viewdir
 				o.uv.zw = dot(normalize(o.view_pos_nor.xyz), -view_dir);//法线*视线（假装）
 				o.view = view_dir;
-				o.tangent = v.tangent;
-
+				//o.tangent = v.tangent;
+				o.tangent = float4((normalize(mul((float3x3)UNITY_MATRIX_MV, v.tangent.xyz))), v.tangent.w);
 				o.normal.xyz = normalize(mul(unity_ObjectToWorld, float4(v.normal, 0)).xyz);
 				o.wpos = mul(unity_ObjectToWorld, v.vertex);
 				float4 shadow_pos = mul(_ShadowView, o.wpos + float4(o.normal.xyz*0.07f, 0));
@@ -174,7 +174,7 @@ Shader "Unlit/DiffusePBR"
              	float3 spec =(1 + metal * 3);//金属控制高光强度
              	 
      			 
-             	PBR(roughness, -lightdir.xyz, e, normal, diff, spec,i.tangent);
+             	PBR(roughness, _Metal, -lightdir.xyz, e, normal, diff, spec,i.tangent);
              	//outspec=lightcolor*(col+metal)*outspec;
              	float3 ambient_spec = 0;   
                 float3 R = reflect(-e,normal)*float3(1,1,-1); 
@@ -182,13 +182,13 @@ Shader "Unlit/DiffusePBR"
                 float sqrt_roughness = (1-roughness);    
 				float3 env = texCUBE(_EnvCube, R).xyz*sqrt_roughness*sqrt_roughness;// texCUBElod(_EnvCube, float4(R, (roughness)*5.0f)).xyz*sqrt_roughness*sqrt_roughness;
                 ambient_spec = env*env*(metal+1)*ambientcolor;
-				ambient_spec *= _Metal;
+				ambient_spec *= _Metal;//metal
 	
 				float2 shadowuv = i.sview.xy;
 				float2 XY_DEPTH = float2(1.0f, 0.003921568627451)*invShadowViewport.w;
-				float occ = CalcShadow3X3(shadowuv, i.sview.z, XY_DEPTH, invShadowViewport.xyz, _ShadowDepth);
-            //   return float4(diff,1);
-             	return pow(float4(lightcolor.xyz*col.xyz*(diff*occ +spec) + ambient_spec, 1),1);//here1/2.2 willbe wrong
+				float occ =max(0.2, CalcShadow3X3(shadowuv, i.sview.z, XY_DEPTH, invShadowViewport.xyz, _ShadowDepth));
+				//return float4(spec , 1);
+             	return pow(float4(lightcolor.xyz*col.xyz*(diff*occ + spec) + ambient_spec, 1),1);//here1/2.2 willbe wrong
 
 			}
 
