@@ -4,11 +4,11 @@
 	{
 		_MainTex ("Texture", 2D) = "white" {}
 		_SpecTex("_SpecTex", 2D) = "black" {}
-		_Metal("_Metal",Range(0,1.0)) = 1.0
+		_Metal("_Metal",Range(0,3.0)) = 1.0
 		_SmoothBase("_SmoothBase",Range(0,1.0)) = 0.0
 		_Smoothness("_Smoothness",Range(0,1.0)) = 0.0
 		_Color("_Color", Color) = (0.5,0.5,0.5,0.5)
-		_BumpScale("_BumpScale",Range(0,3.0)) = 1.0
+		_BumpScale("_BumpScale",Range(0,3.0)) = 1.0//xy normal,z roughness,w metal
 	}
 	SubShader
 	{
@@ -162,14 +162,16 @@
 
 			float4 retc;
 			retc.xyz = pow(col.xyz, 2.2f)*_Color.xyz * 1;
-			float3 normal_spec = tex2D(_SpecTex, i.uv.xy).xyz;
+			float4 normal_spec = tex2D(_SpecTex, i.uv.xy);
 			float3 normal = _BumpScale*(normal_spec * 2 - 1);
 			normal.z = sqrt(max(0, 1 - dot(normal.xy, normal.xy)));
 			//float3 normal = normalize(i.view_pos_nor.xyz);
+			float base_metal = _Metal * normal_spec.w;
+
 			float base_smooth = _SmoothBase + _Smoothness*2.0f*normal_spec.z;
 			retc.w = saturate(base_smooth + max(0, 1 - abs(i.uv.z))*0.2f);
 				retc.w *=0.495f; 
-				if(_Metal>0.5f) 
+				if(base_metal>0.5f)
 				{
 					retc.w +=0.5f; 
 				}
@@ -188,7 +190,7 @@
              	float3 spec =(1 + metal * 3);//金属控制高光强度
              	 
      			 
-             	PBR(roughness, _Metal, -lightdir.xyz, e, normal, diff, spec,i.tangent);
+             	PBR(roughness, base_metal, -lightdir.xyz, e, normal, diff, spec,i.tangent);
              	//outspec=lightcolor*(col+metal)*outspec;
              	float3 ambient_spec = 0;   
                 float3 R = reflect(-e,normal)*float3(1,1,-1); 
@@ -196,7 +198,7 @@
                 float sqrt_roughness = (1-roughness);    
 				float3 env = texCUBE(_EnvCube, R).xyz*sqrt_roughness*sqrt_roughness;// texCUBElod(_EnvCube, float4(R, (roughness)*5.0f)).xyz*sqrt_roughness*sqrt_roughness;
                 ambient_spec = env*env*(metal+1)*ambientcolor;
-				ambient_spec *= _Metal;
+				ambient_spec *= base_metal;
 	
 				float2 shadowuv = i.sview.xy;
 				float2 XY_DEPTH = float2(1.0f, 0.003921568627451)*invShadowViewport.w;
