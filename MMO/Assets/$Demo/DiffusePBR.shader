@@ -122,8 +122,8 @@
 				float3 view_dir = normalize(mul(UNITY_MATRIX_MV, v.vertex).xyz);//viewdir
 				o.uv.zw = dot(normalize(o.view_pos_nor.xyz), -view_dir);//法线*视线（假装）
 				o.view = view_dir;
-				o.tangent = v.tangent;
-
+				//o.tangent = v.tangent;
+				o.tangent = float4((normalize(mul((float3x3)UNITY_MATRIX_MV, v.tangent.xyz))), v.tangent.w);
 				o.normal.xyz = normalize(mul(unity_ObjectToWorld, float4(v.normal, 0)).xyz);
 				o.wpos = mul(unity_ObjectToWorld, v.vertex);
 				float4 shadow_pos = mul(_ShadowView, o.wpos + float4(o.normal.xyz*0.07f, 0));
@@ -138,6 +138,7 @@
 #else
 				o.view_pos_nor.x *= -1;
 				o.view_pos_nor.z *= -1;//坐标系问题
+
 				o.view.y *= -1;
 				shadowproj.y *= -1;
 #endif
@@ -149,7 +150,7 @@
 				return o;
 			}
 			fixed4 frag (v2f i) : SV_Target
-			{
+			{//in view space cal
 				fixed4 col = tex2D(_MainTex, i.uv.xy);	
 			
 				float4 retc;  
@@ -188,7 +189,7 @@
 				float2 shadowuv = i.sview.xy;
 				float2 XY_DEPTH = float2(1.0f, 0.003921568627451)*invShadowViewport.w;
 				float occ =max(0.2, CalcShadow3X3(shadowuv, i.sview.z, XY_DEPTH, invShadowViewport.xyz, _ShadowDepth));
-				//return float4(spec + diff.xyz*(occ+ ambientcolor)*col.xyz, 1);
+				//return float4(spec , 1);
              	return pow(float4(lightcolor.xyz*col.xyz*(diff*occ + spec) + ambient_spec, 1),1);//here1/2.2 willbe wrong
 
 			}
