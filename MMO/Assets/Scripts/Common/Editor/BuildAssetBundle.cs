@@ -323,6 +323,7 @@ public class BuildAssetBundle : MonoBehaviour {
             {
                 continue;
             }
+       
             if (DirectoryKey != null)
             {
                 if (temp.Contains(DirectoryKey))

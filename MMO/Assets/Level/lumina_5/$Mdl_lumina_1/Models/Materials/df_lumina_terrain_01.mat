@@ -27,7 +27,7 @@ Material:
       second: 1
     - first:
         name: _SmoothBase
-      second: 0
+      second: 0.036
     m_Colors:
     - first:
         name: _Color

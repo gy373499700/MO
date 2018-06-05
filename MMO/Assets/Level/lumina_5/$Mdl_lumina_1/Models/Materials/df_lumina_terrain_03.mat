@@ -24,7 +24,7 @@ Material:
     m_Floats:
     - first:
         name: _Metal
-      second: 1
+      second: 0
     - first:
         name: _SmoothBase
       second: 0

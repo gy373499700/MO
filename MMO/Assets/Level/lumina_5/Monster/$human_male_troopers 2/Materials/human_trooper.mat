@@ -39,13 +39,13 @@ Material:
       second: 0.596
     - first:
         name: _RoughnessX
-      second: 0.5759407
+      second: 0.6332911
     - first:
         name: _RoughnessY
-      second: 0.3194202
+      second: 0.63666713
     - first:
         name: _SmoothBase
-      second: 0.67382365
+      second: 0.7446548
     m_Colors:
     - first:
         name: _AddColor
