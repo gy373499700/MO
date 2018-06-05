@@ -5,7 +5,7 @@
 		_MainTex ("Texture", 2D) = "white" {}
 		_SpecTex("_SpecTex", 2D) = "black" {}
 		_Metal("_Metal",Range(0,1.0)) = 1.0
-		_SmoothBase("_SmoothBase",Range(0,1.0)) = 0.0
+		_Roughness("_Roughness",Range(0,1.0)) = 0.0
 	//	_Smoothness("_Smoothness",Range(0,1.0)) = 0.0
 		_Color("_Color", Color) = (0.5,0.5,0.5,0.5)
 		_BumpScale("_BumpScale",Range(0,1.0)) = 1.0//xy normal,z roughness,w metal
@@ -55,8 +55,8 @@
 			sampler2D _MainTex;
 			float4 _MainTex_ST;
 			float4 _Color;
-			float _SmoothBase;
-			float _Smoothness;
+			float _Roughness;
+		
 			float _Metal;
 			float4 lightdir;
 			float4 lightcolor;
@@ -176,7 +176,7 @@
              	float3 e =-normalize(i.view);//viewspace
              	float3 diff = 1;
 				float metal = _Metal;
-				float roughness = (1 - _SmoothBase)*normal_spec.z;// saturate(1 - (col.w*2.0f) + metal);//1-_SmoothBase
+				float roughness = _Roughness*normal_spec.z;// saturate(1 - (col.w*2.0f) + metal);//1-_SmoothBase
              	float3 spec =(1 + metal * 3);//金属控制高光强度
              	 
      			 
