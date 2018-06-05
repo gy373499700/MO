@@ -196,6 +196,7 @@ public class SceneRenderSetting : MonoBehaviour {
     public bool EnableFXAA = false;
     public bool EnableRimLight = false;
     public bool ShowNormal = false;
+    public bool ShowDepth = false;
     public bool DebugRT = false;
     // public bool DebugShadow = false;
      public bool UseMRT = false;

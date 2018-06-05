@@ -17,6 +17,7 @@ public class PropertyModify : MonoBehaviour {
         SunShaftSize,
         LutifyColor,
         LutifyAphpa,
+        ShadowLevel,
     }
     public float RangeSize = 1f;
     UISlider slider = null;
@@ -83,6 +84,11 @@ public class PropertyModify : MonoBehaviour {
         {
             slider.value = SceneRenderSetting._Setting.LutifyAlpha / RangeSize;
         }
+        else if (property == Property.ShadowLevel)
+        {
+                if(RenderPipeline._instance!=null)
+                slider.value = RenderPipeline._instance.quality.ShadowLevel / RangeSize;
+        }
 
     }
     void OnDragChange()
@@ -138,7 +144,11 @@ public class PropertyModify : MonoBehaviour {
             SceneRenderSetting._Setting.LutifyAlpha = slider.value * RangeSize;
         }
 
-
+        else if (property == Property.ShadowLevel)
+        {
+            if (RenderPipeline._instance != null)
+                RenderPipeline._instance.quality.ShadowLevel = (int)(slider.value * RangeSize);
+        }
 
     }
 

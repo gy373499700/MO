@@ -890,7 +890,17 @@ public class RenderPipeline : MonoBehaviour
             Graphics.Blit(source, destination);
             return;
         }
-    
+        if (SceneRenderSetting._Setting.ShowDepth)
+        {
+            Graphics.SetRenderTarget(source);
+            mat_DebugRT.SetTexture("_MainTex", gbuffer_tex);
+            mat_DebugRT.SetVector("_FarCorner", farcorner);
+            mat_DebugRT.SetPass(1);
+            Graphics.DrawMeshNow(Quad, Matrix4x4.identity);
+            Graphics.Blit(source, destination);
+            return;
+        }
+
 
         invViewport_main.x = 1.0f / (float)ScreenWidth;
         invViewport_main.y = 1.0f / (float)ScreenHeight;
@@ -957,9 +967,25 @@ public class RenderPipeline : MonoBehaviour
         {
             if (SceneRenderSetting._Setting.EnableSSAOPro)
             {
-                RenderTexture cb = RenderTexture.GetTemporary(ScreenWidth/2, ScreenHeight/2, 0);
+                RenderTexture cb = RenderTexture.GetTemporary(ScreenWidth / 2, ScreenHeight / 2, 0);
                 Graphics.SetRenderTarget(cb);
-                DrawSSAOMergeMode(cb.colorBuffer, cb.depthBuffer, invViewport_main, farcorner, diffuseRT, currentColorBuffer, currentDepthBuffer, 3,null);
+                DrawSSAOMergeMode(cb.colorBuffer, cb.depthBuffer, invViewport_main, farcorner, diffuseRT, currentColorBuffer, currentDepthBuffer, 3, null);
+                if (SceneRenderSetting._Setting.EnableSSAODebug)
+                {
+                    Graphics.Blit(cb, destination);
+                    RenderTexture.ReleaseTemporary(cb);
+                    return;
+                }
+                Graphics.SetRenderTarget(currentColorBuffer, currentDepthBuffer);
+                DrawSSAOMergeMode(currentColorBuffer, currentDepthBuffer, invViewport_main, farcorner, diffuseRT, currentColorBuffer, currentDepthBuffer, 2, cb);
+                RenderTexture.ReleaseTemporary(cb);
+            }
+            else if (SceneRenderSetting._Setting.EnableSSAO)
+            {
+                RenderTexture cb = RenderTexture.GetTemporary(ScreenWidth / 2, ScreenHeight / 2, 0);//屏幕变花的问题一定是temp的texture没有初始化Clear
+                Graphics.SetRenderTarget(cb);
+
+                DrawSSAOMergeMode(cb.colorBuffer, cb.depthBuffer, invViewport_main, farcorner, diffuseRT, currentColorBuffer, currentDepthBuffer, 4, null);
                 if (SceneRenderSetting._Setting.EnableSSAODebug)
                 {
                     Graphics.Blit(cb, destination);
@@ -2137,10 +2163,10 @@ public class RenderPipeline : MonoBehaviour
             RenderTexture depthbuffer = GetGbuffer();
 
             cloneCamera.clearFlags = CameraClearFlags.SolidColor;
-            string[] name = { "Shadow_Off", "Shadow_Low", "Shadow_Mid", "Shadow_High" , "Shadow_High" };
-              for(int i = 0; i < name.Length; i++)
+            string[] name = { "Shadow_Off", "Shadow_Low", "Shadow_Mid", "Shadow_High", "Shadow_High" };
+             for(int i = 0; i < name.Length; i++)
             {
-                if(i== quality.ShadowLevel)
+                if(i== quality.ShadowLevel||i==4)
                     Shader.EnableKeyword(name[i]);
                 else
                     Shader.DisableKeyword(name[i]);

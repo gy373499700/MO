@@ -24,6 +24,8 @@ public class ToggleModify : MonoBehaviour {
         EnableLutify,
         EnbaleMoveBlur,
         EnableInputBlur,
+        EnableDepth,
+        EnableSSAOPro,
     }
     UIToggle toggle = null;
     public ToggleSelect m_toggle = ToggleSelect.None;
@@ -58,6 +60,10 @@ public class ToggleModify : MonoBehaviour {
             toggle.value = SceneRenderSetting._Setting.EnableReflect;
         }
         else if (m_toggle == ToggleSelect.EnableSSAO)
+        {
+            toggle.value = SceneRenderSetting._Setting.EnableSSAO;
+        }
+        else if (m_toggle == ToggleSelect.EnableSSAOPro)
         {
             toggle.value = SceneRenderSetting._Setting.EnableSSAOPro;
         }
@@ -117,6 +123,10 @@ public class ToggleModify : MonoBehaviour {
         {
             toggle.value = SceneRenderSetting._Setting.EnableInputDisturb;
         }
+        else if (m_toggle == ToggleSelect.EnableDepth)
+        {
+            toggle.value = SceneRenderSetting._Setting.ShowDepth;
+        }
     }
     // Update is called once per frame
     void OnChange ()
@@ -135,6 +145,10 @@ public class ToggleModify : MonoBehaviour {
             SceneRenderSetting._Setting.EnableReflect = toggle.value;
         }
         else if (m_toggle == ToggleSelect.EnableSSAO)
+        {
+            SceneRenderSetting._Setting.EnableSSAO = toggle.value;
+        }
+        else if (m_toggle == ToggleSelect.EnableSSAOPro)
         {
             SceneRenderSetting._Setting.EnableSSAOPro = toggle.value;
         }
@@ -194,6 +208,10 @@ public class ToggleModify : MonoBehaviour {
         else if (m_toggle == ToggleSelect.EnableInputBlur)
         {
            SceneRenderSetting._Setting.EnableInputDisturb = toggle.value;
+        }
+        else if (m_toggle == ToggleSelect.EnableDepth)
+        {
+            SceneRenderSetting._Setting.ShowDepth = toggle.value;
         }
     }
 }
