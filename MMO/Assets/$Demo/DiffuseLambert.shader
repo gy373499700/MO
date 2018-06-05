@@ -84,7 +84,7 @@
 
 			};
 
-			PS_OUTPUT frag (v2f i) : SV_Target
+			PS_OUTPUT frag (v2f i) 
 			{
 				fixed4 col = tex2D(_MainTex, i.uv.xy);	
 		

@@ -116,8 +116,9 @@
 				o.uv.xy = TRANSFORM_TEX(v.uv, _MainTex);
 
 				float4 veiw = mul(UNITY_MATRIX_MV, v.vertex);
-				o.view_pos_nor.xyz =  mul(UNITY_MATRIX_MV, float4(v.normal, 0)).xyz;//view normal
-				//o.view_pos_nor.xyz = mul(v.normal, (float3x3)UNITY_MATRIX_IT_MV).xyz;
+			//	o.view_pos_nor.xyz =  mul(UNITY_MATRIX_MV, float4(v.normal, 0)).xyz;//view normal
+				o.view_pos_nor.xyz = normalize(mul(UNITY_MATRIX_MV, float4(v.normal, 0)).xyz);
+			//	o.view_pos_nor.xyz = mul(v.normal, (float3x3)UNITY_MATRIX_IT_MV).xyz;
 				o.view_pos_nor.w = -veiw.z*_ProjectionParams.w;//view depth
 				float3 view_dir = normalize(mul(UNITY_MATRIX_MV, v.vertex).xyz);//viewdir
 				o.uv.zw = dot(normalize(o.view_pos_nor.xyz), -view_dir);//法线*视线（假装）
@@ -153,7 +154,7 @@
 				float4 depth_normal			: COLOR1;
 
 			};
-			PS_OUTPUT frag (v2f i) : SV_Target
+			PS_OUTPUT frag (v2f i) 
 			{
 				fixed4 col = tex2D(_MainTex, i.uv.xy);	
 			
@@ -193,7 +194,7 @@
 				float2 shadowuv = i.sview.xy;
 				float2 XY_DEPTH = float2(1.0f, 0.003921568627451)*invShadowViewport.w;
 				float occ =max(0.2, CalcShadow3X3(shadowuv, i.sview.z, XY_DEPTH, invShadowViewport.xyz, _ShadowDepth));
-				//return float4(spec , 1);
+				//return float4(normal , 1);
 				float4 color = float4(lightcolor.xyz*col.xyz*(diff*occ + spec) + ambient_spec, 1);//here1/2.2 willbe wrong
 
 				PS_OUTPUT output;
@@ -202,6 +203,7 @@
 				float4 ret;
 				ret.xy = EncodeDepth(i.view_pos_nor.w);
 				ret.zw = EncodeNormal(normalize(normal));
+			
 				output.depth_normal = ret;
 				return output;
 			}
