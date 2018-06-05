@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 3181531010
+CRC: 3276467226
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: e8b75f42d7f74763981e4f062a975a6d
+    Hash: cd74f1df9c007a4ff1daf8f7fd077c8f
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 2af0d5bacc8d9beb10196fda8237a438
+    Hash: 19711c90f806c7fd7dc5cdd91d99d7b9
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -29,12 +29,16 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 95
   Script: {instanceID: 0}
+- Class: 109
+  Script: {instanceID: 0}
 - Class: 114
   Script: {fileID: 11500000, guid: b6eb8f38a6f40f64c82522db62c65241, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 Assets:
+- Assets/$Demo/beach_sea_05.FBX
 - Assets/$Demo/caustics/c1_015.bmp
+- Assets/$Demo/DiffusePBRBump.shader
 - Assets/$Demo/caustics/c1_004.bmp
 - Assets/$Demo/caustics/c1_003.bmp
 - Assets/$Demo/caustics/gausitic.png
@@ -43,8 +47,10 @@ Assets:
 - Assets/$Demo/caustics/c1_008.bmp
 - Assets/$Demo/PBRShader.shader
 - Assets/$Demo/Materials/lambert1.mat
+- Assets/$Demo/CommonBRDF.cg
 - Assets/$Demo/caustics/c1_012.bmp
 - Assets/$Demo/caustics/c1_002.bmp
+- Assets/$Demo/df_beach_grass01_01_NRM.png
 - Assets/$Demo/caustics/c1_013.bmp
 - Assets/$Demo/df_city_natural_flower02_01_t01.tga
 - Assets/$Demo/caustics/c1_009.bmp
@@ -53,6 +59,7 @@ Assets:
 - Assets/$Demo/fog_noise.jpg
 - Assets/$Demo/water_noise.jpg
 - Assets/$Demo/RainDone.fbx
+- Assets/$Demo/df_beach_grass01_01.png
 - Assets/$Demo/Hair.mat
 - Assets/$Demo/Water.prefab
 - Assets/$Demo/caustics/c1_010.bmp
@@ -61,6 +68,7 @@ Assets:
 - Assets/$Demo/raintexture_05.tif
 - Assets/$Demo/DiffuseAnisoHair.shader
 - Assets/$Demo/caustics/c1_007.bmp
+- Assets/$Demo/DiffusePBRBumpTemp.shader
 - Assets/$Demo/grass.mat
 - Assets/$Demo/caustics/c1_016.bmp
 - Assets/$Demo/caustics/c1_005.bmp
@@ -68,5 +76,6 @@ Assets:
 - Assets/$Demo/DiffusePBR.shader
 - Assets/$Demo/burn_noise.png
 - Assets/$Demo/caustics/c1_001.bmp
+- Assets/$Demo/Materials/df_beach_sand01_01.mat
 Dependencies:
-- E:/Github/trunk/MMO/Bundles/$ngr.unity3d
+- E:/Github/trunk/MMO/Bundles/level/lumina_5/$mdl_lumina_1.unity3d

@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 2816927475
+CRC: 1349347635
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: f6dadcad342971e658ee7a6bcb104035
+    Hash: c063da59a687d23d8124f9b2bf6acb25
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 749a0e905db539514a6b2e5a3d5739aa
+    Hash: 3c8f76c11ca0c1d44e671bc483612587
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -23,8 +23,6 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 43
   Script: {instanceID: 0}
-- Class: 48
-  Script: {instanceID: 0}
 - Class: 74
   Script: {instanceID: 0}
 - Class: 111
@@ -35,5 +33,4 @@ Assets:
 - Assets/Level/lumina_5/Monster/$barrel01/Materials/barerl01_M.mat
 - Assets/Level/lumina_5/Monster/$barrel01/barrel01_idle01.FBX
 - Assets/Level/lumina_5/Monster/$barrel01/barrel01.FBX
-Dependencies:
-- E:/Github/trunk/MMO/Bundles/$ngr.unity3d
+Dependencies: []

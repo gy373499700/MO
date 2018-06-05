@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 4275510925
+CRC: 2301113215
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: ac4a343c63fe80687813630ba1270fcc
+    Hash: 7da513f310576699a19125baaa6ed9f3
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 1bdd4dd221f1141031524db4420d827e
+    Hash: 3a8d7a8f84c339ea057fd09ac2d78395
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -90,6 +90,8 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: 3f093ad5830afe44aba6efa8b8a5d5b9, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: 60bca8f58a0b8478e946e6e86658cb29, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: 2c5ecb5660b11414fb042fb826e03b73, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 0598817672c02414aa76e649b69e1a59, type: 3}
@@ -116,6 +118,8 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: 060b0bb918911e54a9e0a719e5743021, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: 68ec2fe99d1108b9d0006a298d76c639, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: f02842fa4878db54f9587ff4de7d9f2d, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 33a082fa8a904284cafd86e49a71010c, type: 3}
@@ -140,13 +144,9 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: 9c57de5f555dc794db7c7aaacd169dd7, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: dfb5429f6dec1b2469ba3840e0919523, type: 3}
-- Class: 114
   Script: {fileID: 11500000, guid: 0ab79d7f243824f5d9826bd83522c8df, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: 60bca8f58a0b8478e946e6e86658cb29, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 68ec2fe99d1108b9d0006a298d76c639, type: 3}
+  Script: {fileID: 11500000, guid: dfb5429f6dec1b2469ba3840e0919523, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 5bf7a0a987db39548b26f0ff22f80e90, type: 3}
 - Class: 114
@@ -220,7 +220,6 @@ Assets:
 Dependencies:
 - E:/Github/trunk/MMO/Bundles/$demo.unity3d
 - E:/Github/trunk/MMO/Bundles/lutify/luts/$standard.unity3d
-- E:/Github/trunk/MMO/Bundles/$ngr.unity3d
 - E:/Github/trunk/MMO/Bundles/level/lumina_5/$mdl_lumina_1.unity3d
 - E:/Github/trunk/MMO/Bundles/level/lumina_5/monster/$barrel01.unity3d
 - E:/Github/trunk/MMO/Bundles/level/lumina_5/monster/$caterpillar_imp.unity3d
