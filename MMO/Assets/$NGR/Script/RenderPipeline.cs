@@ -1981,16 +1981,16 @@ public class RenderPipeline : MonoBehaviour
         EffectCamera.depth = mainCam.depth;
         EffectCamera.orthographic = mainCam.orthographic;
 
-        bool bMRT = true;// SceneRenderSetting._Setting.UseMRT;
+        bool bMRT =  true;
         if (UnityEngine.SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.OpenGLES2)
         {
             bMRT = false;
         }
         //es20 = true;
-        //if(Application.isEditor)
-        //{
-        //    bMRT = SceneRenderSetting._Setting.UseMRT;
-        //}
+        if(Application.isEditor)
+        {
+            bMRT = SceneRenderSetting._Setting.UseMRT;
+        }
 
         Vector3 _WorldUpInViewSpace = mainCam.transform.InverseTransformDirection(Vector3.up);
         Shader.SetGlobalVector("_WorldUpInViewSpace", _WorldUpInViewSpace.normalized);
@@ -2137,8 +2137,18 @@ public class RenderPipeline : MonoBehaviour
             RenderTexture depthbuffer = GetGbuffer();
 
             cloneCamera.clearFlags = CameraClearFlags.SolidColor;
+            string[] name = { "Shadow_Off", "Shadow_Low", "Shadow_Mid", "Shadow_High" , "Shadow_High" };
+              for(int i = 0; i < name.Length; i++)
+            {
+                if(i== quality.ShadowLevel)
+                    Shader.EnableKeyword(name[i]);
+                else
+                    Shader.DisableKeyword(name[i]);
+            }
+
             if (bMRT)
             {
+                
                 renderbuffs[0] = cbuffer.colorBuffer;
                 renderbuffs[1] = depthbuffer.colorBuffer;
                 cloneCamera.SetTargetBuffers(renderbuffs, cbuffer.depthBuffer);

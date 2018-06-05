@@ -312,3 +312,63 @@ float DecodeDepth(float2 depthxy)
 	return dot( depthxy, kDecodeDot );
 	//return dot(depthxy.xy,float2(1.0f,0.003921568627451));
 }
+
+
+//////shadow
+
+
+		float CalcLerp2X2(float2 uv, float4 dot_val)
+			{
+				float2 lerp_val = frac(uv*1024.0f);
+				float2 temp = lerp(dot_val.xy, dot_val.zw, lerp_val.y);
+
+				return lerp(temp.x, temp.y, lerp_val.x);
+			}
+			const static float2 kernel3x3[9] =
+			{
+				float2(-1,-1),
+				float2(0,-1),
+				float2(1,-1),
+
+				float2(-1,0),
+				float2(0,0),
+				float2(1,0),
+
+				float2(-1,1),
+				float2(0,1),
+				float2(1,1),
+			};
+			float CalcShadow3X3(float2 uv, float z, float2 XY_Depth, float3 invVP, sampler2D _ShadowDepth)
+			{
+				float _depth[9];
+				for (int i = 0; i < 9; i++)
+				{
+					float2 temp = kernel3x3[i] * invVP.xyxy + uv.xyxy;
+					float2 temp_depth = tex2D(_ShadowDepth, temp).xy;
+					_depth[i] = dot(temp_depth, XY_Depth.xy) - z>0;
+				}
+
+				float ret = 0;
+				ret += CalcLerp2X2(uv + kernel3x3[0] * invVP.xy, float4(_depth[0], _depth[1], _depth[3], _depth[4]));
+				ret += CalcLerp2X2(uv + kernel3x3[1] * invVP.xy, float4(_depth[1], _depth[2], _depth[4], _depth[5]));
+				ret += CalcLerp2X2(uv + kernel3x3[3] * invVP.xy, float4(_depth[3], _depth[4], _depth[6], _depth[7]));
+				ret += CalcLerp2X2(uv + kernel3x3[4] * invVP.xy, float4(_depth[4], _depth[5], _depth[7], _depth[8]));
+				return ret*0.25f;
+			}
+
+			float CalcShadow(float2 uv, float z, float2 XY_Depth, float3 invVP, sampler2D _ShadowDepth)
+			{
+				float origin_z = dot(tex2D(_ShadowDepth, uv).xy, XY_Depth);
+				return origin_z>z;
+			}
+			float CalcShadow2(float2 uv, float z, float2 XY_Depth, float3 invVP, sampler2D _ShadowDepth)
+			{
+				float2 shadow_depth;
+				shadow_depth.x = dot(tex2D(_ShadowDepth, uv).xy, XY_Depth);
+				shadow_depth.y = dot(tex2D(_ShadowDepth, uv + float2(0, invVP.y)).xy, XY_Depth);
+				shadow_depth -= z;
+				shadow_depth = shadow_depth>0;
+				float lerp_val = frac(uv.y / invVP.x);
+
+				return lerp(shadow_depth.x, shadow_depth.y, lerp_val);
+			}

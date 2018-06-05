@@ -25,7 +25,7 @@
 
 			#include "CommonBRDF.cg" 
 			#include "UnityCG.cginc"
-		
+#pragma multi_compile Shadow_Off Shadow_Low Shadow_Mid Shadow_High
 			
 			struct appdata
 			{
@@ -67,51 +67,7 @@
 			float _RoughnessY;
 			float _BumpScale;
 
-			float CalcLerp2X2(float2 uv, float4 dot_val)
-			{
-				float2 lerp_val = frac(uv*1024.0f);
-				float2 temp = lerp(dot_val.xy, dot_val.zw, lerp_val.y);
-
-				return lerp(temp.x, temp.y, lerp_val.x);
-			}	const static float2 kernel3x3[9] =
-			{
-				float2(-1,-1),
-				float2(0,-1),
-				float2(1,-1),
-
-				float2(-1,0),
-				float2(0,0),
-				float2(1,0),
-
-				float2(-1,1),
-				float2(0,1),
-				float2(1,1),
-			};
-			float CalcShadow3X3(float2 uv, float z, float2 XY_Depth, float3 invVP, sampler2D _ShadowDepth)
-			{
-				float _depth[9];
-				for (int i = 0; i < 9; i++)
-				{
-					float2 temp = kernel3x3[i] * invVP.xyxy + uv.xyxy;
-					float2 temp_depth = tex2D(_ShadowDepth, temp).xy;
-					_depth[i] = dot(temp_depth, XY_Depth.xy) - z>0;
-				}
-
-				float ret = 0;
-				ret += CalcLerp2X2(uv + kernel3x3[0] * invVP.xy, float4(_depth[0], _depth[1], _depth[3], _depth[4]));
-				ret += CalcLerp2X2(uv + kernel3x3[1] * invVP.xy, float4(_depth[1], _depth[2], _depth[4], _depth[5]));
-				ret += CalcLerp2X2(uv + kernel3x3[3] * invVP.xy, float4(_depth[3], _depth[4], _depth[6], _depth[7]));
-				ret += CalcLerp2X2(uv + kernel3x3[4] * invVP.xy, float4(_depth[4], _depth[5], _depth[7], _depth[8]));
-				return ret*0.25f;
-			}
-
-			float3 CalcLeafPos(float3 pos, float3 n)
-			{
-				float fsin = 0;
-				float fcos = 0;
-				sincos((_Time.y + pos.y)*3.14f*2, fsin, fcos);
-				return pos + n*fsin*0.025f*2;// + fcos*float3(0,1,0)*0.01f;
-			}
+	
 			v2f vert(appdata v)
 			{
 				v2f o;
@@ -189,10 +145,21 @@
 				float3 env = texCUBE(_EnvCube, R).xyz*sqrt_roughness*sqrt_roughness;// texCUBElod(_EnvCube, float4(R, (roughness)*5.0f)).xyz*sqrt_roughness*sqrt_roughness;
                 ambient_spec = env*env*(metal+1)*ambientcolor;
 				ambient_spec *= base_metal;
-	
+				float occ = 1;
+#if Shadow_High
 				float2 shadowuv = i.sview.xy;
 				float2 XY_DEPTH = float2(1.0f, 0.003921568627451)*invShadowViewport.w;
-				float occ =max(0.2, CalcShadow3X3(shadowuv, i.sview.z, XY_DEPTH, invShadowViewport.xyz, _ShadowDepth));
+				occ = max(0.2, CalcShadow3X3(shadowuv, i.sview.z, XY_DEPTH, invShadowViewport.xyz, _ShadowDepth));
+#elif Shadow_Mid
+				float2 shadowuv = i.sview.xy;
+				float2 XY_DEPTH = float2(1.0f, 0.003921568627451)*invShadowViewport.w;
+				occ = max(0.2, CalcShadow2(shadowuv, i.sview.z, XY_DEPTH, invShadowViewport.xyz, _ShadowDepth));
+#elif Shadow_Low
+				float2 shadowuv = i.sview.xy;
+				float2 XY_DEPTH = float2(1.0f, 0.003921568627451)*invShadowViewport.w;
+				occ = max(0.2, CalcShadow(shadowuv, i.sview.z, XY_DEPTH, invShadowViewport.xyz, _ShadowDepth));
+#endif
+
 				//return float4(ret_normal, 1); 
            //  return float4(spec+ 0,1);
 			//	return pow(float4(col.xyz,1),1/2.2);

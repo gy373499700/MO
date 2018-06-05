@@ -198,7 +198,7 @@ public class SceneRenderSetting : MonoBehaviour {
     public bool ShowNormal = false;
     public bool DebugRT = false;
     // public bool DebugShadow = false;
-    // public bool UseMRT = false;
+     public bool UseMRT = false;
     public bool ShowLightmap = false;
     [System.NonSerialized]
     public bool EnableActorWhiting = true;

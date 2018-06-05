@@ -20,7 +20,8 @@
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
-#include "CommonBRDF.cg"
+			#pragma multi_compile Shadow_Off Shadow_Low Shadow_Mid Shadow_High
+			#include "CommonBRDF.cg"
 			#include "UnityCG.cginc"
 
 			
@@ -40,8 +41,8 @@
 				float4 tangent		: TEXCOORD2;
 				float3 view	: TEXCOORD3;
 				float4 sview	: TEXCOORD4;
-				float4 wpos			: TEXCOOR4;
-				float3 normal			: TEXCOOR3;
+			//	float4 wpos			: TEXCOOR4;
+			//	float3 normal			: TEXCOOR3;
 			};
 			sampler2D _ShadowDepth;
 			float4 invShadowViewport;
@@ -61,73 +62,26 @@
 			float _RoughnessX;
 			float _RoughnessY;
 			
-			float CalcLerp2X2(float2 uv, float4 dot_val)
-			{
-				float2 lerp_val = frac(uv*1024.0f);
-				float2 temp = lerp(dot_val.xy, dot_val.zw, lerp_val.y);
 
-				return lerp(temp.x, temp.y, lerp_val.x);
-			}
-			const static float2 kernel3x3[9] =
-			{
-				float2(-1,-1),
-				float2(0,-1),
-				float2(1,-1),
-
-				float2(-1,0),
-				float2(0,0),
-				float2(1,0),
-
-				float2(-1,1),
-				float2(0,1),
-				float2(1,1),
-			};
-			float CalcShadow3X3(float2 uv, float z, float2 XY_Depth, float3 invVP, sampler2D _ShadowDepth)
-			{
-				float _depth[9];
-				for (int i = 0; i < 9; i++)
-				{
-					float2 temp = kernel3x3[i] * invVP.xyxy + uv.xyxy;
-					float2 temp_depth = tex2D(_ShadowDepth, temp).xy;
-					_depth[i] = dot(temp_depth, XY_Depth.xy) - z>0;
-				}
-
-				float ret = 0;
-				ret += CalcLerp2X2(uv + kernel3x3[0] * invVP.xy, float4(_depth[0], _depth[1], _depth[3], _depth[4]));
-				ret += CalcLerp2X2(uv + kernel3x3[1] * invVP.xy, float4(_depth[1], _depth[2], _depth[4], _depth[5]));
-				ret += CalcLerp2X2(uv + kernel3x3[3] * invVP.xy, float4(_depth[3], _depth[4], _depth[6], _depth[7]));
-				ret += CalcLerp2X2(uv + kernel3x3[4] * invVP.xy, float4(_depth[4], _depth[5], _depth[7], _depth[8]));
-				return ret*0.25f;
-			}
-
-			float3 CalcLeafPos(float3 pos, float3 n)
-			{
-				float fsin = 0;
-				float fcos = 0;
-				sincos((_Time.y + pos.y)*3.14f*2, fsin, fcos);
-				return pos + n*fsin*0.025f*2;// + fcos*float3(0,1,0)*0.01f;
-			}
 			v2f vert(appdata v)
 			{
 				v2f o;
-				//float4 localpos = float4(CalcLeafPos(v.vertex.xyz, v.normal.xyz), 1);
-				//o.vertex = mul(UNITY_MATRIX_MVP, localpos);
+
 				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
 				o.uv.xy = TRANSFORM_TEX(v.uv, _MainTex);
 
 				float4 veiw = mul(UNITY_MATRIX_MV, v.vertex);
-			//	o.view_pos_nor.xyz =  mul(UNITY_MATRIX_MV, float4(v.normal, 0)).xyz;//view normal
+
 				o.view_pos_nor.xyz = normalize(mul(UNITY_MATRIX_MV, float4(v.normal, 0)).xyz);
 			//	o.view_pos_nor.xyz = mul(v.normal, (float3x3)UNITY_MATRIX_IT_MV).xyz;
 				o.view_pos_nor.w = -veiw.z*_ProjectionParams.w;//view depth
 				float3 view_dir = normalize(mul(UNITY_MATRIX_MV, v.vertex).xyz);//viewdir
 				o.uv.zw = dot(normalize(o.view_pos_nor.xyz), -view_dir);//法线*视线（假装）
 				o.view = view_dir;
-				//o.tangent = v.tangent;
 				o.tangent = float4((normalize(mul((float3x3)UNITY_MATRIX_MV, v.tangent.xyz))), v.tangent.w);
-				o.normal.xyz = normalize(mul(unity_ObjectToWorld, float4(v.normal, 0)).xyz);
-				o.wpos = mul(unity_ObjectToWorld, v.vertex);
-				float4 shadow_pos = mul(_ShadowView, o.wpos + float4(o.normal.xyz*0.07f, 0));
+				float3 normal = normalize(mul(unity_ObjectToWorld, float4(v.normal, 0)).xyz);
+				float4 wpos = mul(unity_ObjectToWorld, v.vertex);
+				float4 shadow_pos = mul(_ShadowView, wpos + float4(normal.xyz*0.07f, 0));
 				float4 shadowproj = mul(_ShadowProj, shadow_pos);
 				shadowproj /= shadowproj.w;
 				if (abs(shadowproj.x)>1.0f || abs(shadowproj.y)>1.0f)
@@ -177,7 +131,7 @@
              	float3 e =normalize(-i.view);//viewspace
              	float3 diff = 1;
              	float metal =  col.w >= 0.497f;//__Metal
-				float roughness =  saturate(1 - (col.w*2.0f) + metal);//1-_SmoothBase
+				float roughness =   saturate(1 - (col.w*2.0f) + metal);//1-_SmoothBase
              	float3 spec =(1 + metal * 3);//金属控制高光强度
              	 
      			 
@@ -190,11 +144,21 @@
 				float3 env = texCUBE(_EnvCube, R).xyz*sqrt_roughness*sqrt_roughness;// texCUBElod(_EnvCube, float4(R, (roughness)*5.0f)).xyz*sqrt_roughness*sqrt_roughness;
                 ambient_spec = env*env*(metal+1)*ambientcolor;
 				ambient_spec *= _Metal;//metal
-	
+				float occ = 1;
+#if Shadow_High
 				float2 shadowuv = i.sview.xy;
 				float2 XY_DEPTH = float2(1.0f, 0.003921568627451)*invShadowViewport.w;
-				float occ =max(0.2, CalcShadow3X3(shadowuv, i.sview.z, XY_DEPTH, invShadowViewport.xyz, _ShadowDepth));
-				//return float4(normal , 1);
+				 occ =  max(0.2, CalcShadow3X3(shadowuv, i.sview.z, XY_DEPTH, invShadowViewport.xyz, _ShadowDepth));
+#elif Shadow_Mid
+				float2 shadowuv = i.sview.xy;
+				float2 XY_DEPTH = float2(1.0f, 0.003921568627451)*invShadowViewport.w;
+				occ = max(0.2, CalcShadow2(shadowuv, i.sview.z, XY_DEPTH, invShadowViewport.xyz, _ShadowDepth));
+#elif Shadow_Low
+				float2 shadowuv = i.sview.xy;
+				float2 XY_DEPTH = float2(1.0f, 0.003921568627451)*invShadowViewport.w;
+				occ = max(0.2, CalcShadow(shadowuv, i.sview.z, XY_DEPTH, invShadowViewport.xyz, _ShadowDepth));
+#endif
+			
 				float4 color = float4(lightcolor.xyz*col.xyz*(diff*occ + spec) + ambient_spec, 1);//here1/2.2 willbe wrong
 
 				PS_OUTPUT output;
