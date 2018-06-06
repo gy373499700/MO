@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: human_gilliam
-  m_Shader: {fileID: 4800000, guid: bf128bce181cf2b469fec90d69866adf, type: 3}
+  m_Shader: {fileID: 4800000, guid: b749399d65e431a4aa4223fd2d306462, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
   m_CustomRenderQueue: -1
@@ -21,10 +21,22 @@ Material:
         m_Texture: {fileID: 2800000, guid: 8142967546bb43742a7bc11de594174d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - first:
+        name: _SpecTex
+      second:
+        m_Texture: {fileID: 2800000, guid: fc502c5e4b4c0f94b9fd045ab504964e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
     - first:
+        name: _BumpScale
+      second: 1
+    - first:
         name: _Metal
-      second: 0
+      second: 1
+    - first:
+        name: _Roughness
+      second: 1
     - first:
         name: _SmoothBase
       second: 1
