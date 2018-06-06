@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: df_lumina_water01
-  m_Shader: {fileID: 4800000, guid: 892e4301e7b1f544caf0c5b44e320707, type: 3}
+  m_Shader: {fileID: 4800000, guid: bf128bce181cf2b469fec90d69866adf, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
   m_CustomRenderQueue: -1
@@ -21,8 +21,14 @@ Material:
         m_Texture: {fileID: 2800000, guid: cae6a81beb84adb4c985948f79799bf5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    m_Floats: []
+    m_Floats:
+    - first:
+        name: _Metal
+      second: 1
+    - first:
+        name: _SmoothBase
+      second: 0
     m_Colors:
     - first:
         name: _Color
-      second: {r: 0.11921499, g: 0.4486316, b: 0.77205884, a: 1}
+      second: {r: 1, g: 1, b: 1, a: 1}

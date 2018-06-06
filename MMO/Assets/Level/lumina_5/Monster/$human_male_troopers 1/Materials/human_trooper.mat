@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: human_trooper
-  m_Shader: {fileID: 4800000, guid: bf128bce181cf2b469fec90d69866adf, type: 3}
+  m_Shader: {fileID: 4800000, guid: b749399d65e431a4aa4223fd2d306462, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
   m_CustomRenderQueue: -1
@@ -21,12 +21,27 @@ Material:
         m_Texture: {fileID: 2800000, guid: 83d6e82eb338df341bfbeb3f5e866822, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - first:
+        name: _SpecTex
+      second:
+        m_Texture: {fileID: 2800000, guid: dcd27f12503abbb43bbe503e2d555b0c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
     - first:
+        name: _BumpScale
+      second: 1
+    - first:
         name: _Metal
-      second: 0.7208018
+      second: 1
+    - first:
+        name: _Roughness
+      second: 1
     - first:
         name: _SmoothBase
+      second: 0
+    - first:
+        name: _Smoothness
       second: 1
     m_Colors:
     - first:

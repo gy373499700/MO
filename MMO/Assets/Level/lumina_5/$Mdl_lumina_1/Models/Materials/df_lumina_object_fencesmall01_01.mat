@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: df_lumina_object_fencesmall01_01
-  m_Shader: {fileID: 4800000, guid: bf128bce181cf2b469fec90d69866adf, type: 3}
+  m_Shader: {fileID: 4800000, guid: b749399d65e431a4aa4223fd2d306462, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
   m_CustomRenderQueue: -1
@@ -21,6 +21,12 @@ Material:
         m_Texture: {fileID: 2800000, guid: 5fa439de59fb0ca4689168e2a187c843, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - first:
+        name: _SpecTex
+      second:
+        m_Texture: {fileID: 2800000, guid: 09cce3454d7c64b4abf9b027a8fd00d9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
     - first:
         name: CullMode
@@ -28,6 +34,9 @@ Material:
     - first:
         name: StencilRef
       second: 0
+    - first:
+        name: _BumpScale
+      second: 1
     - first:
         name: _GrassFreq
       second: 2.4
@@ -38,9 +47,12 @@ Material:
         name: _Metal
       second: 1
     - first:
+        name: _Roughness
+      second: 1
+    - first:
         name: _SmoothBase
       second: 0
     m_Colors:
     - first:
         name: _Color
-      second: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
+      second: {r: 1, g: 1, b: 1, a: 1}
