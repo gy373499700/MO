@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: df_lumina_terrain_02
-  m_Shader: {fileID: 4800000, guid: bf128bce181cf2b469fec90d69866adf, type: 3}
+  m_Shader: {fileID: 4800000, guid: b749399d65e431a4aa4223fd2d306462, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
   m_CustomRenderQueue: -1
@@ -21,9 +21,21 @@ Material:
         m_Texture: {fileID: 2800000, guid: 27fdef6422645354299724899a9363a5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - first:
+        name: _SpecTex
+      second:
+        m_Texture: {fileID: 2800000, guid: 3c398daf43db1b6489349b627cd31580, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
     - first:
+        name: _BumpScale
+      second: 1
+    - first:
         name: _Metal
+      second: 1
+    - first:
+        name: _Roughness
       second: 1
     - first:
         name: _SmoothBase
