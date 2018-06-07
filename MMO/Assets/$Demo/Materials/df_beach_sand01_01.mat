@@ -78,7 +78,7 @@ Material:
     m_Floats:
     - first:
         name: _BumpScale
-      second: 1
+      second: 0.32454747
     - first:
         name: _Cutoff
       second: 0.5
@@ -114,7 +114,7 @@ Material:
       second: 0.02
     - first:
         name: _SmoothBase
-      second: 0.505
+      second: 0.84412664
     - first:
         name: _Smoothness
       second: 0
