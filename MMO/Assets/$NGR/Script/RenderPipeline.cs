@@ -2021,8 +2021,7 @@ public class RenderPipeline : MonoBehaviour
         Vector3 _WorldUpInViewSpace = mainCam.transform.InverseTransformDirection(Vector3.up);
         Shader.SetGlobalVector("_WorldUpInViewSpace", _WorldUpInViewSpace.normalized);
 
-
-
+        
         //检查是否需要 更新阴影深度信息 
         if (SceneRenderSetting._Setting != null && SceneRenderSetting._Setting.EnableShadow)
         {
@@ -2092,6 +2091,7 @@ public class RenderPipeline : MonoBehaviour
         {
             if (SceneRenderSetting._Setting.MainLightColorScale > 0.001f)
             {
+                Profiler.BeginSample("DrawShadowDepth");
                 if (SceneRenderSetting._Setting.EnableShadow)
                 {
                     DrawShadowDepth();
@@ -2128,19 +2128,23 @@ public class RenderPipeline : MonoBehaviour
                     Shader.SetGlobalTexture("_ColorTex", lastFrame);
                     //mat_shadow_gen.SetVector("mainInvViewport", invViewport);
                 }
+                Profiler.EndSample();
             }
         }
    
         RenderTexture cbuffer = GetColorBuffer();
         if (quality.mode == GlobalQualitySetting.Mode.Fast)
         {
+            Profiler.BeginSample("FastRender");
             cloneCamera.clearFlags = CameraClearFlags.SolidColor;
             cloneCamera.SetTargetBuffers(cbuffer.colorBuffer, cbuffer.depthBuffer);
             cloneCamera.RenderWithShader(ForwardShader, "RenderType");
+            Profiler.BeginSample("FastRender");
         }
         else if (quality.mode == GlobalQualitySetting.Mode.Merge)
         {//光照和阴影前面算 其他后处理 后面算
             //按照材质本身shader渲染 场景中同时存在PBR和Lambert，如果要规范化就用perfect的MRt渲染 给不同材质不同shader定义不同的rendertype去分开计算光照模型
+            Profiler.BeginSample("MergeRender");
             Matrix4x4 MainViewMatrix = Matrix4x4.identity;
             ViewMatrix(GetComponent<Camera>(), ref MainViewMatrix);
             Vector4 MainLightDir_WorldSpace = shadowCameraNear.transform.TransformDirection(Vector3.forward);
@@ -2182,17 +2186,23 @@ public class RenderPipeline : MonoBehaviour
             }
             else
             {
+                Profiler.BeginSample("1111");
                 cloneCamera.SetTargetBuffers(cbuffer.colorBuffer, cbuffer.depthBuffer);
                 cloneCamera.Render();
+                Profiler.EndSample();
+                Profiler.BeginSample("22222");
                 cloneCamera.SetTargetBuffers(depthbuffer.colorBuffer, cbuffer.depthBuffer);
                 cloneCamera.RenderWithShader(gbuffer, "RenderType");//不过最好还是统一渲染MRT
+                Profiler.EndSample();
             }
+            Profiler.EndSample();
             //cloneCamera.clearFlags = CameraClearFlags.Nothing;
             // cloneCamera.SetTargetBuffers(cbuffer.colorBuffer, cbuffer.depthBuffer);
             // cloneCamera.RenderWithShader(PBRShader, "RenderType");颜色渲染放在相机自己里边
         }
         else
         {
+           
             RenderTexture depthbuffer = GetGbuffer();
             if (bMRT)
             {//MRT里边可以根据不同rendertype设置不同的光照模型，后续增加

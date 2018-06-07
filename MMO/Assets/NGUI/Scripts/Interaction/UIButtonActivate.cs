@@ -14,6 +14,7 @@ public class UIButtonActivate : MonoBehaviour
 {
     public GameObject target;
     public bool state = true;
-
-    void OnClick () { if (target != null) NGUITools.SetActive(target, state); }
+    public bool ResetPos = true;
+    void OnClick() { if (target != null) { NGUITools.SetActive(target, state);
+            if (ResetPos) target.transform.localPosition = Vector3.zero; } }
 }

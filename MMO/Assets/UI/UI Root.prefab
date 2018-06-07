@@ -188,7 +188,6 @@ GameObject:
   - 114: {fileID: 114000011903782958}
   - 65: {fileID: 65000010976734242}
   - 114: {fileID: 114000013171933584}
-  - 114: {fileID: 114000012144375004}
   m_Layer: 11
   m_Name: back
   m_TagString: Untagged
@@ -6345,7 +6344,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010509153034}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -232.3, y: 0, z: 0}
+  m_LocalPosition: {x: -264.93, y: 0, z: 0}
   m_LocalScale: {x: 1.0008, y: 1.0008, z: 1.0008}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -7727,7 +7726,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013091990600}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 533, y: 300, z: 0.0010728836}
+  m_LocalPosition: {x: 640, y: 360, z: 0.015063286}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -7810,8 +7809,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012335762578}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.9, z: 0}
-  m_LocalScale: {x: 0.0033333334, y: 0.0033333334, z: 0.0033333334}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.0027777778, y: 0.0027777778, z: 0.0027777778}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 4000011042519816}
@@ -11206,6 +11205,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 1000010632914218}
   state: 0
+  ResetPos: 1
 --- !u!114 &114000010298341172
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -11595,6 +11595,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 1000010932272288}
   state: 0
+  ResetPos: 1
 --- !u!114 &114000010406268142
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -12479,6 +12480,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 1000014070700174}
   state: 0
+  ResetPos: 1
 --- !u!114 &114000010682285546
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -12670,17 +12672,17 @@ MonoBehaviour:
   updateAnchors: 1
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 3
-  mWidth: 76
+  mWidth: 110
   mHeight: 20
   mDepth: 5
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 3.8
+  aspectRatio: 6.1
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 12800000, guid: 002a34e3e31fafe4cb26ccadd749ac8e, type: 3}
   mFont: {fileID: 0}
-  mText: smooth
+  mText: Roughness
   mFontSize: 20
   mFontStyle: 0
   mAlignment: 0
@@ -13028,6 +13030,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 1000010932272288}
   state: 1
+  ResetPos: 1
 --- !u!114 &114000010953349724
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -14294,6 +14297,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 1000014070700174}
   state: 1
+  ResetPos: 1
 --- !u!114 &114000011323095100
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -15869,7 +15873,7 @@ MonoBehaviour:
     relative: 1
     absolute: 30
   updateAnchors: 1
-  mColor: {r: 1, g: 1, b: 1, a: 0.241}
+  mColor: {r: 0.9705882, g: 0.9705882, b: 0.9705882, a: 0.116}
   mPivot: 4
   mWidth: 784
   mHeight: 384
@@ -16858,19 +16862,6 @@ MonoBehaviour:
   mMaxLineHeight: 0
   mLineWidth: 0
   mMultiline: 1
---- !u!114 &114000012144375004
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000010126616774}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f02842fa4878db54f9587ff4de7d9f2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scrollView: {fileID: 114000010719099080}
-  draggablePanel: {fileID: 0}
 --- !u!114 &114000012148143064
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -17425,7 +17416,7 @@ MonoBehaviour:
     relative: 1
     absolute: 30
   updateAnchors: 1
-  mColor: {r: 1, g: 1, b: 1, a: 1}
+  mColor: {r: 0.43382353, g: 0.43382353, b: 0.43382353, a: 0.49}
   mPivot: 4
   mWidth: 550
   mHeight: 432
@@ -19878,7 +19869,7 @@ MonoBehaviour:
   anchorOffset: 0
   softBorderPadding: 1
   renderQueue: 0
-  startingRenderQueue: 3000
+  startingRenderQueue: 3002
   mClipTexture: {fileID: 0}
   mAlpha: 1
   mClipping: 0
@@ -20499,7 +20490,7 @@ MonoBehaviour:
   target: {fileID: 4000010696230550}
   panelRegion: {fileID: 0}
   scrollMomentum: {x: 0, y: 0, z: 0}
-  restrictWithinPanel: 1
+  restrictWithinPanel: 0
   contentRect: {fileID: 0}
   dragEffect: 2
   momentumAmount: 35
@@ -21104,7 +21095,7 @@ MonoBehaviour:
   target: {fileID: 4000013686024062}
   panelRegion: {fileID: 0}
   scrollMomentum: {x: 0, y: 0, z: 0}
-  restrictWithinPanel: 1
+  restrictWithinPanel: 0
   contentRect: {fileID: 0}
   dragEffect: 2
   momentumAmount: 35
@@ -21699,7 +21690,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mat: {fileID: 2100000, guid: 4a3cd1f1feaea754da6f456d397d6476, type: 2}
-  propertyName: _SmoothBase
+  propertyName: _Roughness
 --- !u!114 &114000013374121100
 MonoBehaviour:
   m_ObjectHideFlags: 1

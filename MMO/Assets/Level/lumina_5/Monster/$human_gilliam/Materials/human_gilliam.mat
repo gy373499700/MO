@@ -39,7 +39,7 @@ Material:
       second: 1
     - first:
         name: _SmoothBase
-      second: 1
+      second: 0.326
     m_Colors:
     - first:
         name: _AddColor
