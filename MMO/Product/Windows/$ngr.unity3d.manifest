@@ -1,0 +1,375 @@
+ManifestFileVersion: 0
+CRC: 2041461171
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: ac69c8e4b1f1154b314f6517ec001e3b
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 9dc17192c8fe218718e6dd6aa8ba2ae7
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 20
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 49
+  Script: {instanceID: 0}
+- Class: 89
+  Script: {instanceID: 0}
+- Class: 109
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 02ea6b5f27514324ba410e623836b382, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 198
+  Script: {instanceID: 0}
+- Class: 199
+  Script: {instanceID: 0}
+Assets:
+- Assets/waterTex/Resources/dudv_foam34.png
+- Assets/waterTex/Resources/water_hm01.png
+- Assets/waterTex/Resources/dudv_foam15.png
+- Assets/$NGR/Texture/sun.png
+- Assets/waterTex/Resources/water_hm55.png
+- Assets/$NGR/Shader/SelfIllumCopy.shader
+- Assets/$NGR/Materials/ds3.mat
+- Assets/waterTex/Resources/water_hm12.png
+- Assets/$NGR/Shader/heightfog.cg
+- Assets/$NGR/Cubemaps/cityspec.cubemap.png
+- Assets/$NGR/Shader/ReflectShader.shader
+- Assets/waterTex/Resources/water_hm38.png
+- Assets/$NGR/Texture/cloud.png
+- Assets/waterTex/Resources/dudv_foam56.png
+- Assets/$NGR/Shader/ShadowLight.cg
+- Assets/waterTex/Resources/dudv_foam17.png
+- Assets/$NGR/Shader/PlaneFog.shader
+- Assets/$NGR/Materials/matGenCubemap.mat
+- Assets/$NGR/Shader/CharacterTransparent.shader
+- Assets/$NGR/Shader/forward.cg
+- Assets/waterTex/Resources/water_hm47.png
+- Assets/waterTex/Resources/dudv_foam53.png
+- Assets/$NGR/Shader/Rain.cg
+- Assets/waterTex/Resources/water_hm20.png
+- Assets/$NGR/Shader/DiffuseFace.cg
+- Assets/waterTex/Resources/dudv_foam37.png
+- Assets/$NGR/Shader/SelfIllum.cg
+- Assets/waterTex/Resources/dudv_foam26.png
+- Assets/$NGR/Shader/PointLight.cg
+- Assets/$NGR/Shader/SoftParticleAlphaBlend.shader
+- Assets/$NGR/Shader/InputDisturb.shader
+- Assets/waterTex/Resources/water_hm57.png
+- Assets/$NGR/Texture/water_normal.jpg
+- Assets/$NGR/mat/pbr10.mat
+- Assets/$NGR/mat/pbr3.mat
+- Assets/$NGR/Shader/DeferredLight.shader
+- Assets/$NGR/Shader/DiffuseFaceInUI.shader
+- Assets/waterTex/Resources/water_hm28.png
+- Assets/$NGR/Cubemaps/Pirate.jpg
+- Assets/$NGR/Shader/DiffuseAlphaDisappearTemplate.shader
+- Assets/$NGR/Shader/DiffuseBumpColorTemplate.shader
+- Assets/$NGR/Shader/ToneMapping.shader
+- Assets/$NGR/Texture/rain13.jpg
+- Assets/waterTex/Resources/water_hm03.png
+- Assets/$NGR/Texture/random256_2.png
+- 'Assets/$NGR/Materials/Material #1.mat'
+- Assets/$NGR/Shader/grass.cg
+- Assets/$NGR/Shader/AddToTarget.shader
+- Assets/$NGR/Shader/NonShadow.cg
+- Assets/waterTex/Resources/water_hm41.png
+- Assets/waterTex/Resources/water_hm09.png
+- Assets/$NGR/Shader/DebugRT.shader
+- Assets/waterTex/Resources/dudv_foam46.png
+- Assets/waterTex/Resources/dudv_foam47.png
+- Assets/waterTex/Resources/water_hm58.png
+- Assets/waterTex/Resources/dudv_foam59.png
+- Assets/$NGR/Shader/SSSSS_HighLight.shader
+- Assets/$NGR/Materials/DS.mat
+- Assets/waterTex/Resources/dudv_foam18.png
+- Assets/$NGR/Shader/Copy.shader
+- Assets/$NGR/Shader/Glow_Blur.shader
+- Assets/$NGR/Shader/CheckerBoard.cg
+- Assets/waterTex/Resources/water_hm02.png
+- Assets/$NGR/Shader/DeferredShadowLightVolume.shader
+- Assets/waterTex/Resources/dudv_foam19.png
+- Assets/$NGR/Shader/HairAnisoSpec.cg
+- Assets/waterTex/Resources/water_hm51.png
+- Assets/$NGR/Texture/shaft.png
+- Assets/$NGR/Materials/ds4.mat
+- Assets/$NGR/Shader/DiffuseOIT.shader
+- Assets/$NGR/Shader/deferred_lighting.cg
+- Assets/$NGR/Shader/GBuffer.shader
+- Assets/$NGR/Shader/colorbuffer.cg
+- Assets/$NGR/Shader/ScreenWater.shader
+- Assets/waterTex/Resources/dudv_foam25.png
+- Assets/waterTex/Resources/water_hm23.png
+- Assets/waterTex/Resources/dudv_foam51.png
+- Assets/$NGR/Shader/ScreenSpaceSSS.shader
+- Assets/waterTex/Resources/water_hm40.png
+- Assets/$NGR/Shader/FullScreenRain.shader
+- Assets/waterTex/Resources/water_hm52.png
+- Assets/$NGR/Shader/DiffuseColorPainterTemplate.shader
+- Assets/$NGR/Shader/DiffuseOITGrass.shader
+- Assets/$NGR/Shader/LightShaft.shader
+- Assets/$NGR/Texture/sky.jpg
+- Assets/$NGR/mat/grass.mat
+- Assets/waterTex/Resources/water_hm48.png
+- Assets/waterTex/Resources/dudv_foam55.png
+- Assets/$NGR/Materials/DeferredLight.mat
+- Assets/waterTex/Resources/water_hm27.png
+- Assets/$NGR/Materials/CubeToSphere.mat
+- Assets/waterTex/Resources/dudv_foam24.png
+- Assets/waterTex/Resources/dudv_foam04.png
+- Assets/$NGR/Texture/rimlight.png
+- Assets/$NGR/mat/ground.mat
+- Assets/waterTex/Resources/water_hm18.png
+- Assets/waterTex/Resources/water_hm36.png
+- Assets/waterTex/Resources/water_hm29.png
+- Assets/$NGR/Shader/ScreenDisturbance.shader
+- Assets/$NGR/Shader/RadialBlur.shader
+- Assets/waterTex/Resources/dudv_foam36.png
+- Assets/$NGR/lutify.txt
+- Assets/$NGR/Materials/TestView.mat
+- Assets/waterTex/Resources/dudv_foam44.png
+- Assets/$NGR/Texture/rain7.jpg
+- Assets/$NGR/Shader/DepthCombine.cg
+- Assets/waterTex/Resources/water_hm43.png
+- Assets/$NGR/Materials/Materials/No Name.mat
+- Assets/waterTex/Resources/dudv_foam31.png
+- Assets/$NGR/Shader/DeferredDecal.shader
+- Assets/$NGR/Texture/rain5.jpg
+- Assets/waterTex/Resources/dudv_foam39.png
+- Assets/$NGR/Materials/NormalTest2.mat
+- Assets/$NGR/Shader/CalcShadow.cg
+- Assets/$NGR/Shader/DeferredShadowLight.shader
+- Assets/$NGR/Shader/gbuffer.cg
+- Assets/$NGR/Shader/ShadowMask.shader
+- Assets/$NGR/Shader/Lutify.shader
+- Assets/$NGR/mat/grass2.mat
+- Assets/waterTex/Resources/water_hm44.png
+- Assets/$NGR/Shader/ForwardShder.shader
+- Assets/waterTex/Resources/water_hm33.png
+- Assets/waterTex/Resources/dudv_foam16.png
+- Assets/$NGR/Shader/DeferredLighting.shader
+- Assets/$NGR/Shader/NearShadow.cg
+- Assets/$NGR/Texture/Grass.psd
+- Assets/$NGR/Shader/DiffuseBumpTemplate.shader
+- Assets/waterTex/Resources/water_hm46.png
+- Assets/waterTex/Resources/water_hm50.png
+- Assets/waterTex/Resources/water_hm19.png
+- Assets/$NGR/Shader/DiffuseAlphaTestTemplate.shader
+- Assets/$NGR/Shader/DiffuseMainCharFace.shader
+- Assets/waterTex/Resources/dudv_foam43.png
+- Assets/$NGR/Cubemaps/forest.cubemap.png
+- Assets/$NGR/Shader/LightingBlur.shader
+- Assets/waterTex/Resources/water_hm00.png
+- Assets/$NGR/Texture/shadowmask.png
+- Assets/waterTex/Resources/dudv_foam42.png
+- Assets/waterTex/Resources/dudv_foam21.png
+- Assets/$NGR/Shader/GenNormal.shader
+- Assets/$NGR/Texture/oit_3x3.png
+- Assets/$NGR/Shader/DiffuseColorTemplate.shader
+- Assets/$NGR/Shader/Glow_DownSample.shader
+- Assets/$NGR/Texture/rain6.jpg
+- Assets/$NGR/Shader/CubeShadowDepth.shader
+- Assets/$NGR/Shader/FXAA3Shader.shader
+- Assets/$NGR/Texture/rain1.jpg
+- Assets/waterTex/Resources/water_hm35.png
+- Assets/waterTex/Resources/water_hm07.png
+- Assets/$NGR/Shader/Cube6ToSphere.shader
+- Assets/$NGR/Shader/SoftParticleEnergyBall_Blend.shader
+- Assets/waterTex/Resources/water_hm25.png
+- Assets/$NGR/Texture/2x2.png
+- Assets/$NGR/Shader/Bloom.shader
+- Assets/waterTex/Resources/dudv_foam11.png
+- Assets/waterTex/Resources/water_hm14.png
+- Assets/waterTex/Resources/dudv_foam54.png
+- Assets/$NGR/Materials/SS.mat
+- Assets/$NGR/Materials/cylinder_plane.FBX
+- Assets/waterTex/Resources/water_hm13.png
+- Assets/$NGR/Texture/rain2.jpg
+- Assets/$NGR/mat/pbr5.mat
+- Assets/$NGR/Cubemaps/Defaultdiff.cubemap.png
+- Assets/$NGR/Texture/rotate4x4.png
+- Assets/waterTex/Resources/water_hm15.png
+- Assets/$NGR/Shader/shadowedobject.cg
+- Assets/waterTex/Resources/water_hm54.png
+- Assets/$NGR/Texture/2x2_inv.tga
+- Assets/waterTex/Resources/dudv_foam03.png
+- Assets/$NGR/Texture/rain_waterfall.png
+- Assets/$NGR/mat/pbr7.mat
+- Assets/$NGR/Shader/SSSSS.shader
+- Assets/$NGR/Texture/2x2.tga
+- Assets/$NGR/Shader/ShadowDepthBA.shader
+- Assets/waterTex/Resources/water_hm08.png
+- Assets/$NGR/Shader/BlendFrame.shader
+- Assets/$NGR/mat/pbr9.mat
+- Assets/waterTex/Resources/dudv_foam02.png
+- Assets/$NGR/Cubemaps/spec.cubemap.png
+- Assets/$NGR/Texture/water.jpg
+- Assets/$NGR/mat/pbr2.mat
+- Assets/waterTex/Resources/dudv_foam29.png
+- Assets/$NGR/Texture/rain12.jpg
+- Assets/$NGR/Shader/T4M.cg
+- Assets/$NGR/Shader/QuadVS.cg
+- Assets/waterTex/Resources/water_hm30.png
+- Assets/$NGR/Shader/BRDF.cg
+- Assets/$NGR/Shader/LightCommon.cg
+- Assets/$NGR/mat/pbr1.mat
+- Assets/waterTex/Resources/dudv_foam30.png
+- Assets/$NGR/Texture/2x2step_inv.png
+- Assets/$NGR/Shader/DiffuseT4MAO.shader
+- Assets/$NGR/Texture/rain14.jpg
+- Assets/waterTex/Resources/dudv_foam40.png
+- Assets/$NGR/Cubemaps/diffuse.cubemap.png
+- Assets/$NGR/Shader/ShaderMicro.txt
+- Assets/$NGR/Shader/DepthCombine.shader
+- Assets/waterTex/Resources/water_hm04.png
+- Assets/$NGR/Texture/rotate_kernel.png
+- Assets/$NGR/Shader/DiffuseTreeLeaf.shader
+- Assets/waterTex/Resources/dudv_foam22.png
+- Assets/waterTex/Resources/dudv_foam00.png
+- Assets/$NGR/Texture/rain4.jpg
+- Assets/$NGR/Shader/GI_Blur.shader
+- Assets/$NGR/Shader/DiffuseBumpPainterTemplate.shader
+- Assets/waterTex/Resources/water_hm26.png
+- Assets/waterTex/Resources/water_hm32.png
+- Assets/$NGR/Materials/Ground.mat
+- Assets/waterTex/Resources/water_hm34.png
+- Assets/$NGR/Texture/rain3.jpg
+- Assets/$NGR/Shader/ShadowDepth.shader
+- Assets/$NGR/Shader/PointLightSpecular.cg
+- Assets/waterTex/Resources/water_hm06.png
+- Assets/$NGR/Shader/DiffuseHair.shader
+- Assets/$NGR/Effect/RainFall.prefab
+- Assets/waterTex/Resources/water_hm49.png
+- Assets/waterTex/Resources/water_hm11.png
+- Assets/$NGR/Texture/SKYSPEC.jpg
+- Assets/$NGR/Prefab/RenderPipeline.prefab
+- Assets/$NGR/Shader/HeightFog.shader
+- Assets/$NGR/Cubemaps/Default.cubemap.png
+- Assets/$NGR/Shader/Water.cg
+- Assets/$NGR/Materials/WaterMat.mat
+- Assets/waterTex/Resources/water_hm56.png
+- Assets/waterTex/Resources/water_hm42.png
+- Assets/$NGR/Shader/ScreenSpaceReflect.shader
+- Assets/waterTex/Resources/dudv_foam08.png
+- Assets/$NGR/Texture/oit_2x2_inv.png
+- Assets/$NGR/Shader/ShadowedObject.shader
+- Assets/waterTex/Resources/water_hm45.png
+- Assets/$NGR/Shader/DiffuseSky.shader
+- Assets/waterTex/Resources/water_hm39.png
+- Assets/waterTex/Resources/dudv_foam20.png
+- Assets/$NGR/mat/pbr6.mat
+- Assets/waterTex/Resources/water_hm05.png
+- Assets/waterTex/Resources/water_hm22.png
+- Assets/$NGR/Shader/RimLight.shader
+- Assets/$NGR/Shader/Decal.cg
+- Assets/waterTex/Resources/dudv_foam58.png
+- Assets/$NGR/Cubemaps/citydiff.cubemap.png
+- Assets/$NGR/Shader/Glow_BlendToTarget.shader
+- Assets/$NGR/mat/pbr0.mat
+- Assets/waterTex/Resources/dudv_foam14.png
+- Assets/$NGR/Texture/noise_kernel.png
+- Assets/$NGR/Shader/FaceForward.cg
+- Assets/waterTex/Resources/dudv_foam32.png
+- Assets/$NGR/Shader/VertexShaft.shader
+- Assets/waterTex/Resources/dudv_foam10.png
+- Assets/$NGR/Shader/DOF.shader
+- Assets/waterTex/Resources/water_hm37.png
+- Assets/$NGR/Texture/rain0.jpg
+- Assets/$NGR/Texture/rain8.jpg
+- Assets/waterTex/Resources/dudv_foam23.png
+- Assets/$NGR/Shader/MRTbuffer.cg
+- Assets/waterTex/Resources/dudv_foam13.png
+- Assets/waterTex/Resources/dudv_foam28.png
+- Assets/$NGR/Shader/DiffuseRoughness.shader
+- Assets/$NGR/Shader/GaussBlur.shader
+- Assets/$NGR/Shader/T4MForward.cg
+- Assets/waterTex/Resources/water_hm17.png
+- Assets/$NGR/Shader/DiffuseSSS.shader
+- Assets/waterTex/Resources/dudv_foam41.png
+- Assets/$NGR/Shader/SSAO2.shader
+- Assets/$NGR/Materials/waterfall.mat
+- Assets/$NGR/Shader/DiffuseColorTemplateSelfIllum.shader
+- Assets/$NGR/Shader/Quad.cg
+- Assets/waterTex/Resources/water_hm10.png
+- Assets/$NGR/Shader/DiffuseT4M.shader
+- Assets/$NGR/Shader/DiffuseFace.shader
+- Assets/$NGR/mat/pbr4.mat
+- Assets/$NGR/mat/pbr8.mat
+- Assets/$NGR/Shader/MRT.shader
+- Assets/$NGR/Shader/AO.cg
+- Assets/waterTex/Resources/dudv_foam50.png
+- Assets/waterTex/Resources/dudv_foam38.png
+- Assets/waterTex/Resources/dudv_foam09.png
+- Assets/$NGR/Texture/rain15.jpg
+- Assets/$NGR/Materials/DS2.mat
+- Assets/$NGR/Shader/SSAO.shader
+- Assets/waterTex/Resources/water_hm21.png
+- Assets/$NGR/Shader/SSAOBlur.shader
+- Assets/$NGR/Cubemaps/forestdiff.cubemap.png
+- Assets/$NGR/Shader/SelfIllum.shader
+- Assets/$NGR/Shader/mipfog.shader
+- Assets/waterTex/Resources/dudv_foam35.png
+- Assets/$NGR/Shader/Transparency.shader
+- Assets/waterTex/Resources/water_hm53.png
+- Assets/$NGR/Texture/rain11.jpg
+- Assets/$NGR/Shader/UIMask.shader
+- Assets/waterTex/Resources/dudv_foam06.png
+- Assets/waterTex/Resources/dudv_foam05.png
+- Assets/$NGR/Shader/Twist.shader
+- Assets/$NGR/Shader/Combine.shader
+- Assets/$NGR/Texture/random256.png
+- Assets/$NGR/Shader/ShadowLightVolume.cg
+- Assets/waterTex/Resources/water_hm59.png
+- Assets/$NGR/Shader/DiffuseBumpOIT.shader
+- Assets/$NGR/Shader/DiffuseT4MNormal.shader
+- Assets/waterTex/Resources/dudv_foam49.png
+- Assets/$NGR/Shader/Water.shader
+- Assets/waterTex/Resources/dudv_foam52.png
+- Assets/waterTex/Resources/dudv_foam01.png
+- Assets/$NGR/Shader/GI_FinalGather.shader
+- Assets/$NGR/Shader/DiffuseFaceInUI.cg
+- Assets/$NGR/Shader/Lutify.cginc
+- Assets/waterTex/Resources/dudv_foam07.png
+- Assets/$NGR/Shader/ShadowGen.shader
+- Assets/$NGR/Shader/ScreenRain.shader
+- Assets/$NGR/Shader/CharacterTransparent.cg
+- Assets/waterTex/Resources/dudv_foam12.png
+- Assets/waterTex/Resources/dudv_foam57.png
+- Assets/waterTex/Resources/dudv_foam33.png
+- Assets/waterTex/Resources/water_hm24.png
+- Assets/waterTex/Resources/dudv_foam48.png
+- Assets/$NGR/Shader/UIModelLight.shader
+- Assets/waterTex/Resources/dudv_foam45.png
+- Assets/$NGR/Texture/rain9.jpg
+- Assets/waterTex/Resources/water_hm31.png
+- Assets/waterTex/Resources/dudv_foam27.png
+- Assets/$NGR/Texture/oit_2x2.png
+- Assets/$NGR/Shader/CheckerBoard.shader
+- Assets/$NGR/Texture/rain10.jpg
+- Assets/waterTex/Resources/water_hm16.png
+- Assets/$NGR/Shader/DiffuseBumpMainCharTemplate.shader
+- Assets/$NGR/Shader/SoftParticleEnergyBall.shader
+- Assets/$NGR/Shader/ActorWhiting.shader
+- Assets/$NGR/Materials/Sky.mat
+- Assets/$NGR/Shader/StencilMask.txt
+- Assets/$NGR/Texture/decal.png
+Dependencies:
+- E:/Tools/effect/Bundles/$shader.unity3d
