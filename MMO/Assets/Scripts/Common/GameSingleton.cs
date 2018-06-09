@@ -31,6 +31,12 @@ public class Singleton<T> : BaseSingleton where T : BaseSingleton
 {
     private static T _instance;
     private static object _lock = new object();
+    public static T GetInstance()
+    {
+
+        return Instance;
+    }
+
     public static T Instance
     {
         get
@@ -46,11 +52,20 @@ public class Singleton<T> : BaseSingleton where T : BaseSingleton
                     _instance = (T)FindObjectOfType(typeof(T));
                     if (_instance == null)
                     {
+
                         GameObject singleton = new GameObject();
                         _instance = singleton.AddComponent<T>();
                         singleton.name = "(singleton) " + typeof(T).ToString();
-                        DontDestroyOnLoad(singleton);
+                        if (Application.isPlaying)
+                        {
+                            DontDestroyOnLoad(singleton);
+                        }
+                        else
+                        {
+                            singleton.hideFlags = HideFlags.DontSave | HideFlags.DontSaveInBuild;
+                        }
                         _instance.Init();
+
                     }
                     else
                     {
