@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 
 
-public class FileInfo
+public class TFileInfo
 {
     public string pathName;
     public string bundleName;
@@ -12,7 +12,7 @@ public class FileInfo
     public int[] dependcyid;//不包括自己的所有依赖
     public int _ref = 0;//大于0 表示有引用 自己也要计数
     public int length = 0;//每个文件的大小 只能改成page模式才能取
-    public static List<FileInfo> AllFile = new List<FileInfo>();//allfile
+    public static List<TFileInfo> AllFile = new List<TFileInfo>();//allfile
     public static Dictionary<string, int> FileName = new Dictionary<string, int>();//filename,allfile.index
     public static int Size=0;
     #region static function
@@ -36,9 +36,9 @@ public class FileInfo
                 continue;                
             }
             string[] eles = s.Split(',');
-            FileInfo info = new FileInfo();
+            TFileInfo info = new TFileInfo();
 
-
+            
             info.pathName = eles[0];
             info.bundleName = eles[1];
             info.bundleCrc = uint.Parse(eles[2]);
@@ -56,8 +56,48 @@ public class FileInfo
             }
         }
     }
+    public static void LoadFileInfoFromStreamAssets(string content, Dictionary<string, BundleGlobalItem> AllLoadedBundle)
+    {
+        FileName.Clear();
+        AllFile.Clear();
+        if (content == null)
+        {
+            return;
+        }
+        string[] lines = content.Split('\n');//youhua
+        if (lines.Length == 0)
+            UnityEngine.Debug.Log("lines.Length == 0");
+        for (int i = 0; i < lines.Length; i++)
+        {
+            if (i == 0) continue;
+            string s = lines[i];
+            if (s.Length == 0)
+            {
+                UnityEngine.Debug.Log("s.Length == 0");
+                continue;
+            }
+            string[] eles = s.Split(',');
+            TFileInfo info = new TFileInfo();
 
-    public static void SaveFileInfo(string path, List<FileInfo> lstRemoteFile)
+
+            info.pathName = eles[0];
+            info.bundleName = eles[1];
+            info.bundleCrc = uint.Parse(eles[2]);
+            info.length = int.Parse(eles[3]);
+            info.dependcyid = StringToArray(eles[4]);
+            FileName[info.pathName] = i - 1;//because 0 is description
+            AllFile.Add(info);
+            if (AllLoadedBundle.ContainsKey(info.bundleName))
+            {
+                AllLoadedBundle[info.bundleName].selfileLst.Add(info);
+            }
+            else
+            {
+                UnityEngine.Debug.Log("RelativeFileToBundle key " + info.bundleName);
+            }
+        }
+    }
+    public static void SaveFileInfo(string path, List<TFileInfo> lstRemoteFile)
     {
         FileStream file = new FileStream(path, FileMode.Create);
         if (file != null)
@@ -129,7 +169,7 @@ public class FileInfo
         }
         return sb.ToString();
     }
-    public static FileInfo GetFile(string pathname)
+    public static TFileInfo GetFile(string pathname)
     {
         if (FileName.ContainsKey(pathname))
             return AllFile[FileName[pathname]];
@@ -141,14 +181,14 @@ public class FileInfo
     }
     #endregion
 
-    public FileInfo[] GetFilesDependcy()
+    public TFileInfo[] GetFilesDependcy()
     {
         if (dependcyid != null && dependcyid.Length > 0)
         {
-            FileInfo[] dependcy = new FileInfo[dependcyid.Length];
+            TFileInfo[] dependcy = new TFileInfo[dependcyid.Length];
             for (int i = 0; i < dependcyid.Length; i++)
             {
-                FileInfo file = AllFile[dependcyid[i]];
+                TFileInfo file = AllFile[dependcyid[i]];
                 dependcy[i] = file;
             }
             return dependcy;
@@ -162,7 +202,7 @@ public class FileInfo
             string[] dependcy = new string[dependcyid.Length];
             for (int i = 0; i < dependcyid.Length; i++)
             {
-                FileInfo file = AllFile[dependcyid[i]];
+                TFileInfo file = AllFile[dependcyid[i]];
                 dependcy[i] = file.pathName;
             }
             return dependcy;
@@ -180,7 +220,7 @@ public class FileInfo
             Dictionary<string, int> dic = new Dictionary<string, int>();
             for(int i=0;i< dependcyid.Length; i++)
             {
-                FileInfo file = AllFile[dependcyid[i]];
+                TFileInfo file = AllFile[dependcyid[i]];
                 dic[file.bundleName] = 1;//多个file对应一个bundle
             }
             foreach(KeyValuePair<string,int> kv in dic)
@@ -198,7 +238,7 @@ public class FileInfo
         {
             for (int i = 0; i < dependcyid.Length; i++)
             {
-                FileInfo file = AllFile[dependcyid[i]];
+                TFileInfo file = AllFile[dependcyid[i]];
                 file.AddRef();
                 Size += file.length;
             }
@@ -212,7 +252,7 @@ public class FileInfo
         {
             for (int i = 0; i < dependcyid.Length; i++)
             {
-                FileInfo file = AllFile[dependcyid[i]];
+                TFileInfo file = AllFile[dependcyid[i]];
                 Size -= file.length;
                 if (IsScene) 
                     file.ClearRef();

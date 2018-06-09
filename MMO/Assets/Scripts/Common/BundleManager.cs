@@ -54,11 +54,11 @@ public class LoadRequest
 
 public class BundleGlobalItem
 {
-    public List<FileInfo> selfileLst = new List<FileInfo>();//该bundle内含的资源
+    public List<TFileInfo> selfileLst = new List<TFileInfo>();//该bundle内含的资源
     public AssetBundle bundle;
     public string bundleName = "";
     public bool dontUnload = false;//judge first
-
+    public bool IsStreamAssets = true;
     public void OnSceneDestroy()
     {//when scene switch
         if (dontUnload) return;
@@ -109,7 +109,7 @@ public class BundleGlobalItem
     {///when a objectbundle be unload(true) and UnLoad Unused Ubndle
         if (dontUnload) return;
         int index = 0;
-        List<FileInfo> fileLst = new List<FileInfo>();
+        List<TFileInfo> fileLst = new List<TFileInfo>();
         for (int i = 0; i < selfileLst.Count; i++)
         {
             if (selfileLst[i].IsFileFree() == false)//只卸载已经加载的
@@ -231,6 +231,14 @@ public class BundleManager : Singleton<BundleManager>
             {
                 return Application.dataPath + "/Bundles/";
             }
+            else if(Application.platform== RuntimePlatform.Android)
+            {//mean android streamingAssetsPath
+                return Application.dataPath + "!assets/Bundles/";
+            }///jar:file:/data/app/com.SDGame.DSHDTESTW-1/base.apk!/assets/AppVersion.txt
+            else if ( Application.platform == RuntimePlatform.IPhonePlayer)
+            {
+                return Application.streamingAssetsPath + "/Bundles/";
+            }
             else
             {
                 return Version.BundlePath;// Application.dataPath.Replace("Assets", "") + "Bunldes/";
@@ -250,22 +258,55 @@ public class BundleManager : Singleton<BundleManager>
     #endregion
     public override void Init()
     {
+        StartCoroutine(StartInit());
+    }
+    IEnumerator  StartInit()
+    {
       //  return;
         base.Init();
-        string data = System.IO.File.ReadAllText(Application.streamingAssetsPath + "/AppVersion.txt");
+        string data;
+        string url = Application.streamingAssetsPath + "/AppVersion.txt";
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            WWW  wwwPercent = new WWW(url);
+            yield return wwwPercent;
+            data = wwwPercent.text;
+        }
+        else
+        {
+            data = System.IO.File.ReadAllText(Application.streamingAssetsPath + "/AppVersion.txt");
+        } 
         Version.LoadVersion(data);
         //version
         string MainBunldes = bundlePath + "Bundles";
 
         AssetBundle manifestBundle = AssetBundle.LoadFromFile(MainBunldes);
-        if (manifestBundle == null) return;
-        manifest = (AssetBundleManifest)manifestBundle.LoadAsset("AssetBundleManifest");
-        InitAllBundle(manifest);
-        //bundle
-        string fileinfo = bundlePath + "fileinfo.txt";
-
-        string content = File.ReadAllText(fileinfo);
-        FileInfo.LoadFileInfo(content, AllLoadedBundle);
+        if (manifestBundle != null)
+        {
+            manifest = (AssetBundleManifest)manifestBundle.LoadAsset("AssetBundleManifest");
+            InitAllBundle(manifest);//init bundle info
+            string content;
+          
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                string fileinfo = Application.streamingAssetsPath + "/Bundles/fileinfo.txt";
+                WWW wwwPercent = new WWW(fileinfo);
+                yield return wwwPercent;
+                content = wwwPercent.text;
+                Debug.Log(content);
+            }
+            else
+            {
+                string fileinfo = bundlePath + "fileinfo.txt";
+                content = File.ReadAllText(fileinfo);
+            }
+            TFileInfo.LoadFileInfo(content, AllLoadedBundle);
+        }else
+        {
+            Debug.Log("No bunlde mode");
+        }
+        //streamasset
+  
         //file
         StartCoroutine(updateLoad());
     }
@@ -331,10 +372,10 @@ public class BundleManager : Singleton<BundleManager>
                     continue;
                 }
                 BundleGlobalItem globalItem = AllLoadedBundle[req.bundleName];
-                FileInfo file = FileInfo.GetFile(req.path);
+                TFileInfo file = TFileInfo.GetFile(req.path);
                 if (file == null)
                 {
-                    Debug.Log("Load FileInfo Object Failed!=" + req.path);
+                    Debug.Log("Load TFileInfo Object Failed!=" + req.path);
                     req.DoCallBack(null);
                     continue;
                 }
@@ -841,7 +882,7 @@ public class BundleManager : Singleton<BundleManager>
             s += (kv.Key + "       "+kv.Value.bundle+"    "+kv.Value.dontUnload) + "\n";
         }
         Debug.Log(s);
-        FileInfo.DebugFileRef();
+        TFileInfo.DebugFileRef();
         ResourceMgr.Instance.DebugResourceDB();
 #endif
     }

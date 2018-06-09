@@ -241,7 +241,7 @@ public class BuildAssetPage : MonoBehaviour {
     #region BuildDependcy
     static void BuildDependcy(AssetBundleManifest minifest)
     {
-        List<FileInfo> lstRemoteFile = new List<FileInfo>();
+        List<TFileInfo> lstRemoteFile = new List<TFileInfo>();
         string outputPath = Application.dataPath.Replace("Assets", "") + "Bundles/";
         string path = Application.dataPath + "/";
         List<string> lst = new List<string>();//"..$NGR/Shader/BRDF.cg"
@@ -251,7 +251,7 @@ public class BuildAssetPage : MonoBehaviour {
         for (int j = 0; j < lst.Count; j++)
         {
             lst[j] = lst[j].Replace(Application.dataPath + "/", "");
-            FileInfo file = new FileInfo();
+            TFileInfo file = new TFileInfo();
             file.pathName = lst[j].ToLower();
             file.bundleName = BundleManager.GetBundleNameFromPath(file.pathName);
             string crcpath = outputPath + file.bundleName;
@@ -264,7 +264,7 @@ public class BuildAssetPage : MonoBehaviour {
         }
         for (int j = 0; j < lst.Count; j++)
         {
-            FileInfo file = lstRemoteFile[j];
+            TFileInfo file = lstRemoteFile[j];
             string[] depend = BuildDepengcyItem(file.pathName);
             if (depend.Length > 0)
             {
@@ -281,7 +281,7 @@ public class BuildAssetPage : MonoBehaviour {
             }
   
         }
-        FileInfo.SaveFileInfo(outputPath + "fileinfo.txt", lstRemoteFile);
+        TFileInfo.SaveFileInfo(outputPath + "fileinfo.txt", lstRemoteFile);
     }
     public static string[] BuildDepengcyItem(string name)
     {

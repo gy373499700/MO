@@ -50,6 +50,11 @@ public class BuildAssetBundle : MonoBehaviour {
     {
         BuildBundle(BuildTarget.Android);
     }
+    [MenuItem("BundleManager/Tools/BuildIOSBundle")]
+    public static void BuildIOSBundle()
+    {
+        BuildBundle(BuildTarget.iOS);
+    }
     [MenuItem("BundleManager/Tools/BuildPCBundle")]
     public static void BuildPCBundle()
     {
@@ -253,7 +258,7 @@ public class BuildAssetBundle : MonoBehaviour {
     #region BuildDependcy
     static void BuildDependcy(AssetBundleManifest minifest)
     {
-        List<FileInfo> lstRemoteFile = new List<FileInfo>();
+        List<TFileInfo> lstRemoteFile = new List<TFileInfo>();
         string outputPath = Application.dataPath.Replace("Assets", "") + "Bundles/";
         string path = Application.dataPath + "/";
         List<string> lst = new List<string>();//"..$NGR/Shader/BRDF.cg"
@@ -263,9 +268,11 @@ public class BuildAssetBundle : MonoBehaviour {
         for (int j = 0; j < lst.Count; j++)
         {
             lst[j] = lst[j].Replace(Application.dataPath + "/", "");
-            FileInfo file = new FileInfo();
+            TFileInfo file = new TFileInfo();
             file.pathName = lst[j].ToLower();
+            
             file.bundleName = BundleManager.GetBundleNameFromPath(file.pathName);
+          
             string crcpath = outputPath + file.bundleName;
             if (!bundleCrc.ContainsKey(crcpath))
                  bundleCrc[crcpath] = BundleManager.CalcCRCDataPath(outputPath + file.bundleName);
@@ -276,7 +283,7 @@ public class BuildAssetBundle : MonoBehaviour {
         }
         for (int j = 0; j < lst.Count; j++)
         {
-            FileInfo file = lstRemoteFile[j];
+            TFileInfo file = lstRemoteFile[j];
             string[] depend = BuildDepengcyItem(file.pathName);
             if (depend.Length > 0)
             {
@@ -293,7 +300,7 @@ public class BuildAssetBundle : MonoBehaviour {
             }
   
         }
-        FileInfo.SaveFileInfo(outputPath + "fileinfo.txt", lstRemoteFile);
+        TFileInfo.SaveFileInfo(outputPath + "fileinfo.txt", lstRemoteFile);
     }
     public static string[] BuildDepengcyItem(string name)
     {
@@ -320,6 +327,10 @@ public class BuildAssetBundle : MonoBehaviour {
                 continue;
             }
             if (temp.EndsWith(".cs"))
+            {
+                continue;
+            }
+            if (temp.Contains("StreamingAssets"))
             {
                 continue;
             }
@@ -448,7 +459,39 @@ public class BuildAssetBundle : MonoBehaviour {
         CopyFolder(Version.BundlePath, output_path.Replace("Fighter.exe", "Fighter_Data/Bundles/"));
         Debug.Log("Build OK!");
     }
+   /* [MenuItem("BundleManager/Player/BuildAndroidPlayer")]
+    public static void BuildAndroidPlayer()
+    {
+        string[] levels = {
+            "Assets/Level/login0.unity",
+        };
+        string output_path = Application.dataPath + "/../bundle-apk/Fighter.apk";
 
+        Debug.Log("build player succeed and wait for copy res folder!");
+        string data = System.IO.File.ReadAllText(Application.streamingAssetsPath + "/AppVersion.txt");
+        VersionItem Version = new VersionItem();
+        Version.LoadVersion(data);
+        DeleteFiles(Application.streamingAssetsPath + "/Bundles/");
+        CopyFolder(Version.BundlePath, Application.streamingAssetsPath + "/Bundles/");
+        BuildPipeline.BuildPlayer(levels, output_path, BuildTarget.Android, BuildOptions.None);
+        Debug.Log("Build OK!");
+    }
+    [MenuItem("BundleManager/Player/BuildIOSPlayer")]
+    public static void BuildIOSPlayer()
+    {
+        string[] levels = {
+            "Assets/Scenes/Entry.unity",
+        };
+        string output_path = Application.dataPath + "/../bundle-apk/X.apk";
+        Debug.Log("build player succeed and wait for copy res folder!");
+        string data = System.IO.File.ReadAllText(Application.streamingAssetsPath + "/AppVersion.txt");
+        VersionItem Version = new VersionItem();
+        Version.LoadVersion(data);
+        DeleteFiles(Application.streamingAssetsPath + "/Bundles/");
+        CopyFolder(Version.BundlePath, Application.streamingAssetsPath + "/Bundles/");
+        BuildPipeline.BuildPlayer(levels, output_path, BuildTarget.Android, BuildOptions.None);
+        Debug.Log("Build OK!");
+    }*/
     #endregion
 
 
