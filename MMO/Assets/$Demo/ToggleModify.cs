@@ -26,6 +26,7 @@ public class ToggleModify : MonoBehaviour {
         EnableInputBlur,
         EnableDepth,
         EnableSSAOPro,
+        EnableWaterReflect,
     }
     UIToggle toggle = null;
     public ToggleSelect m_toggle = ToggleSelect.None;
@@ -127,6 +128,21 @@ public class ToggleModify : MonoBehaviour {
         {
             toggle.value = SceneRenderSetting._Setting.ShowDepth;
         }
+        else if (m_toggle == ToggleSelect.EnableSubWater)
+        {
+            Water water = GameObject.Find("SceneObject/Water").GetComponent<Water>();
+            toggle.value = water.enableSubWater;
+        }
+        else if (m_toggle == ToggleSelect.EnableSubgausitic)
+        {
+            Water water = GameObject.Find("SceneObject/Water").GetComponent<Water>();
+            toggle.value = water.enableCausitic;
+        }
+        else if (m_toggle == ToggleSelect.EnableWaterReflect)
+        {
+            Water water = GameObject.Find("SceneObject/Water").GetComponent<Water>();
+            toggle.value = water.enableRefl;
+        }
     }
     // Update is called once per frame
     void OnChange ()
@@ -212,6 +228,21 @@ public class ToggleModify : MonoBehaviour {
         else if (m_toggle == ToggleSelect.EnableDepth)
         {
             SceneRenderSetting._Setting.ShowDepth = toggle.value;
+        }
+        else if (m_toggle == ToggleSelect.EnableSubWater)
+        {
+            Water water = GameObject.Find("SceneObject/Water").GetComponent<Water>();
+            water.enableSubWater=toggle.value;
+        }
+        else if (m_toggle == ToggleSelect.EnableSubgausitic)
+        {
+            Water water = GameObject.Find("SceneObject/Water").GetComponent<Water>();
+            water.enableCausitic = toggle.value;
+        }
+        else if (m_toggle == ToggleSelect.EnableWaterReflect)
+        {
+            Water water = GameObject.Find("SceneObject/Water").GetComponent<Water>();
+            water.enableRefl = toggle.value;
         }
     }
 }
