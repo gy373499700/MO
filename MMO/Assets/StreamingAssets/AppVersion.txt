@@ -1,4 +1,4 @@
-BundleTest=1
+BundleTest=0
 BundlePath=E:/Github/trunk/MMO/Bundles/
 StreamAssetsCompress=0
 appName=tencent_qyds_
