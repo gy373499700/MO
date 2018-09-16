@@ -1,0 +1,282 @@
+
+#ifndef T4M_AO
+#define T4M_AO 0
+#endif
+//#ifndef T4M_NORMAL
+//#define T4M_NORMAL 0
+//#endif
+
+#ifndef T4M_WETNESS
+#define T4M_WETNESS 0
+#endif
+
+#ifndef DEBUG_AO
+#define DEBUG_AO 0
+#endif
+
+
+#include "UnityCG.cginc"
+#include "LightCommon.cg"
+sampler2D _Control;
+#if T4M_AO == 1
+sampler2D _ColorControl;
+#elif T4M_AO == 2
+sampler2D _ColorControl;
+#endif
+sampler2D _Splat0,_Splat1,_Splat2,_Splat3;
+float4 _Control_ST;
+float4 _Splat0_ST;
+float4 _Splat1_ST;
+float4 _Splat2_ST;
+float4 _Splat3_ST;
+
+#if T4M_NORMAL == 1
+sampler2D _Normal0,_Normal1,_Normal2,_Normal3;
+float4 _Color0,_Color1,_Color2,_Color3;
+#endif
+
+float4 _WorldUpInViewSpace;
+
+float4		_Color;
+float		_SmoothBase;
+float		_Metal;
+float4		_AAOffset;
+
+//#include "colorbuffer.cg"
+
+
+struct v2f {
+	float4 pos 			: SV_POSITION;
+	float4 uv 			: TEXCOORD0;
+	float4 uv_01		: TEXCOORD1;
+	float4 uv_23		: TEXCOORD2;
+};
+
+fixed4 TerrainColor(float2 uv,float4 uv01,float4 uv23,fixed4 splat_control)
+{
+#if T4M_NORMAL == 1
+	fixed4 lay1 = pow(tex2D(_Splat0, uv01.xy), 2.2f)*_Color0;
+	fixed4 lay2 = pow(tex2D(_Splat1, uv01.zw), 2.2f)*_Color1;
+	fixed4 lay3 = pow(tex2D(_Splat2, uv23.xy), 2.2f)*_Color2;
+	fixed4 lay4 = pow(tex2D(_Splat3, uv23.zw), 2.2f)*_Color3;
+#else
+	fixed4 lay1 = pow(tex2D(_Splat0, uv01.xy), 2.2f);
+	fixed4 lay2 = pow(tex2D(_Splat1, uv01.zw), 2.2f);
+	fixed4 lay3 = pow(tex2D(_Splat2, uv23.xy), 2.2f);
+	fixed4 lay4 = pow(tex2D(_Splat3, uv23.zw), 2.2f);
+#endif
+	fixed4 ret= (lay1 * splat_control.r + lay2 * splat_control.g + lay3 * splat_control.b + lay4 * max(0,1-dot(splat_control.xyz,1)));
+	
+	#if T4M_NORMAL == 0
+	ret.w = 0;
+	#endif
+	return ret;
+}
+#if T4M_NORMAL == 1
+float3 TerrainNormal(float2 uv,float4 uv01,float4 uv23,fixed4 splat_control)
+{
+	float3 lay1 = tex2D(_Normal0, uv01.xy).xyz;
+	float3 lay2 = tex2D(_Normal1, uv01.zw).xyz;
+	float3 lay3 = tex2D(_Normal2, uv23.xy).xyz;
+	float3 lay4 = tex2D(_Normal3, uv23.zw).xyz;
+	float3 ret	= (lay1 * splat_control.r + lay2 * splat_control.g + lay3 * splat_control.b + lay4 * max(0,1-dot(splat_control.xyz,1)));
+	return ret;
+}
+#endif
+
+v2f vert(appdata_full v)
+{
+	v2f o;
+	float3 view_dir = 0;
+
+	o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+	view_dir = normalize(mul(UNITY_MATRIX_MV, v.vertex).xyz);
+
+	o.pos.xy += _AAOffset.xy*o.pos.w;
+
+	o.uv.xy = TRANSFORM_TEX(v.texcoord, _Control);
+	float3 normal = mul((float3x3)UNITY_MATRIX_MV, v.normal.xyz);
+	o.uv.zw = 1 - dot(normal, -view_dir);
+
+	o.uv_01.xy = TRANSFORM_TEX(v.texcoord, _Splat0);
+	o.uv_01.zw = TRANSFORM_TEX(v.texcoord, _Splat1);
+	o.uv_23.xy = TRANSFORM_TEX(v.texcoord, _Splat2);
+	o.uv_23.zw = TRANSFORM_TEX(v.texcoord, _Splat3);
+
+	#if LIGHTMAP_ON
+	o.uv.xy = v.texcoord1*unity_LightmapST.xy+unity_LightmapST.zw;
+	#endif
+	return o;
+}
+#if LIGHTMAP_ON
+float4 frag(v2f i) : COLOR
+{
+	return DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, i.uv.xy)).xyzz;//UNITY_SAMPLE_TEX2D(unity_Lightmap,i.uv.xy);
+}
+#else
+float4 frag(v2f i) : COLOR
+{
+	float4 ret=0;
+	fixed4 splat_control = tex2D(_Control, i.uv).rgba;
+	fixed4 color = TerrainColor(i.uv, i.uv_01,i.uv_23,splat_control);
+#if T4M_AO == 1
+	fixed3 color_control =  tex2D(_ColorControl,i.uv.xy).rgb;
+	ret.xyz = color_control.xyz*2.0f;
+#elif T4M_AO == 2
+	fixed3 color_control =  tex2D(_ColorControl,i.uv.xy).rgb;
+	//float3 sqrtcolor = color*color;
+	//color.xyz = lerp(color.xyz,sqrtcolor,ClampRange(color_control.y,0.0f,0.35f));
+	#if DEBUG_AO == 1
+	ret.xyz=color_control.x*2.0f+float4(0,color_control.y,0,0);
+	#else
+	ret.xyz=color_control.x*2.0f;
+	#endif
+#endif
+	ret.xyz *= color.xyz*_Color.xyz*2.0f;
+
+
+	ret.w = saturate(_SmoothBase + i.uv.z*0.2f+color.w);
+	#if T4M_AO == 2
+	#if T4M_NORMAL == 1
+	ret.w = lerp(ret.w,1.0f,ClampRange(color_control.y,0.2f,1.0f));
+	#endif
+	#endif
+	ret.w *= 0.495f;
+	if (_Metal>0.5f)
+	{
+		ret.w += 0.5f;
+	}
+
+	return ret;
+}
+#endif
+struct mrt_v2f {
+			float4 pos 			: SV_POSITION;
+			float4 uv 			: TEXCOORD0;
+			float4 uv_01		: TEXCOORD1;
+			float4 uv_23		: TEXCOORD2;
+			float4 depth_normal : TEXCOORD3;
+			#if T4M_NORMAL == 1
+			float4 tangent		: TEXCOORD4;
+			#endif
+		};
+
+mrt_v2f mrt_vert(appdata_full v)
+		{
+			mrt_v2f o;
+			float3 view_dir = 0;
+
+			o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+			float4 view_pos = mul(UNITY_MATRIX_MV, v.vertex);
+			view_dir = normalize(view_pos.xyz);
+
+			o.pos.xy += _AAOffset.xy*o.pos.w;
+
+			o.uv.xy = TRANSFORM_TEX(v.texcoord, _Control);
+			float3 normal = mul((float3x3)UNITY_MATRIX_MV, v.normal.xyz);
+			o.uv.zw = 1 - dot(normal, -view_dir);
+
+			o.uv_01.xy = TRANSFORM_TEX(v.texcoord, _Splat0);
+			o.uv_01.zw = TRANSFORM_TEX(v.texcoord, _Splat1);
+			o.uv_23.xy = TRANSFORM_TEX(v.texcoord, _Splat2);
+			o.uv_23.zw = TRANSFORM_TEX(v.texcoord, _Splat3);
+
+			o.depth_normal.w = -view_pos.z*_ProjectionParams.w;
+			o.depth_normal.xyz = normalize(mul(UNITY_MATRIX_MV, float4(v.normal, 0)).xyz);
+			#if T4M_NORMAL == 1
+			o.tangent.xyz = normalize(mul(UNITY_MATRIX_MV, float4(v.tangent.xyz, 0)).xyz);
+			o.tangent.w = v.tangent.w;
+			#endif
+			return o;
+		}
+
+struct PS_OUTPUT
+{
+	float4 diffuse_roughness	: COLOR0;
+	float4 depth_normal			: COLOR1;
+};
+
+PS_OUTPUT mrt_frag(mrt_v2f i)
+{
+	float4 ret=0;
+	fixed4 splat_control = tex2D(_Control, i.uv).rgba;
+	fixed4 color = TerrainColor(i.uv, i.uv_01,i.uv_23,splat_control);
+#if T4M_AO == 1
+	fixed3 color_control =  tex2D(_ColorControl,i.uv.xy).rgb;
+	ret.xyz =color_control.xyz*2.0f;
+#elif T4M_AO == 2
+	fixed3 color_control =  tex2D(_ColorControl,i.uv.xy).rgb;
+
+	float3 sqrtcolor = color*color;
+	//color.xyz = lerp(color.xyz,sqrtcolor,ClampRange(color_control.y,0.0f,1.0f));
+	ret.xyz=color_control.x*2.0f;
+#endif
+	ret.xyz *= color.xyz*_Color.xyz*2.0f;
+
+
+	ret.w = saturate(_SmoothBase + i.uv.z*0.2f+color.w);
+
+	
+
+	PS_OUTPUT output;
+	
+	output.depth_normal.xy = EncodeDepth(i.depth_normal.w);
+	#if T4M_NORMAL == 1
+		float3 normalTS = TerrainNormal(i.uv, i.uv_01,i.uv_23,splat_control);
+#if T4M_AO == 2
+		normalTS.xy = lerp(normalTS.xy,float2(0.5f,0.5f),ClampRange(color_control.y,0.45f,0.95f));
+#endif
+		float3 nor = normalTS.xyz*2-1;
+		nor.z = sqrt(1-dot(nor.xy,nor.xy));
+		float3 binormal = i.tangent.w*cross(i.depth_normal.xyz,i.tangent.xyz);
+		nor =  mul(nor,float3x3(i.tangent.xyz,binormal,i.depth_normal.xyz));
+#if T4M_AO == 2
+		float temp_val = ClampRange(color_control.y,0.98f,1.0f);
+		nor = lerp(nor,_WorldUpInViewSpace.xyz*float3(1,1,-1),temp_val);
+		ret.w = lerp(ret.w,1.0f,ClampRange(color_control.y,0.2f,1.0f));
+
+#endif
+		output.depth_normal.zw = EncodeNormal(normalize(nor.xyz));
+	#else
+	output.depth_normal.zw = EncodeNormal(normalize(i.depth_normal.xyz));
+	#endif
+
+	ret.w *= 0.495f;
+	if (_Metal > 0.5f)
+	{
+		ret.w += 0.5f;
+	}
+	output.diffuse_roughness = ret;
+
+	return output;
+}
+
+float4 gbuffer_frag(mrt_v2f i):COLOR
+{
+	float4 ret = 0;
+	fixed4 splat_control = tex2D(_Control, i.uv).rgba;
+#if T4M_AO == 2
+	fixed3 color_control =  tex2D(_ColorControl,i.uv.xy).rgb;
+#endif
+	ret.xy = EncodeDepth(i.depth_normal.w);
+	#if T4M_NORMAL == 1
+		float3 normalTS = TerrainNormal(i.uv, i.uv_01,i.uv_23,splat_control);
+#if T4M_AO == 2
+		normalTS.xy = lerp(normalTS.xy,float2(0.5f,0.5f),ClampRange(color_control.y,0.45f,0.95f));
+#endif
+		float3 nor = normalTS.xyz*2-1;
+		nor.z = sqrt(1-dot(nor.xy,nor.xy));
+		float3 binormal = i.tangent.w*cross(i.depth_normal.xyz,i.tangent.xyz);
+		nor =  mul(nor,float3x3(i.tangent.xyz,binormal,i.depth_normal.xyz));
+#if T4M_AO == 2
+		float temp_val = ClampRange(color_control.y,0.98f,1.0f);
+		nor = lerp(nor,_WorldUpInViewSpace.xyz*float3(1,1,-1),temp_val);
+		
+
+#endif
+		ret.zw = EncodeNormal(normalize(nor.xyz));
+	#else
+	ret.zw = EncodeNormal(normalize(i.depth_normal.xyz));
+	#endif
+	return ret;
+}

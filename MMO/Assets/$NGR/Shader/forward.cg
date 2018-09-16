@@ -1,0 +1,239 @@
+// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+
+#include "UnityCG.cginc"
+#include "LightCommon.cg"
+#include "grass.cg"
+
+
+#ifndef ALPHA_TEST
+#define ALPHA_TEST 0
+#endif
+#ifndef HAS_BUMP
+#define HAS_BUMP 0
+#endif
+#ifndef ALPHA_TEST_BLACK
+#define ALPHA_TEST_BLACK 0
+#endif
+#ifndef OIT
+#define OIT 0
+#endif
+#ifndef NORMAL_UP
+#define NORMAL_UP 0
+#endif
+#ifndef FORCE_FIELD
+#define FORCE_FIELD 0
+#endif
+#ifndef ALPHA_DisAppear
+#define ALPHA_DisAppear 0
+#endif
+#ifndef HAIR_ON
+#define HAIR_ON 0
+#endif
+#ifndef TREE_LEAF
+#define TREE_LEAF 0
+#endif
+#ifndef COLOR_PAINTER
+#define COLOR_PAINTER 0
+#endif
+
+#ifndef USE_SHADOW
+#define USE_SHADOW 1
+#endif
+
+#ifndef USE_FOG
+#define USE_FOG 1
+#endif
+
+sampler2D	_MainTex;
+float4		_MainTex_ST;
+sampler2D	_SpecTex;
+float4		_Color;
+float		_SmoothBase;
+float		_Metal;
+float4		_AAOffset;
+#if ALPHA_DisAppear == 1
+float     _Disappear;
+sampler2D	_NoiseTex;
+float4	_DisappearColor;
+#endif
+#if HAS_BUMP == 1
+float		_Smoothness;
+float		_BumpScale;
+#endif
+
+#if HAIR_ON == 1
+sampler2D _HairDetail;
+#endif
+#if COLOR_PAINTER == 1
+sampler2D _PainterTex;
+float4	_PaintColor0;
+float4	_PaintColor1;
+#endif
+
+sampler2D _ShadowDepth;
+float4 invShadowViewport;
+float4x4 _ShadowView;
+float4x4 _ShadowProj;
+
+float4 MainColor;
+float4 MainDir;
+float4 AmbientColor;
+float4 FogColor;
+float4 FogParam;
+
+struct v2f{
+	float4 pos 			: SV_POSITION;
+	float4 uv 			: TEXCOORD0;
+	float4 normal		: TEXCOORD1;
+	float4 wpos			: TEXCOORD2;
+	float4 sview		: TEXCOORD3;
+	#if VERTEX_COLOR == 1
+	float4 vertexColor 	: TEXCOORD4;
+	#endif
+};
+
+v2f gbuffer_vert(appdata_full v)
+{
+	v2f o;
+
+	#if FORCE_FIELD == 1
+	float rand =unity_ObjectToWorld[0].w * 100 + unity_ObjectToWorld[2].w + v.color.a;
+	o.wpos.xyz	=	 CalcPos(mul(unity_ObjectToWorld,v.vertex).xyz,v.color.a,rand);
+	o.wpos.w = 1;
+	#else
+		#if TREE_LEAF == 1
+			float4 localpos = float4(CalcLeafPos(v.vertex.xyz,v.normal.xyz),1);
+			o.wpos = mul(unity_ObjectToWorld,localpos);
+		#else
+			o.wpos = mul(unity_ObjectToWorld,v.vertex);
+		#endif
+	#endif
+	o.pos = mul(UNITY_MATRIX_VP,o.wpos);
+
+	#if NORMAL_UP == 1
+	o.normal.xyz	= float3(0,1,0);
+	#else
+	o.normal.xyz	=	normalize(mul(unity_ObjectToWorld,float4(v.normal,0)).xyz);
+	#endif
+
+
+	float4 shadow_pos = mul(_ShadowView,o.wpos+float4(o.normal.xyz*0.07f,0));
+	float4 shadowproj = mul(_ShadowProj,shadow_pos);
+	shadowproj/=shadowproj.w;
+	if(abs(shadowproj.x)>1.0f || abs(shadowproj.y)>1.0f)
+	{
+		shadow_pos.z = 0.0f;
+	}
+		#if SHADER_API_GLES|| SHADER_API_GLES3
+
+		#else
+			shadowproj.y*=-1;
+		#endif
+
+	o.sview.xy = shadowproj.xy*0.5+0.5;
+	o.sview.z = shadow_pos.z;
+	o.sview.w = 0;
+
+	o.pos.xy += _AAOffset.xy*o.pos.w;
+	o.uv.xy = TRANSFORM_TEX(v.texcoord,_MainTex);
+	
+	
+
+	float3 view_dir	=	normalize(o.wpos-_WorldSpaceCameraPos.xyz);
+	o.normal.w = view_dir.z;
+	o.uv.zw	=	view_dir.xy;
+
+	#if VERTEX_COLOR == 1
+	o.vertexColor = v.color;
+	#endif
+	return o;
+}
+
+
+
+float CalcDiffuse(float inRoughness,float3 L,float3 N)
+{
+	float fn = inRoughness*inRoughness;
+	float f0   =   (1-fn)/(1+fn);
+	return max(0,dot(L,N))*saturate(1-f0*f0)/ PI;
+}
+
+float4 gbuffer_frag(v2f i) : COLOR0
+{
+	
+		float3 P = i.wpos.xyz;
+	float3 N = normalize(i.normal.xyz);
+	float3 E = normalize(float3(i.uv.zw,i.normal.w));
+	float3 L = MainDir.xyz;
+	
+
+	float4 Diff = 0;
+	float4 color = tex2D(_MainTex,i.uv.xy);
+	Diff.xyz   =   pow(color.xyz,2.2f)*_Color.xyz*2.0f;
+
+	#if HAS_BUMP == 1
+		float base_smooth   =   _SmoothBase+_Smoothness*2.0f*tex2D(_SpecTex,i.uv.xy).z;
+		Diff.w   =   saturate(base_smooth+max(0,1-abs(i.uv.z))*0.2f);
+	#else
+		Diff.w     =   saturate(_SmoothBase+max(0,1-abs(i.uv.z))*0.2f);
+	#endif
+
+	#if HAIR_ON == 1
+	Diff.xyz*= tex2D(_HairDetail,i.uv.xy).x;
+	#endif
+	#if VERTEX_COLOR == 1
+	Diff.xyz *=i.vertexColor.xyz;
+	#endif
+
+	#if ALPHA_TEST == 1
+		#if ALPHA_DisAppear == 1
+		float4 noi = tex2D(_NoiseTex, i.uv);
+		float v = _Disappear - noi.x;
+		clip(v);
+		if(abs(v)<0.05f)
+		{	
+			Diff = Diff*_DisappearColor;
+		}
+		#else
+		clip(color.w*_Color.w-0.5f);
+		#endif
+	#endif
+
+
+	#if COLOR_PAINTER == 1
+	float4 paint_weight = tex2D(_PainterTex,i.uv.xy);
+	float4 p_color = _PaintColor0*paint_weight.x+_PaintColor1*paint_weight.y;
+	Diff.xyz *= lerp(p_color.xyz*4.0f,1,1-paint_weight.x-paint_weight.y);
+	#endif
+
+	float fDot = CalcDiffuse(saturate(1-Diff.w),-L,N);;
+	
+	#if USE_SHADOW == 1
+	float2 shadowuv = i.sview.xy;
+	float2 XY_DEPTH = float2(1.0f,0.003921568627451)*invShadowViewport.w;
+	float2 shadow_depth=0;
+	shadow_depth.x = dot(tex2D(_ShadowDepth,shadowuv).xy,XY_DEPTH);
+	shadow_depth.y = dot(tex2D(_ShadowDepth,shadowuv+float2(0,invShadowViewport.y)).xy,XY_DEPTH);
+	shadow_depth-=i.sview.z;
+	shadow_depth = shadow_depth>0;
+	float lerp_val = frac(shadowuv.y/invShadowViewport.x);
+
+	
+	
+	float4 light = lerp(shadow_depth.x, shadow_depth.y, lerp_val)*MainColor*fDot;
+	#else
+	float4 light = MainColor*fDot;
+	#endif
+
+	float4 ambient = (N.y*0.25+0.25f)*AmbientColor;
+	
+	#if USE_FOG == 1
+	float dis = pow(saturate((length(P-_WorldSpaceCameraPos.xyz)-FogParam.x)/FogParam.y),FogParam.z);
+	return lerp((light+ambient)*Diff,FogColor,dis);
+	#else
+	float4 retValue = (light + ambient) * Diff;
+	retValue.w = 0;
+	return retValue;
+	#endif
+}
+

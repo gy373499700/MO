@@ -1,0 +1,236 @@
+// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+
+#include "UnityCG.cginc"
+#include "LightCommon.cg"
+#include "grass.cg"
+
+#ifndef ALPHA_TEST
+#define ALPHA_TEST 0
+#endif
+#ifndef ALPHA_TEST_BLACK
+#define ALPHA_TEST_BLACK 0
+#endif
+#ifndef HAS_BUMP
+#define HAS_BUMP 0
+#endif 
+
+#ifndef HAS_BUMP_COLOR
+#define HAS_BUMP_COLOR 0
+#endif 
+
+#ifndef OIT
+#define OIT 0
+#endif
+#ifndef FORCE_FIELD
+#define FORCE_FIELD 0
+#endif
+#ifndef VERTEX_COLOR
+#define VERTEX_COLOR 0
+#endif
+#ifndef ALPHA_DisAppear
+#define ALPHA_DisAppear 0
+#endif
+#ifndef SHOW_LIGHTMAP
+#define SHOW_LIGHTMAP 0
+#endif
+#ifndef HAIR_ON
+#define HAIR_ON 0
+#endif
+#ifndef TREE_LEAF
+#define TREE_LEAF 0
+#endif
+#ifndef COLOR_PAINTER
+#define COLOR_PAINTER 0
+#endif
+
+#if LIGHTMAP_ON
+//sampler2D unity_Lightmap;
+//float4 unity_LightmapST;
+#endif
+
+sampler2D	_MainTex;
+float4		_MainTex_ST;
+float4		_Color;
+float		_SmoothBase;
+float		_Metal;
+float4		_AAOffset;
+#if ALPHA_DisAppear == 1
+float     _Disappear;
+sampler2D	_NoiseTex;
+float4	_DisappearColor;
+#endif
+#if HAS_BUMP == 1
+float _Smoothness;
+float _BumpScale;
+sampler2D	_SpecTex;
+#endif
+
+#if HAS_BUMP_COLOR == 1
+float4		_SkinColor;
+float4		_StainColorFst;
+float       _GrayScaleFst;
+float4		_StainColorSnd;
+float       _GrayScaleSnd;
+#define SKIN_COLOR_FLAG 0.9f
+#define STAINS_COLOR_FLAG1 0.7f
+#define STAINS_COLOR_FLAG2 0.35f
+#endif
+
+#if OIT == 1
+sampler2D	_OIT2X2Tex;
+float4		_OITScreenParams;
+#endif
+#if HAIR_ON == 1
+sampler2D _HairDetail;
+#endif
+#if COLOR_PAINTER == 1
+sampler2D _PainterTex;
+float4	_PaintColor0;
+float4	_PaintColor1;
+#endif
+struct v2f{
+	float4 pos 			: SV_POSITION;
+	float4 uv 			: TEXCOORD0;
+
+
+	#if OIT == 1
+	float4 proj_pos 	: TEXCOORD1;
+	#if VERTEX_COLOR == 1
+	float4 vertexColor 	: TEXCOORD2;
+	#endif
+	#else
+	#if VERTEX_COLOR == 1
+	float4 vertexColor 	: TEXCOORD1;
+	#endif
+	#endif
+
+
+	
+};
+
+v2f vert(appdata_full v)
+{
+	v2f o;
+	float3 view_dir = 0;
+	#if FORCE_FIELD == 1
+		float rand =unity_ObjectToWorld[0].w * 100 + unity_ObjectToWorld[2].w + v.color.a;
+		float3 p	=	 CalcPos(mul(unity_ObjectToWorld,v.vertex).xyz,v.color.a,rand);
+
+		view_dir	=	normalize(p-_WorldSpaceCameraPos.xyz);
+		o.pos = mul(UNITY_MATRIX_VP,float4(p,1));
+	#else
+		#if TREE_LEAF == 1
+		float4 localpos = float4(CalcLeafPos(v.vertex.xyz,v.normal.xyz),1);
+		o.pos = mul(UNITY_MATRIX_MVP,localpos);
+		view_dir = normalize(mul(UNITY_MATRIX_MV,localpos).xyz);
+		#else
+		o.pos = mul(UNITY_MATRIX_MVP,v.vertex);
+		view_dir = normalize(mul(UNITY_MATRIX_MV,v.vertex).xyz);
+		#endif
+	#endif
+	o.pos.xy += _AAOffset.xy*o.pos.w;
+
+	o.uv.xy = TRANSFORM_TEX(v.texcoord,_MainTex);
+	
+	#if LIGHTMAP_ON
+	o.uv.xy = v.texcoord1*unity_LightmapST.xy+unity_LightmapST.zw;
+	#endif
+	
+	float4 normal = mul(UNITY_MATRIX_MV,float4(v.normal.xyz,0));
+	o.uv.zw	=	dot(normalize(normal.xyz),-view_dir);
+	
+	#if OIT == 1
+	o.proj_pos	=	o.pos;
+	#endif
+	#if VERTEX_COLOR == 1
+	o.vertexColor = v.color;
+	#endif
+	return o;
+}
+#if LIGHTMAP_ON == 1
+float4 frag(v2f i) : COLOR
+{
+	return DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, i.uv.xy)).xyzz;//UNITY_SAMPLE_TEX2D(unity_Lightmap,i.uv.xy);
+}
+#else
+
+float4 frag(v2f i) : COLOR
+{
+	float4 ret;
+	float4 color = tex2D(_MainTex,i.uv.xy);
+
+	#if HAS_BUMP_COLOR == 1
+
+	    float Gray;
+		float GreenEdge = tex2D(_SpecTex,i.uv.xy).y;
+		float3 trueColor = pow(color, 2.2f) * _Color.xyz * 2.0f;
+
+		if (GreenEdge  > SKIN_COLOR_FLAG)
+		{
+			ret.xyz = pow(color.xyz, 2.2f) * _SkinColor.xyz;
+		}	
+		else if(GreenEdge > STAINS_COLOR_FLAG1)
+		{
+			Gray = (trueColor.x * 30.0f + trueColor.y * 59.0f + trueColor.z * 11.0f + 50) / 100.0f * _GrayScaleFst;
+		    ret.xyz = Gray * _StainColorFst.xyz;
+		}
+		else if(GreenEdge > STAINS_COLOR_FLAG2)
+		{
+			Gray = (trueColor.x * 30.0f + trueColor.y * 59.0f + trueColor.z * 11.0f + 50) / 100.0f * _GrayScaleSnd;
+			ret.xyz = Gray * _StainColorSnd.xyz;
+		}
+			
+    #else
+		ret.xyz   =   pow(color.xyz,2.2f)*_Color.xyz*2.0f;
+	#endif
+
+	#if HAIR_ON == 1
+	ret.xyz*= tex2D(_HairDetail,i.uv.xy).x;
+	#endif
+	#if COLOR_PAINTER == 1
+	float4 paint_weight = tex2D(_PainterTex,i.uv.xy);
+	float4 p_color = _PaintColor0*paint_weight.x+_PaintColor1*paint_weight.y;
+	ret.xyz *= lerp(p_color.xyz*4.0f,1,1-paint_weight.x-paint_weight.y);
+	#endif
+	#if VERTEX_COLOR == 1
+	ret.xyz *=i.vertexColor.xyz;
+	#endif
+	#if HAS_BUMP == 1
+		float base_smooth   =   _SmoothBase+_Smoothness*2.0f*tex2D(_SpecTex,i.uv.xy).z;
+		ret.w   =   saturate(base_smooth+max(0,1-abs(i.uv.z))*0.2f);
+	#else
+		ret.w     =   saturate(_SmoothBase+max(0,1-abs(i.uv.z))*0.2f);
+	#endif
+	ret.w *=0.495f;
+	if(_Metal>0.5f)
+	{
+		ret.w +=0.5f;
+	}
+
+	#if ALPHA_TEST == 1
+	#if ALPHA_DisAppear == 1
+		float4 noi = tex2D(_NoiseTex, i.uv);
+		float v = _Disappear - noi.x;
+		clip(v);
+		if(abs(v)<0.05f)
+		{	
+			ret = ret*_DisappearColor;
+		}
+	#else
+		clip(color.w*_Color.w-0.5f);
+	#endif
+	#endif
+	#if ALPHA_TEST_BLACK == 1
+		clip(dot(color.xyz,1)-0.01f);
+	#endif
+	#if OIT == 1
+		float4 proj	=	i.proj_pos/i.proj_pos.w;
+		float2 projuv = proj.xy*0.5+0.5f;
+		float clip_val = tex2D(_OIT2X2Tex,projuv/2/_OITScreenParams.xy);
+
+		clip(color.w-clip_val);
+	#endif
+
+	return ret;
+}
+#endif

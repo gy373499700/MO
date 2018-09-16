@@ -1,0 +1,89 @@
+#include "UnityCG.cginc"
+#include "LightCommon.cg"
+#include "CalcShadow.cg"
+
+sampler2D _Sample2x2;
+sampler2D _ShadowDepth;
+sampler2D _MainTex;
+float4 _MainTex_ST;
+float4 _Color;
+float _SmoothBase;
+float _Metal;
+float4 _SpecColor;
+float4 lightdir;
+float4 lightcolor;
+sampler2D _Sample4x4;
+//sampler2D _ShadowDepth;
+float4x4 mainView_shadowView;
+float4x4 shadowProj;
+float4 invViewportShadow;
+float4 _AmbientColor;
+float4 _Emissive;
+struct v2f{
+	float4 pos 			  : SV_POSITION;
+	float2 uv 			  : TEXCOORD0;
+    float3 normal     : TEXCOORD1;
+	float4 viewpos 	  : TEXCOORD2;
+};
+
+v2f vert(appdata_full v)
+{
+	v2f o;
+
+
+	o.pos = mul(UNITY_MATRIX_MVP,v.vertex);
+	o.uv = TRANSFORM_TEX(v.texcoord,_MainTex);
+	o.normal = normalize(mul(UNITY_MATRIX_MV,float4(v.normal.xyz,0)).xyz);
+	o.viewpos = mul(UNITY_MATRIX_MV,v.vertex);
+	o.viewpos.z*=-1;
+	o.normal.z*=-1;
+	return o;
+}
+
+float4 frag_null(v2f i) : COLOR
+{
+	return 0;
+}
+
+float4 frag(v2f i) : COLOR
+{
+	//float4 ret;
+	float4 color = tex2D(_MainTex,i.uv.xy);
+
+    float3 N = normalize(i.normal);
+    float3 L = -normalize(lightdir.xyz);
+    float3 E = -normalize(i.viewpos.xyz);
+	float roughness = _SmoothBase;//color.w+_SmoothBase;
+	float3 col = color.xyz*color.xyz;
+	float3 diff = lightcolor*col*_Color.xyz*2.0f;
+	float3 spec = lightcolor*_SpecColor*_Metal * 3;
+	PBR(roughness,L,E,N,diff,spec);										
+	
+	float4 shadowpos = mul(mainView_shadowView,float4(i.viewpos.xyz,1));
+	shadowpos/=shadowpos.w;
+
+
+	float4 proj_pos = mul(shadowProj,shadowpos);
+	proj_pos/=proj_pos.w;
+
+	
+	float2 shadowuv = proj_pos.xy*0.5f+0.5f;
+	#if SHADER_API_MOBILE
+	#if UNITY_UV_STARTS_AT_TOP
+
+	#else
+			   shadowuv.y = 1 - shadowuv.y;
+	#endif
+#else
+ #if UNITY_UV_STARTS_AT_TOP
+			   shadowuv.y = 1-shadowuv.y;
+ #endif
+#endif
+
+	float2 XY_Depth = float2(1.0f,0.003921568627451)*invViewportShadow.w;	   
+
+	float occ = CalcShadow2x2(shadowuv,shadowpos.z,XY_Depth, invViewportShadow,_ShadowDepth);
+	
+	float3 ret = occ*occ*(diff+spec)+_Emissive*_AmbientColor.xyz*color.xyz;
+	return float4(ret.xyz,_Color.w*color.w);
+}

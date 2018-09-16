@@ -1,0 +1,155 @@
+
+
+#include "UnityCG.cginc"
+#include "LightCommon.cg"
+#define SAMPLER_NUM 4
+
+#ifndef HAIR_ON 
+#define HAIR_ON 0
+#endif 
+#ifndef LIGHT_COUNT
+#define LIGHT_COUNT 1
+#endif
+
+sampler2D	_Depth;
+sampler2D	_Diffuse;
+sampler2D	_HairTex;
+float4		_Color;
+float4		_FarCorner;
+float4		invViewport_Radius;
+float4		_LPos0;
+float4		_LPos1;
+float4		_LPos2;
+float4		_LPos3;
+float4		_LPos4;
+float4		_LPos5;
+float4		_LColor0;
+float4		_LColor1;
+float4		_LColor2;
+float4		_LColor3;
+float4		_LColor4;
+float4		_LColor5;
+
+struct v2f {
+	float4 pos : SV_POSITION;
+	float2 uv : TEXCOORD0;
+	float4 viewpos  : TEXCOORD1;
+};
+
+			v2f vert (appdata_full v)
+			{
+				v2f o;
+#if SHADER_API_GLES|| SHADER_API_GLES3
+				//Mobile
+				o.pos = float4(v.vertex.x*2,v.vertex.y*2,1,1);
+				o.uv = o.pos*0.5f+0.5f;
+				o.viewpos = float4(o.pos.xy,1.0f,1)*_FarCorner;
+#else
+				//Editor Only 
+				o.pos = float4(v.vertex.x*2,v.vertex.y*2,1,1);
+				o.uv = o.pos*0.5f+0.5f;
+				o.uv.y = 1-o.uv.y;
+				o.viewpos = float4(o.pos.xy,1.0f,1)*_FarCorner;
+				o.viewpos.y*=-1;
+#endif
+				
+				return o;
+			}
+
+
+
+
+
+float4 Lighting(float4 lpos, float4 lcolor, float3 E, float3 pos, float3 normal, float spec_power)
+{
+	float3 offset = lpos.xyz - pos;
+	float3 L = normalize(offset);
+	float len = length(offset);
+
+	float4 spec = 0;
+
+	#if HAIR_ON == 1
+	float3 T = (normal);
+	float3 right = normalize(cross(-L,T));
+	float3 UP = normalize(cross(T,right));
+	float3 refl = reflect(L,UP);
+
+	float3 new_dir = normalize(float3(dot(UP,E),dot(right,E),0));
+	float dot_ue = dot(UP,new_dir);
+	float dot_te = dot(T,E)-dot(refl,T)*0.5f+0.5f;
+	spec = 1;//tex2D(_HairTex,float2(dot_ue,dot_te)).y;
+	#else
+	float3 H = normalize(L + E);
+	float nh = max(0, dot(normal, H));
+	spec = pow(nh, spec_power);
+	#endif
+	
+	return lcolor*spec *(1.0f / (len));
+
+}
+
+float4 frag( v2f IN) : COLOR
+{
+
+   float2 halfPixel   =   0.5f*invViewport_Radius.xy;
+   float2   uv=   IN.uv;//+halfPixel;
+
+   float2 XY_Depth = float2(1.0f,0.003921568627451);
+
+   float4 depth_normal = tex2D(_Depth,uv);
+   float view_depth = dot(depth_normal.xy,XY_Depth);
+
+   float3 viewpos = IN.viewpos*view_depth;
+   float3 normal = normalize(DecodeNormal(depth_normal.zw));
+
+
+   float3 E = -normalize(viewpos);
+
+   float4 diffuse = tex2D(_Diffuse,uv);
+   float metal = diffuse.w>=0.497f;
+   float roughness = saturate((diffuse.w*2.0f)-metal);
+   diffuse.xyz += diffuse.xyz*metal*3;
+   diffuse.w = roughness;// lerp(roughness, 1, invViewport_Radius.z);
+   //float4 spec = diffuse;
+   //spec.xyz=pow(1-roughness,0.5)+metal;
+   float4 color = 0;
+
+   float fullspec = ClampRange(roughness,0.925f,1.5f);
+
+
+	float spec_power =  1+(roughness*roughness)*256.0f;
+#if LIGHT_COUNT == 1
+	color += Lighting(_LPos0,_LColor0,E,viewpos,normal,spec_power);
+#elif LIGHT_COUNT == 2
+	color += Lighting(_LPos0,_LColor0,E,viewpos,normal,spec_power);
+	color += Lighting(_LPos1,_LColor1,E,viewpos,normal,spec_power);
+#elif LIGHT_COUNT == 3
+	color += Lighting(_LPos0,_LColor0,E,viewpos,normal,spec_power);
+	color += Lighting(_LPos1,_LColor1,E,viewpos,normal,spec_power);
+	color += Lighting(_LPos2,_LColor2,E,viewpos,normal,spec_power);
+#elif LIGHT_COUNT == 4
+	color += Lighting(_LPos0,_LColor0,E,viewpos,normal,spec_power);
+	color += Lighting(_LPos1,_LColor1,E,viewpos,normal,spec_power);
+	color += Lighting(_LPos2,_LColor2,E,viewpos,normal,spec_power);
+	color += Lighting(_LPos3,_LColor3,E,viewpos,normal,spec_power);
+#elif LIGHT_COUNT == 5
+	color += Lighting(_LPos0,_LColor0,E,viewpos,normal,spec_power);
+	color += Lighting(_LPos1,_LColor1,E,viewpos,normal,spec_power);
+	color += Lighting(_LPos2,_LColor2,E,viewpos,normal,spec_power);
+	color += Lighting(_LPos3,_LColor3,E,viewpos,normal,spec_power);
+	color += Lighting(_LPos4,_LColor4,E,viewpos,normal,spec_power);
+#elif LIGHT_COUNT == 6
+	color += Lighting(_LPos0,_LColor0,E,viewpos,normal,spec_power);
+	color += Lighting(_LPos1,_LColor1,E,viewpos,normal,spec_power);
+	color += Lighting(_LPos2,_LColor2,E,viewpos,normal,spec_power);
+	color += Lighting(_LPos3,_LColor3,E,viewpos,normal,spec_power);
+	color += Lighting(_LPos4,_LColor4,E,viewpos,normal,spec_power);
+	color += Lighting(_LPos5,_LColor5,E,viewpos,normal,spec_power);
+#endif
+
+	#if HAIR_ON == 1
+	return (roughness*lerp(diffuse,1,fullspec))*color*5*invViewport_Radius.w;
+	#else
+	return (roughness*lerp(diffuse,1,fullspec))*color*invViewport_Radius.w;
+	#endif
+}

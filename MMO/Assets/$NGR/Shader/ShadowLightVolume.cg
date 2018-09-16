@@ -1,0 +1,177 @@
+#include "UnityCG.cginc"
+#include "LightCommon.cg"
+
+#ifndef CAST_SHADOW
+#define CAST_SHADOW 0
+#endif
+
+#define SAMPLER_NUM 12
+
+sampler2D _Depth;
+//float4 _Depth_ST;
+sampler2D _Sample2x2;
+sampler2D _ShadowDepth;
+sampler2D _Random256;
+sampler2D _ShadowMask;
+
+float4 farCorner;
+float4x4 MV_Matrix;
+struct v2f {
+	float4 pos : SV_POSITION;
+	float4 proj_pos : TEXCOORD0;
+	float4 viewpos  : TEXCOORD1;
+};
+
+v2f vert (appdata_img v)
+{
+	v2f o;
+	float4 pos= v.vertex;
+	#if SHADER_API_MOBILE
+	#if UNITY_UV_STARTS_AT_TOP
+	#else
+	pos.z*=-1;
+	#endif
+	#else
+	#if UNITY_UV_STARTS_AT_TOP
+	pos.z*=-1;
+	#endif
+	#endif
+	o.pos = mul (UNITY_MATRIX_MVP,pos);
+	o.proj_pos = o.pos;
+	float4 p = mul (UNITY_MATRIX_MV , float4(pos.xyz,1));
+	o.viewpos = p;
+	return o;
+}
+
+
+float4 invViewport_Radius;
+float4 mainInvViewport;
+float4x4  mainView_shadowView;
+float4x4  shadowProj;
+float4 lightdir;
+float4 lightcolor;
+sampler2D _FarDepth;
+float4 VolumeParams;
+
+
+float4 depth_frag( v2f IN) : COLOR
+{
+	float4 depth = 0;
+	float4 p = IN.viewpos/IN.viewpos.w;
+	depth.xy	=	EncodeDepth(-p.z/farCorner.z);
+	return depth;
+}
+
+
+
+#ifndef EYE_IN_SHADOW
+#define EYE_IN_SHADOW 0
+#endif
+
+float2 FixUV(float2 uv)
+{
+#if SHADER_API_MOBILE
+	#if UNITY_UV_STARTS_AT_TOP
+		uv.xy = 1 - uv.xy;
+	#else
+		uv.x = 1-uv.x;   
+	#endif
+#else
+ #if UNITY_UV_STARTS_AT_TOP
+		uv.x = 1-uv.x;
+ #endif
+#endif
+	return uv;
+}
+float2 FixOrthographicUV(float2 uv)
+{
+#if SHADER_API_MOBILE
+	#if UNITY_UV_STARTS_AT_TOP
+
+	#else
+			   uv.y = 1 - uv.y;
+	#endif
+#else
+ #if UNITY_UV_STARTS_AT_TOP
+			   uv.y = 1-uv.y;
+ #endif
+#endif
+	return uv;
+}
+
+float4 volume_frag( v2f IN) : COLOR
+{
+	float4	proj	=	IN.proj_pos/IN.proj_pos.w;
+	#if UNITY_UV_STARTS_AT_TOP
+	proj.y *= -1;
+#endif
+	float2 proj_uv		=	proj.xy*0.5f+0.5f;
+	float2 depthFrustum	=	tex2D(_FarDepth,proj_uv).xy;
+	float2 XY_Depth = float2(1.0f,0.003921568627451);
+	float zFrustum = dot(XY_Depth,depthFrustum);
+	float2 depthGBuffer = tex2D(_Depth,proj_uv).xy;
+	float zGBuffer = dot(XY_Depth,depthGBuffer);
+	float z = min(zFrustum,zGBuffer);
+
+	float4   rand  = tex2D(_Random256,proj_uv/256/mainInvViewport.xy);
+	
+
+
+	float3 viewpos = float3(proj.xy,1)*farCorner*z;
+	#if EYE_IN_SHADOW == 1
+	float3 eyepos = 0;
+	#else
+	float4 vpos = IN.viewpos/IN.viewpos.w;
+	float3 eyepos = vpos.xyz;
+	eyepos.z *= -1;
+	#endif
+
+
+	float4 eye_view_pos = mul(mainView_shadowView,float4(eyepos,1));
+	float4 dst_view_pos = mul(mainView_shadowView,float4(viewpos,1));
+	eye_view_pos/=eye_view_pos.w;
+	dst_view_pos/=dst_view_pos.w;
+
+	
+
+	//float4 shadow_porj_pos = mul(shadowProj,dst_view_pos);
+	//shadow_porj_pos/=shadow_porj_pos.w;
+	//return tex2D(_ShadowDepth,shadow_porj_pos.xy*0.5f+0.5f);
+
+	float3 start_pos = eye_view_pos.xyz;
+	float3 end_pos = dst_view_pos.xyz;
+
+
+
+	XY_Depth*=mainInvViewport.w;
+	float3 step = (end_pos-start_pos)/SAMPLER_NUM;
+	start_pos += (rand.x+0.01f)*step;
+
+	float4 ret = 0;
+
+	for(int i=0;i<SAMPLER_NUM;i++)
+	{
+		float3 pos = start_pos + step*i;
+		float4 shadow_porj_pos = mul(shadowProj,float4(pos,1));
+		shadow_porj_pos/=shadow_porj_pos.w;
+		float2 uv = shadow_porj_pos.xy*0.5+0.5f;
+		if(lightdir.w>0.5f)
+		{
+			uv = FixUV(uv);
+		}
+		else
+		{
+			uv = FixOrthographicUV(uv);
+		}
+		#if CAST_SHADOW == 1
+		float2 shadowz = tex2D(_ShadowDepth,uv).xy;
+		float shadow_depth = dot(XY_Depth,shadowz);
+		#else
+		float shadow_depth = mainInvViewport.w;
+		#endif
+		ret += (shadow_depth>pos.z)*saturate(1-pos.z/VolumeParams.z)*saturate(pos.z>VolumeParams.x)*tex2D(_ShadowMask,uv);
+	}
+
+
+	return (ret/SAMPLER_NUM)*lightcolor*VolumeParams.y*length(eyepos-viewpos)*VolumeParams.w;
+}

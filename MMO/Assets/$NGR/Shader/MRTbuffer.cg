@@ -1,0 +1,220 @@
+// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+
+#include "UnityCG.cginc"
+#include "LightCommon.cg"
+#include "grass.cg"
+
+
+#ifndef ALPHA_TEST
+#define ALPHA_TEST 0
+#endif
+#ifndef HAS_BUMP
+#define HAS_BUMP 0
+#endif
+#ifndef ALPHA_TEST_BLACK
+#define ALPHA_TEST_BLACK 0
+#endif
+#ifndef OIT
+#define OIT 0
+#endif
+#ifndef NORMAL_UP
+#define NORMAL_UP 0
+#endif
+#ifndef FORCE_FIELD
+#define FORCE_FIELD 0
+#endif
+#ifndef ALPHA_DisAppear
+#define ALPHA_DisAppear 0
+#endif
+#ifndef HAIR_ON
+#define HAIR_ON 0
+#endif
+#ifndef TREE_LEAF
+#define TREE_LEAF 0
+#endif
+#ifndef COLOR_PAINTER
+#define COLOR_PAINTER 0
+#endif
+
+sampler2D	_MainTex;
+float4		_MainTex_ST;
+sampler2D	_SpecTex;
+float4		_Color;
+float		_SmoothBase;
+float		_Metal;
+float4		_AAOffset;
+#if ALPHA_DisAppear == 1
+float     _Disappear;
+sampler2D	_NoiseTex;
+float4	_DisappearColor;
+#endif
+#if HAS_BUMP == 1
+float		_Smoothness;
+float		_BumpScale;
+#endif
+#if OIT == 1
+sampler2D	_OIT2X2Tex;
+float4		_OITScreenParams;
+#endif
+#if HAIR_ON == 1
+sampler2D _HairDetail;
+#endif
+#if COLOR_PAINTER == 1
+sampler2D _PainterTex;
+float4	_PaintColor0;
+float4	_PaintColor1;
+#endif
+
+struct v2f{
+	float4 pos 			: SV_POSITION;
+	float4 uv 			: TEXCOORD0;
+	float4 view_pos_nor	: TEXCOORD1;
+
+	float4 tangent		: TEXCOORD2;
+
+	#if OIT==1
+	float4 proj_pos		: TEXCOORD3;
+	#endif
+	#if VERTEX_COLOR == 1
+	float4 vertexColor 	: TEXCOORD4;
+	#endif
+};
+
+v2f gbuffer_vert(appdata_full v)
+{
+	v2f o;
+	float3 view_dir = 0;
+	#if FORCE_FIELD == 1
+
+	float rand =unity_ObjectToWorld[0].w * 100 + unity_ObjectToWorld[2].w + v.color.a;
+	float3 p	=	 CalcPos(mul(unity_ObjectToWorld,v.vertex).xyz,v.color.a,rand);
+	view_dir	=	normalize(p-_WorldSpaceCameraPos.xyz);
+	o.pos = mul(UNITY_MATRIX_VP,float4(p,1));
+	#else
+		#if TREE_LEAF == 1
+			float4 localpos = float4(CalcLeafPos(v.vertex.xyz,v.normal.xyz),1);
+			o.pos = mul(UNITY_MATRIX_MVP,localpos);
+			view_dir = normalize(mul(UNITY_MATRIX_MV,localpos).xyz);
+		#else
+			o.pos = mul(UNITY_MATRIX_MVP,v.vertex);
+			view_dir = normalize(mul(UNITY_MATRIX_MV,v.vertex).xyz);
+		#endif
+	#endif
+	o.pos.xy += _AAOffset.xy*o.pos.w;
+	o.uv.xy = TRANSFORM_TEX(v.texcoord,_MainTex);
+	
+	float4 view = mul(UNITY_MATRIX_MV,v.vertex);
+	o.view_pos_nor.w	=	-view.z*_ProjectionParams.w;
+	#if NORMAL_UP == 1
+	o.view_pos_nor.xyz	= normalize(mul((float3x3)UNITY_MATRIX_MV,float3(0,1,0)));
+	#else
+	o.view_pos_nor.xyz	=	normalize(mul(UNITY_MATRIX_MV,float4(v.normal,0)).xyz);
+	#endif
+
+	o.uv.zw	=	dot(normalize(o.view_pos_nor.xyz),-view_dir);
+
+
+	o.tangent = float4((normalize(mul((float3x3)UNITY_MATRIX_MV,v.tangent.xyz))),v.tangent.w);
+
+	#if OIT==1
+	o.proj_pos	=o.pos;
+	#endif
+	#if VERTEX_COLOR == 1
+	o.vertexColor = v.color;
+	#endif
+	return o;
+}
+
+
+float4 sample_color(v2f i,float3 normal_spec)
+{
+	float4 ret;
+	float4 color = tex2D(_MainTex,i.uv.xy);
+	ret.xyz   =   pow(color.xyz,2.2f)*_Color.xyz*2.0f;
+	#if HAIR_ON == 1
+	ret.xyz*= tex2D(_HairDetail,i.uv.xy).x;
+	#endif
+	#if VERTEX_COLOR == 1
+	ret.xyz *=i.vertexColor.xyz;
+	#endif
+
+	#if COLOR_PAINTER == 1
+	float4 paint_weight = tex2D(_PainterTex,i.uv.xy);
+	float4 p_color = _PaintColor0*paint_weight.x+_PaintColor1*paint_weight.y;
+	ret.xyz *= lerp(p_color.xyz*4.0f,1,1-paint_weight.x-paint_weight.y);
+	#endif
+
+	#if HAS_BUMP == 1
+		float base_smooth   =   _SmoothBase+_Smoothness*2.0f*normal_spec.z;
+		ret.w   =   saturate(base_smooth+max(0,1-abs(i.uv.z))*0.2f);
+	#else
+		ret.w     =   saturate(_SmoothBase+max(0,1-abs(i.uv.z))*0.2f);
+	#endif
+	ret.w *=0.495f;
+	if(_Metal>0.5f)
+	{
+		ret.w +=0.5f;
+	}
+	#if ALPHA_TEST == 1
+		#if ALPHA_DisAppear == 1
+		float4 noi = tex2D(_NoiseTex, i.uv);
+		float v = _Disappear - noi.x;
+		clip(v);
+		if(abs(v)<0.05f)
+		{	
+			ret = ret*_DisappearColor;
+		}
+		#else
+		clip(color.w*_Color.w-0.5f);
+		#endif
+	#endif
+	#if ALPHA_TEST_BLACK == 1
+		clip(dot(color.xyz,1)-0.01f);
+	#endif
+	#if OIT == 1
+		float4 proj	=	i.proj_pos/i.proj_pos.w;
+		float2 projuv = proj.xy*0.5+0.5f;
+		float clip_val = tex2D(_OIT2X2Tex,projuv/2/_OITScreenParams.xy);
+
+		clip(color.w-clip_val);
+	#endif
+	return ret;
+}
+
+struct PS_OUTPUT
+{
+	float4 diffuse_roughness	: COLOR0;
+	float4 depth_normal			: COLOR1;
+	
+};
+
+PS_OUTPUT gbuffer_frag(v2f i) 
+{
+	float4 ret;
+
+	ret.xy   =   EncodeDepth(i.view_pos_nor.w);
+	float3 normal_spec = 0;
+	#if HAS_BUMP == 1
+		float3 binormal = normalize( i.tangent.w*cross((i.view_pos_nor.xyz),(i.tangent)));
+		float3x3 rotmatrix =float3x3(i.tangent.xyz,binormal,i.view_pos_nor.xyz);
+		normal_spec = tex2D(_SpecTex,i.uv.xy).xyz;
+		float3 normal = _BumpScale*(normal_spec*2-1);
+		normal.z = sqrt(max(0,1-dot(normal.xy,normal.xy)));
+		float3 ret_normal = mul(normal,rotmatrix);
+		ret.zw	=	EncodeNormal(normalize(ret_normal));
+	#else
+		#if HAIR_ON == 1
+		ret.zw =	EncodeNormal(normalize( i.tangent.w*cross((i.view_pos_nor.xyz),(i.tangent))));
+		#else
+		ret.zw =	EncodeNormal(normalize(i.view_pos_nor.xyz));
+		#endif
+	#endif
+
+
+	PS_OUTPUT output;
+	output.depth_normal = ret;
+	output.diffuse_roughness = sample_color(i,normal_spec);
+	
+	return output;
+}
+

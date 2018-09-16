@@ -1,0 +1,101 @@
+#include "LightCommon.cg"
+#include "UnityCG.cginc"
+#ifndef CAST_SHADOW
+#define CAST_SHADOW 0
+#endif
+
+#ifndef DYNAMIC_SHADOW
+#define DYNAMIC_SHADOW 0
+#endif
+
+sampler2D	_MainTex;
+float4		_MainTex_ST;
+float4		_LightPos = float4(0, 0, 0, 1);
+float4		_Color;
+float4		_Attenuation;
+float4		_FarCorner;
+float4		_InvViewport;
+sampler2D	_Diffuse;
+
+#if CAST_SHADOW == 1
+samplerCUBE	_DepthCube;
+float4x4 _InvView;
+#if DYNAMIC_SHADOW == 1
+samplerCUBE	_DynamicDepthCube;
+#endif
+#endif
+
+struct v2f {
+	float4 pos 			: SV_POSITION;
+	float4 lightpos 	: TEXCOORD0;
+	float4 proj_pos		: TEXCOORD1;
+};
+
+v2f vert(appdata_full v)
+{
+	v2f o;
+	o.pos = mul(UNITY_MATRIX_MVP, float4(v.vertex.xyz*_LightPos.w * 2, 1.0f));//*_LightPos.w);//*_LightPos.w+float4(_LightPos.xyz,0));
+
+	o.lightpos = _LightPos;
+	o.proj_pos = o.pos;
+	//o.proj_pos.y *= _FarCorner.w;
+#if UNITY_UV_STARTS_AT_TOP
+				o.proj_pos.y *= -1;
+#endif
+				return o;
+}
+
+
+float4 frag(v2f i) : COLOR
+{
+
+	float4 pos = i.proj_pos / i.proj_pos.w;
+
+
+
+	float2 uv = pos.xy*0.5 + 0.5;
+
+	float4 depth_normal = tex2D(_MainTex,uv);
+	float2 XY_Depth = float2(1.0f,0.003921568627451);
+	float depth = dot(XY_Depth,depth_normal.xy);
+	float3 normal = DecodeNormal(depth_normal.zw);
+
+	float3 view_pos = float3(pos.xy,1.0f)*_FarCorner*depth;
+
+	float3 ldir = (i.lightpos.xyz - view_pos);
+	float len = length(ldir);
+
+	float3 L = normalize(ldir);
+	float fdot = max(0, dot((normal), L));
+	float occ =1;
+#if CAST_SHADOW == 1
+	
+	
+
+	float3 World_Light = normalize(mul(_InvView, float4(-L,0)).xyz);
+
+	float4 shadowdepth = texCUBE(_DepthCube, World_Light);
+	float bias = ((1 - fdot)*0.02f + 0.001f);
+#if DYNAMIC_SHADOW == 1
+	float4 dynamic_depth = texCUBE(_DynamicDepthCube, World_Light);
+	float offset = dot(XY_Depth, shadowdepth.xy-dynamic_depth);
+	if(offset>0)
+	{
+		shadowdepth = dynamic_depth;
+	}
+#endif
+	
+	float z = (dot(XY_Depth, shadowdepth.xy) + bias)*_LightPos.w;
+
+	occ = len <z;
+#endif
+
+	float4 diff = tex2D(_Diffuse, uv);
+	float roughness = frac(diff.w*2.0f);
+	
+	float4 ret = _Color*fdot*pow(max(0, 1 - len / _LightPos.w), _Attenuation.x)*(1-roughness)*diff;// *tex2D(_AOTex, uv + 0.5f*_InvViewport.xy).w * 2;
+
+	ret.w = _Color.w;
+	//
+	return occ*ret;
+}

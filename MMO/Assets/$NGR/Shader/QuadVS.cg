@@ -1,0 +1,21 @@
+
+
+v2f quad_vert(appdata_full v,float3 inFarCorner)
+{
+	v2f o;
+	o.pos = float4(v.vertex.x*2,v.vertex.y*2,1,1);
+	o.uv = o.pos*0.5f+0.5f;
+	o.viewpos = float4(o.pos.xy,1.0f,1)*inFarCorner;
+
+	#if SHADER_API_GLES
+	//Mobile
+	#elif SHADER_API_GLES3
+	o.uv.y = 1 - o.uv.y;
+	#else
+	//Editor Only 
+	o.uv.y = 1 - o.uv.y;
+	o.viewpos.y*=-1;
+	#endif
+	
+	return o;
+}

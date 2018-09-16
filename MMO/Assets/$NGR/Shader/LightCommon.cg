@@ -1,0 +1,214 @@
+#include "BRDF.cg"
+
+float ClampRange(float input,float minVal,float maxVal)
+{
+	return saturate((input-minVal)/(maxVal-minVal));
+}
+
+// greatly reduces shadow mapping artifacts
+float BiasedNDotL(float NDotLWithoutSaturate )
+{
+	return saturate(NDotLWithoutSaturate * 1.08f - 0.08f);
+}
+
+
+// @param VectorToLight, L = normalized(VectorToLight)
+float3 PointLightDiffuse( float3 DiffuseColor,float inRoughness, float3 VectorToLight, float3 V, half3 N )
+{
+	
+
+	float3 L = ( VectorToLight );
+
+	float3 H = normalize(V + L);
+	float NoL = saturate( dot(N, L) );
+	float NoV = saturate( dot(N, V) );
+	float VoH = saturate( dot(V, H) );
+
+	float fn = inRoughness*inRoughness;
+	float f0   =   (1-fn)/(1+fn);
+
+
+	return saturate(1-f0*f0)*BiasedNDotL(max(0,NoL))*Diffuse( DiffuseColor, inRoughness, NoV, NoL, VoH );
+} 
+
+half3 SimplePointLightDiffuse( half3 DiffuseColor ,float inRoughness,float3 L,float3 N)
+{
+	float fn = inRoughness*inRoughness;
+	float f0   =   (1-fn)/(1+fn);
+	return Diffuse_Lambert(DiffuseColor)*max(0,dot(L,N))*saturate(1-f0*f0);
+}
+
+// @param VectorToLight, L = normalized(VectorToLight)
+float3 PointLightSpecular( float3 SpecularColor,float inRoughness, float3 VectorToLight, float3 V, half3 N )
+{
+	
+	float Roughness = inRoughness;
+	float Energy = 1;
+
+	Roughness = max( Roughness, 0.08 );
+	float a = Roughness * Roughness;
+	
+	//const float SourceRadius = LightData.SpotAnglesAndSourceRadius.z;
+	//const float SourceLength = LightData.SpotAnglesAndSourceRadius.w;
+	
+	float3 R = reflect( -V, N );
+	float RLengthL = rsqrt( dot( VectorToLight, VectorToLight ) );
+
+	
+
+	// normalized direction to light
+	float3 L = ( VectorToLight );
+
+	float3 H = normalize(V + L);
+	float NoL = saturate( dot(N, L) );
+	float NoV = saturate( dot(N, V) );
+	float NoH = saturate( dot(N, H) );
+	float VoH = saturate( dot(V, H) );
+	
+	// Generalized microfacet specular
+	float  D = Distribution( Roughness, NoH ) / PI;
+	float  G = GeometricVisibility( Roughness, NoV, NoL, VoH, L, V );
+	float3 F = Fresnel( SpecularColor, VoH );
+
+	return (Energy * D * G) * F*(NoL);
+}
+
+half3 SimplePointLightSpecular( half3 SpecularColor,half inRoughness, float3 UnitL, float3 V, half3 N )
+{
+	//FGBufferData InGBufferData = ScreenSpaceData.GBuffer;
+	float Roughness = inRoughness;
+
+	// TODO move outside tile loop
+	Roughness = max( 0.08, Roughness );
+
+	float3 H = normalize(V + UnitL);
+	float NoH = saturate( dot(N, H) );
+	
+	// Generalized microfacet specular
+	float  D = D_GGX( Roughness, NoH ) / PI;
+	float  G = G_Implicit();
+	float3 F = F_None( SpecularColor );
+
+	return (D * G) * F *dot(N,UnitL);
+}
+float D_GGX_Fast( float Roughness_2, float NoH )
+{
+	float m2 = Roughness_2 * Roughness_2;
+	float d = ( NoH * m2 - NoH ) * NoH + 1;	// 2 mad
+	return m2 / ( d*d );					// 2 mul, 1 rcp
+}
+float2 PBR_Fast(half inRoughness, half3 L, half3 V, half3 N)
+{//公式和PBR完全一样 写法不一样
+	float2 ret;
+	float Roughness = max( 0.08, inRoughness );
+
+	float fn = Roughness*Roughness;
+	float f0   =   (1-fn)/(1+fn);
+	float fdot = max(0,dot(L,N));
+	ret.x= fdot*saturate(1-f0*f0)/PI;
+
+
+	float3 H = normalize(V + L);
+	float NoH = saturate( dot(N, H) );
+	float  D = D_GGX_Fast( fn, NoH ) / PI;
+	float  G = G_Implicit();
+	ret.y= (D * G)*fdot;
+
+	return ret;
+
+}
+void PBR(half inRoughness, half3 UnitL, half3 V, half3 N ,inout half3 diff,inout half3 spec)
+{
+	//diff	=	SimplePointLightDiffuse(diff,inRoughness,UnitL,N);
+	//spec	=	SimplePointLightSpecular(spec,inRoughness,UnitL,V,N);
+	
+	float2 pbr = PBR_Fast(inRoughness,UnitL,V,N);
+	diff*=pbr.x;
+	spec*=pbr.y;
+}
+
+
+half2 EncodeNormal (half3 n)
+{
+	if(n.z<-0.999f)
+    {
+       return half2(0.5f,0.5f);
+    }
+    else
+    {
+       half2 enc = normalize(n.xy) * (sqrt(-n.z*0.5+0.5));
+       return enc*0.5+0.5;
+    }
+}
+half3 DecodeNormal (half2 enc)
+{
+
+	half4 nn = enc.xyxy*half4(2,2,0,0) + half4(-1,-1,1,-1);
+
+	half l = dot(nn.xyz,-nn.xyw);
+
+	nn.z = -l;
+
+	nn.xy *= sqrt(l);
+
+	return nn.xyz * 2 + half3(0,0,1);
+
+}
+
+float3 Sphere2Normal(float2 texCoord)
+{
+   float2 uv   =   (float2(2,1))*(texCoord+float2(0.5,0))*3.14159265;
+   return   float3(cos(uv.x)*sin(uv.y),cos(uv.y),sin(uv.x)*sin(uv.y));
+}
+float2 Normal2Sphere(float3 n)
+{
+   return frac(float2(atan(n.z/n.x)*0.5,acos(n.y)) /3.14159265f +float2(n.x>0 ,0)*0.5);
+}
+float2 EncodeDepth(float depth)
+{
+	//float2 ret;
+	//ret.x   =   floor(depth*255.0f)/255.0f;
+	//ret.y   =   (depth-ret.x)*255.0f;
+	//return ret;
+
+	float2 kEncodeMul = float2(1.0, 255.0);
+	float kEncodeBit = 1.0/255.0;
+	float2 enc = kEncodeMul * depth;
+	enc = frac (enc);
+	enc.x -= enc.y * kEncodeBit;
+	return enc;
+}
+float DecodeDepth(float2 depthxy)
+{
+	float2 kDecodeDot = float2(1.0, 1/255.0);
+	return dot( depthxy, kDecodeDot );
+	//return dot(depthxy.xy,float2(1.0f,0.003921568627451));
+}
+
+
+
+float3	PBRDF(float3 N,float3	L,float3 E,float fShiness)
+{
+   float fn         =   pow(fShiness,4)*512+1;
+
+
+   float3 H         = normalize( E+L);
+   float   NL       =   dot(N,L) ;
+   float   NH       =   dot(N,H) ;
+   float   EH       =   dot(E,H);
+   float   NE       =   dot(N,E);
+   
+   float f0   =   (1-fn)/(1+fn);
+   f0*=f0;
+   
+   float	Fambient	=	f0+(1-f0)*pow(1-(NE),5);
+   float   Fdiff   =   f0+(1-f0)*pow(1-NL,5);
+   float   Fspec   =   f0+(1-f0)*pow(1-EH,5);
+   
+   float   diff   =   NL*saturate(1-f0);
+   float   n      =   fn;
+   float   spec   =   (0.0397436*fn+0.0856832)*Fspec*pow(saturate(NH),fn)/max(NL,NE);
+    
+
+   return float3(max(diff,0),max(spec,0),Fambient);////saturate(1-Fambient));
+};

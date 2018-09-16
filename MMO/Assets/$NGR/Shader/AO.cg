@@ -1,0 +1,342 @@
+
+#ifndef AO_QUILITY
+#define AO_QUILITY 0
+#endif
+
+#if AO_QUILITY == 5
+#define AMBIENT_SPECULAR 1
+#define SAMPLER_NUM 16
+#define ROTATE 0
+#endif
+
+#if AO_QUILITY == 4
+#define AMBIENT_SPECULAR 0
+#define SAMPLER_NUM 8
+#define ROTATE 0
+#endif
+
+#if AO_QUILITY == 3
+#define AMBIENT_SPECULAR 1
+#define SAMPLER_NUM 8
+#define ROTATE 1
+#endif
+
+#if AO_QUILITY == 2
+#define AMBIENT_SPECULAR 1
+#define SAMPLER_NUM 8
+#define ROTATE 1
+#endif
+
+#if AO_QUILITY == 1
+#define SAMPLER_NUM 8
+#define ROTATE 1
+#endif
+
+#if AO_QUILITY == 0
+#define SAMPLER_NUM 8
+#define ROTATE 0
+#endif
+
+#ifndef AMBIENT_SPECULAR
+#define AMBIENT_SPECULAR 0
+#endif
+
+#ifdef ROTATE
+#if ROTATE == 0
+#define POSION 1
+#endif
+#endif
+
+#ifndef POSION
+#define POSION 0
+#endif
+
+#ifndef ROTATE
+#define ROTATE 0
+#endif
+
+#ifndef AO_Debug
+#define AO_Debug 0
+#endif
+
+
+#include "UnityCG.cginc"
+#include "LightCommon.cg"
+
+
+sampler2D	_Depth;
+float4		_Depth_ST;
+sampler2D	_Sample2x2;
+sampler2D	_Diffuse;
+sampler2D   _Random;
+samplerCUBE   _SkyTexture;
+float4		_SkyColor;
+//sampler2D   _LUT;
+float4		_AmbientColor;
+float4		_WorldUp;
+float4		_FarCorner;
+float4x4 ViewToWorld;
+struct v2f {
+	float4 pos : SV_POSITION;
+	float2 uv : TEXCOORD0;
+	float4 viewpos  : TEXCOORD1;
+};
+
+v2f vert (appdata_full v)
+{
+	v2f o;
+	
+	#if AO_QUILITY == 5
+	float depth = 0.5f;
+	#else
+	float depth = 1.0f;
+	#endif
+	#if SHADER_API_GLES || SHADER_API_GLES3
+	//Mobile
+	o.pos = float4(v.vertex.x*2,v.vertex.y*2,depth,1);
+	o.uv = o.pos*0.5f+0.5f;
+	o.viewpos = float4(o.pos.xy,1.0f,1)*_FarCorner;
+	#else
+	//Editor Only 
+	o.pos = float4(v.vertex.x*2,v.vertex.y*2,depth,1);
+	o.uv = o.pos*0.5f+0.5f;
+	o.uv.y = 1 - o.uv.y;
+	o.viewpos = float4(o.pos.xy,1.0f,1)*_FarCorner;
+	o.viewpos.y*=-1;
+	#endif
+	
+	return o;
+}
+
+
+float4 invViewport_Radius;
+#ifndef SAMPLER_NUM
+#define SAMPLER_NUM 8
+#endif
+#if SAMPLER_NUM == 32
+static float radius = 10.0f;
+static float2 offset[32]={
+float2(0.2599703f, -0.8976048f)*radius,
+float2(0.4422587f, -0.4750184f)*radius,
+float2(-0.1986221f, -0.6939777f)*radius,
+float2(-0.0124238f, -0.4680904f)*radius,
+float2(-0.4416051f, -0.3365665f)*radius,
+float2(0.3594103f, -0.1362432f)*radius,
+float2(-0.1736233f, -0.1094101f)*radius,
+float2(0.8127208f, -0.2710058f)*radius,
+float2(0.7109355f, -0.5696113f)*radius,
+float2(-0.04597443f, -0.9623359f)*radius,
+float2(-0.741334f, 0.04512462f)*radius,
+float2(-0.9083741f, -0.3378215f)*radius,
+float2(-0.7696987f, -0.597804f)*radius,
+float2(-0.3956201f, 0.1144934f)*radius,
+float2(0.3825082f, 0.2819604f)*radius,
+float2(0.6036237f, 0.03521964f)*radius,
+float2(0.7026271f, 0.4224456f)*radius,
+float2(0.8637612f, 0.1912058f)*radius,
+float2(0.08374725f, 0.1254498f)*radius,
+float2(0.5370411f, -0.8054448f)*radius,
+float2(-0.8713361f, 0.3171529f)*radius,
+float2(-0.551398f, 0.3643217f)*radius,
+float2(-0.473556f, -0.7749792f)*radius,
+float2(-0.499662f, 0.7189553f)*radius,
+float2(-0.7588091f, 0.5759102f)*radius,
+float2(-0.254542f, 0.3688764f)*radius,
+float2(-0.1405081f, 0.6183669f)*radius,
+float2(0.2668809f, 0.8706948f)*radius,
+float2(-0.0003728607f, 0.99127f)*radius,
+float2(0.06034204f, 0.4170518f)*radius,
+float2(0.4010086f, 0.5608956f)*radius,
+float2(0.6499857f, 0.7549948f)*radius,
+	};
+#elif SAMPLER_NUM == 16
+static float radius = 20.0f;
+const static float2 offset[16]={
+float2(-0.3274248f, -0.8165722f),
+float2( 0.2417469f, -0.3051864f),
+float2( 0.2739029f, -0.8037025f),
+float2(-0.2944864f, -0.1231967f),
+float2(-0.7281096f, -0.1973342f),
+float2(-0.7600139f,  0.5833009f),
+float2(-0.0826142f,  0.2298674f),
+float2(-0.9805833f,  0.1633332f),
+float2(-0.7545381f, -0.6213331f),
+float2( 0.6095112f,  0.5189977f),
+float2(-0.3558101f,  0.8667912f),
+float2( 0.2464557f,  0.8337156f),
+float2( 0.4317672f,  0.1220754f),
+float2( 0.5942856f, -0.5409905f),
+float2( 0.9252075f, -0.2078843f),
+float2(-0.5248916f,  0.2508877f)
+	};
+#elif SAMPLER_NUM == 8
+
+static float radius = 10.0f;
+static float2 offset[8]={ 
+#if POSION == 1
+//float2(-0.1138351f, -0.2659752f)*radius,
+//float2(0.4403384f, -0.5212708f)*radius,
+//float2(-0.6705374f, -0.258383f)*radius,
+//float2(0.2175581f, 0.7004075f)*radius,
+//float2(-0.2944002f, 0.3079723f)*radius,
+//float2(0.7975355f, 0.3165087f)*radius,
+//float2(-0.1226294f, -0.9167973f)*radius,
+//float2(-0.8755433f, 0.4738268f)*radius
+
+float2(0.5276858f, -0.8309537f)*radius,
+float2(0.7190355f, 0.1213354f)*radius,
+float2(0.02684063f, -0.2622508f)*radius,
+float2(0.3505048f, 0.9361609f)*radius,
+float2(-0.6499152f, 0.5111607f)*radius,
+float2(-0.4145076f, -0.756127f)*radius,
+float2(-0.7485286f, -0.08379126f)*radius,
+float2(-0.07827432f, 0.5377133f)*radius,
+#else
+float2(0.0,1.0)*radius*0.2f,
+float2(1.4,1.4)*radius*0.2f,
+float2(2.0,0.0)*radius*0.2f,
+float2(3.0,-3.0)*radius*0.2f,
+float2(0.0,-4)*radius*0.2f,
+float2(-5.0,-5.0)*radius*0.2f,
+float2(-6,0.0)*radius*0.2f,
+float2(-7.0,7.0)*radius*0.2f
+#endif
+	};
+#endif
+const static fixed weight = 0.5f / SAMPLER_NUM;
+
+
+float4 frag( v2f IN) : COLOR
+{
+   //float2 halfPixel   =   0.5f*invViewport_Radius.xy;
+   float2   uv=   IN.uv;
+
+   float2 XY_Depth = float2(1.0f,0.003921568627451);
+
+   float2 sampleuv = uv;
+
+   float4 depth_normal = tex2D(_Depth,sampleuv);
+   
+   float view_depth = dot(depth_normal.xy,XY_Depth);
+   float3 normal = DecodeNormal(depth_normal.zw);
+
+   
+   float3 view_pos = IN.viewpos*view_depth;
+   float3 viewdir = normalize(view_pos);
+   //view_pos += normal*0.1f;
+   float2x2 rotate = float2x2(tex2D(_Sample2x2, sampleuv*0.25f / invViewport_Radius.xy));
+   
+
+   float4   tempUV;
+    
+   half occ=0;
+   #if AO_QUILITY == 5
+   tempUV = invViewport_Radius.xyxy*20.0f;// *invViewport_Radius.z;// *(0.5 + rand.x);
+   #else
+   tempUV = invViewport_Radius.xyxy*invViewport_Radius.z;
+   #endif
+   tempUV.zw *= 2.0f;
+
+   float4 UV[4];
+   float4 baseuv = float4(IN.uv,IN.uv*2-1);
+
+   for(int i=0;i<SAMPLER_NUM;i+=4){
+
+
+   #if ROTATE == 1   //主要靠这个rotate来旋转顶点 显示模糊效果
+	UV[0] = mul(rotate,offset[i]).xyxy*tempUV + baseuv;
+	UV[1] = mul(rotate,offset[i+1]).xyxy*tempUV + baseuv;
+	UV[2] = mul(rotate,offset[i+2]).xyxy*tempUV + baseuv;//uv坐标螺旋偏移
+	UV[3] = mul(rotate,offset[i+3]).xyxy*tempUV + baseuv;
+
+   #else
+		UV[0] = offset[i].xyxy*tempUV + baseuv;
+		UV[1] = offset[i+1].xyxy*tempUV + baseuv;
+		UV[2] = offset[i+2].xyxy*tempUV + baseuv;
+		UV[3] = offset[i+3].xyxy*tempUV + baseuv;
+	#endif
+
+		float4 sample_depth;
+		sample_depth.x = dot(tex2D(_Depth, UV[0].xy).xy, XY_Depth);
+		sample_depth.y = dot(tex2D(_Depth, UV[1].xy).xy, XY_Depth);
+		sample_depth.z = dot(tex2D(_Depth, UV[2].xy).xy, XY_Depth);
+		sample_depth.w = dot(tex2D(_Depth, UV[3].xy).xy, XY_Depth);
+
+		UV[0].xyz = float3(UV[0].zw, 1)*_FarCorner*sample_depth.x- view_pos;//采样偏移后的uv坐标对应的viewpos点 作为采样点
+		UV[1].xyz = float3(UV[1].zw, 1)*_FarCorner*sample_depth.y- view_pos;
+		UV[2].xyz = float3(UV[2].zw, 1)*_FarCorner*sample_depth.z- view_pos;//这样写是为了简化指令数
+		UV[3].xyz = float3(UV[3].zw, 1)*_FarCorner*sample_depth.w- view_pos;
+
+		sample_depth.x =dot(normalize(UV[0].xyz), viewdir);
+		sample_depth.y =dot(normalize(UV[1].xyz), viewdir);
+		sample_depth.z =dot(normalize(UV[2].xyz), viewdir);
+		sample_depth.w =dot(normalize(UV[3].xyz), viewdir);
+
+		occ += dot(sample_depth, weight);
+
+   }
+
+   float3 ret = ((occ)+0.5);
+	#if AO_Debug == 1
+		//if(view_pos.z>30)
+		//{
+		//	return view_depth;
+		//}//当前的blend one one 思路下不适合 clip
+		return  half4(ret.xyz, 0); 
+	#else
+		//if(view_pos.z>30)
+		//{
+		//	ret=0.50f;
+		//}
+	#endif
+	
+   #if AO_QUILITY == 5
+	
+   #else
+	float4 diff = tex2D(_Diffuse, sampleuv);
+    ret *= diff.xyz*_AmbientColor;
+	#endif
+	float3 WorldN = mul((float3x3)ViewToWorld, normal);
+	float3 envDiff = texCUBE(_SkyTexture,WorldN); 
+
+	ret *= envDiff*envDiff;
+
+	
+	return  half4(ret.xyz, 0); 
+
+}
+
+float4 frag_noao(v2f IN) : COLOR
+{
+	float2 halfPixel = 0.5f*invViewport_Radius.xy;
+	float2   uv = IN.uv;//+halfPixel;
+
+
+	float2 sampleuv = uv;
+
+	float4 depth_normal = tex2D(_Depth,sampleuv);
+	float3 normal = DecodeNormal(depth_normal.zw);
+	
+
+
+	float3 col = tex2D(_Diffuse, sampleuv).xyz;
+
+	float3 WorldN = normalize(mul((float3x3)ViewToWorld, normal));
+	float3 envDiff = texCUBE(_SkyTexture, WorldN);
+
+	col *= envDiff*envDiff;
+
+
+
+	return  half4(_AmbientColor.xyz*col.xyz,0);
+}
+sampler2D _AO;
+float4 frag_ao(v2f IN) : COLOR
+{
+	float2 sampleuv = IN.uv;
+
+	float3 diff = tex2D(_Diffuse, sampleuv).xyz;
+	float3 ao = tex2D(_AO, sampleuv).xyz;
+
+	return  half4(ao*diff*_AmbientColor,0);
+}

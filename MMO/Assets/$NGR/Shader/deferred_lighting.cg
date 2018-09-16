@@ -1,0 +1,83 @@
+// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+
+#include "UnityCG.cginc"
+#include "LightCommon.cg"
+#include "grass.cg"
+
+
+
+#ifndef FORCE_FIELD
+#define FORCE_FIELD 0
+#endif
+
+
+sampler2D	_MainTex;
+float4		_MainTex_ST;
+sampler2D	_SpecTex;
+float4		_Color;
+float4		_SpecColor;
+float		_SpecColorScale;
+float		_SmoothBase;
+float		_Metal;
+
+sampler2D	_DepthNormal;
+sampler2D	_Shadow;
+sampler2D	_AO;
+float4		_MainLightDir;
+float4		_MainLightColor;
+
+float4		_AAOffset;
+
+struct v2f{
+	float4 pos 			: SV_POSITION;
+	float4 uv 			: TEXCOORD0;
+	float4 view_pos		: TEXCOORD1;
+	float4 proj_pos		: TEXCOORD2;
+
+};
+
+v2f gbuffer_vert(appdata_full v)
+{
+	v2f o;
+	#if FORCE_FIELD == 1
+
+	float rand =unity_ObjectToWorld[0].w * 100 + unity_ObjectToWorld[2].w + v.color.a;
+	float3 p	=	 CalcPos(mul(unity_ObjectToWorld,v.vertex).xyz,v.color.a,rand);
+	o.view_pos = mul(UNITY_MATRIX_V,float4(p,1));
+	o.pos = mul(UNITY_MATRIX_VP,float4(p,1));
+	#else
+	o.view_pos = mul(UNITY_MATRIX_MV,v.vertex);
+	o.pos = mul(UNITY_MATRIX_MVP,v.vertex);
+	#endif
+	o.pos.xy += _AAOffset.xy*o.pos.w;
+	o.uv.xy = TRANSFORM_TEX(v.texcoord,_MainTex);
+	o.uv.zw	=	0;
+	
+	o.proj_pos	=o.pos;
+
+	return o;
+}
+
+float4 gbuffer_frag(v2f i) : COLOR
+{
+	float4 ret;
+	float4 proj_pos = i.proj_pos/i.proj_pos.w;
+	float2 uv = proj_pos.xy*0.5f+0.5f;
+
+	float4 depth_normal = tex2D(_DepthNormal,uv);
+	float3 N = DecodeNormal(depth_normal.zw);
+	float4 shadow	=	tex2D(_Shadow,uv);
+	float4 ao = tex2D(_AO,uv);
+	float4 color = tex2D(_MainTex,i.uv.xy);
+
+	float3 E = -normalize(i.view_pos.xyz);
+	float3 L = _MainLightDir.xyz;
+	
+	//float3 spec = PointLightSpecular(1,_SmoothBase,L,E,N);
+	float3 diff = _Color.xyz*_MainLightColor;
+	float3 spec = _SpecColor.xyz*_MainLightColor;
+	PBR(_SmoothBase,L,E,N,diff,spec);
+	
+	return float4(((diff + spec)*shadow.x+ao)*color.xyz,0);
+}
+

@@ -1,0 +1,85 @@
+float4x4 ForceField0;
+float4x4 ForceField1;
+float4x4 ForceField2;
+float _GrassStrength = 1.0f;
+float _GrassFreq = 1.0f;
+
+
+//windspeed
+float3 _WindDir;
+float _WindStrength=0;
+float3 _GrassPos;
+float4 CalcForce(float3 pos,float4 force)
+{
+	float2 force_pos = pos.xz-force.xy;
+	return float4(normalize(float3(force_pos.x,0,force_pos.y)),1)*(1-saturate(length(force_pos)/force.z))*force.w;
+}
+float3 CalcWind(float3 pos,float y )
+{
+	float3 dir=_WindDir;
+	float strlen=length(dir)*0.01f;
+	float Freq=_WindStrength*0.05f;//frequency
+	float3 plane=((pos)*normalize(dir));//向量点乘为cos方向投影,位置问题也可以再优化下  不然位置会影响参数
+	float sigX=sign(plane.x);
+	float sigZ=sign(plane.z);
+	float t=_Time.y*Freq*plane.x;
+	float tz=_Time.y*Freq*plane.z;
+	float x=min(0,min(0,sin(t)))+min(0,min(0,sin(t+3.14159)))+1;
+	float z=min(0,min(0,sin(tz)))+min(0,min(0,sin(tz+3.14159)))+1;
+	float3 offset=pos*strlen*y*float3(x*sigX,0,z*sigZ);//pos.z==0?
+
+	return offset;
+
+}
+
+float3 CalcPos(float3 pos,float y,float rand )
+{
+
+	float4 force = 0;
+	force	+=	CalcForce(pos,ForceField0[0]);
+	force	+=	CalcForce(pos,ForceField0[1]);
+	force	+=	CalcForce(pos,ForceField0[2]);
+	force	+=	CalcForce(pos,ForceField0[3]);
+
+	force	+=	CalcForce(pos,ForceField1[0]);
+	force	+=	CalcForce(pos,ForceField1[1]);
+	force	+=	CalcForce(pos,ForceField1[2]);
+	force	+=	CalcForce(pos,ForceField1[3]);
+
+	force	+=	CalcForce(pos,ForceField2[0]);
+	force	+=	CalcForce(pos,ForceField2[1]);
+	force	+=	CalcForce(pos,ForceField2[2]);
+	force	+=	CalcForce(pos,ForceField2[3]);
+	
+	float3 dir = (force.xyz);
+	//float3 first = dir*0.5f;
+	//float3 second = cross(dir,float3(0,1,0))*0.2f;
+
+	float fsin = 0;
+	float fcos = 0;
+	sincos((_Time.y+2*rand)*3.14f,fsin,fcos);
+	float fsin2 = 0;
+	float fcos2 = 0;
+	sincos((_Time.y*2+4*rand)*3.14f,fsin2,fcos2);
+
+	float3 axis = normalize(dir + pos);
+	float3 right = cross(float3(0,1,0),axis);
+	float3 newup = cross(right,axis);
+	float3 wind = dir+(newup*fsin2+fcos2*right*0.2f)*force.w*0.2f ;
+	#if Wind_On 
+		return pos +CalcWind(pos,y)+ y*(wind+float3(fsin,0,fcos)*(0.1f))*_GrassStrength; 
+	#else
+		return pos + y*(wind+float3(fsin,0,fcos)*(0.1f))*_GrassStrength;
+	#endif
+
+} 
+
+
+float3 CalcLeafPos(float3 pos,float3 n)
+{
+	float fsin = 0;
+	float fcos = 0;
+	sincos((_Time.y+pos.y)*3.14f*_GrassFreq,fsin,fcos);
+	return pos + n*fsin*0.025f*_GrassStrength;// + fcos*float3(0,1,0)*0.01f;
+}
+

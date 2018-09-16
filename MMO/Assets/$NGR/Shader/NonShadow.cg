@@ -1,0 +1,201 @@
+#include "UnityCG.cginc"
+#include "LightCommon.cg"
+#include "CalcShadow.cg"
+
+#ifdef SHADOW_QUILITY
+#define QUAD_DEPTH 0.5f
+#endif
+
+#ifndef QUAD_DEPTH 
+#define QUAD_DEPTH 1.0f
+#endif
+
+
+sampler2D _Depth;
+//float4 _Depth_ST;
+sampler2D _Sample2x2;
+sampler2D _ShadowDepth;
+sampler2D _Random256;
+
+float4 farCorner;
+
+struct v2f {
+	float4 pos : SV_POSITION;
+	float2 uv : TEXCOORD0;
+	float4 viewpos  : TEXCOORD1;
+};
+
+v2f vert(appdata_full v)
+{
+	v2f o;
+
+#if SHADER_API_GLES || SHADER_API_GLES3
+				//Mobile
+				o.pos = float4(v.vertex.x * 2, v.vertex.y * 2, QUAD_DEPTH, 1);
+				o.uv = o.pos*0.5f + 0.5f;
+				o.viewpos = float4(o.pos.xy, 1.0f, 1)*farCorner;
+#else
+				//Editor Only 
+				o.pos = float4(v.vertex.x * 2, v.vertex.y * 2, QUAD_DEPTH, 1);
+				o.uv = o.pos*0.5f + 0.5f;
+				o.uv.y = 1 - o.uv.y;
+				o.viewpos = float4(o.pos.xy, 1.0f, 1)*farCorner;
+				o.viewpos.y *= -1;
+#endif
+
+
+	return o;
+}
+
+
+float4 invViewport_Radius;
+float4 mainInvViewport;
+float4x4  mainView_shadowView;
+float4x4  shadowProj;
+//float4 lightpos;
+float4 lightdir;
+float4 lightcolor;
+sampler2D _Diffuse;
+float4 ambientcolor;
+samplerCUBE _EnvCube;
+
+
+float4 frag(v2f IN) : COLOR
+{
+	float2 proj_uv = IN.uv;
+	float4 viewdir = IN.viewpos;
+
+	float2 XY_Depth = float2(1.0f,0.003921568627451);
+
+	float4 depth = tex2D(_Depth,proj_uv);
+
+	float view_depth = dot(depth.xy,XY_Depth);
+	float3 normal = DecodeNormal(depth.zw);
+
+
+	float4 viewspace_pos = viewdir*view_depth;
+
+	float4 col = tex2D(_Diffuse, proj_uv);
+	//return col;
+	float3 e = -normalize(viewspace_pos);
+	//return float4(e,1);
+	float3 diff = 1;
+	float metal = col.w >= 0.497f;
+	float roughness = saturate(1 - (col.w*2.0f) + metal);
+	float3 spec =(1 + metal * 3);
+	PBR(roughness, -lightdir.xyz, e, normal, diff, spec);//view space cal
+	//outspec=lightcolor*(col+metal)*outspec;
+	float3 ambient_spec = 0;
+   
+   float3 R = reflect(-e,normal)*float3(1,1,-1); 
+   R = mul(R,(float3x3)UNITY_MATRIX_V);
+   float sqrt_roughness = (1-roughness);    
+   float3 env = texCUBElod(_EnvCube,float4(R,(roughness)*5.0f)).xyz*sqrt_roughness*sqrt_roughness;
+   ambient_spec = env*env*(metal+1);
+	//return float4(diff,1); 
+	      // return float4(spec,1);
+   return float4(lightcolor.xyz*col.xyz*(diff + spec)+0, 1);
+}
+
+float4 frag_clear(v2f IN) : COLOR
+{
+	return 1;
+}
+float4 frag_shadow( v2f IN) : COLOR
+{
+	float2 proj_uv = IN.uv;
+	
+	float4 viewdir	=	float4(proj_uv*2-1,1,1)*farCorner;
+	
+
+	float2 XY_Depth = float2(1.0f,0.003921568627451);
+	
+	float4 depth = tex2D(_Depth,proj_uv);
+	float4 col = tex2D(_Diffuse, proj_uv);
+	float view_depth = dot(depth.xy,XY_Depth);
+	float3 normal = (DecodeNormal(depth.zw));
+	
+	
+	float4 viewspace_pos = viewdir*view_depth;
+	
+	float4 shadowpos = mul(mainView_shadowView,float4(viewspace_pos.xyz+ normal*lightdir.w,1));
+
+	float4 proj_pos = mul(shadowProj,shadowpos);
+	proj_pos/=proj_pos.w;
+	
+	float2 shadowuv = proj_pos.xy*0.5f+0.5f;
+
+#if SHADER_API_MOBILE
+	#if UNITY_UV_STARTS_AT_TOP
+
+	#else
+			   shadowuv.y = 1 - shadowuv.y;
+	#endif
+#else
+ #if UNITY_UV_STARTS_AT_TOP
+			   shadowuv.y = 1-shadowuv.y;
+ #endif
+#endif
+
+	XY_Depth *= invViewport_Radius.w;
+	#if SHADOW_QUILITY == 0
+		float4   rot   =  tex2D(_Sample2x2,proj_uv*0.25f/mainInvViewport.xy)*2-1;
+		float2x2 rot_2x2 = float2x2( rot.xyzw);
+		float occ = CalcShadowRotate(shadowuv, shadowpos.z, XY_Depth, invViewport_Radius.xyz, _ShadowDepth, rot_2x2);
+		occ=occ*occ;
+	#elif SHADOW_QUILITY == 1
+		float occ = CalcShadow3X3(shadowuv, shadowpos.z, XY_Depth, invViewport_Radius.xyz, _ShadowDepth);
+	#elif SHADOW_QUILITY == 2
+		float occ = CalcShadow2x2(shadowuv, shadowpos.z, XY_Depth, invViewport_Radius.xyz, _ShadowDepth);
+	#elif SHADOW_QUILITY == 3 
+	    float occ = CalcShadow2(shadowuv, shadowpos.z, XY_Depth, invViewport_Radius.xyz, _ShadowDepth);
+	#else
+		float occ = 1;
+	#endif
+	float2 abs_xy = abs(proj_pos.xy);
+	if(abs_xy.x>1.0f || abs_xy.y > 1.0f)
+	{
+		occ = 1.0f;
+	}
+
+	return occ;
+
+}
+sampler2D _ShadowMask;
+
+float4 frag_combine_shadow( v2f IN) : COLOR
+{
+	float2 proj_uv = IN.uv;
+	
+	float4 viewdir	=	float4(proj_uv*2-1,1,1)*farCorner;
+	
+
+	float2 XY_Depth = float2(1.0f,0.003921568627451);
+	
+	float4 depth = tex2D(_Depth,proj_uv);
+	float4 col = tex2D(_Diffuse, proj_uv);
+	float occ = tex2D(_ShadowMask, proj_uv).a;
+	float view_depth = dot(depth.xy,XY_Depth);
+	float3 normal = (DecodeNormal(depth.zw));
+	
+	float4 viewspace_pos = viewdir*view_depth;
+   float3 e = normalize(viewspace_pos);
+   
+   float3 diff = 1;
+   float metal = col.w>=0.497f;
+   float roughness = saturate(1-(col.w*2.0f)+metal);
+   float3 origin_spec= (1 + metal * 3);
+   float3 spec = origin_spec;
+  
+   PBR(roughness,-lightdir.xyz,-e,normal,diff, spec);
+   float3 ambient_spec = 0;
+   
+   float3 R = reflect(e,normal)*float3(1,1,-1); 
+   R = mul(R,(float3x3)UNITY_MATRIX_V);
+   float sqrt_roughness = (1-roughness);    
+   float3 env = texCUBElod(_EnvCube,float4(R,(roughness)*5.0f)).xyz*sqrt_roughness*sqrt_roughness;
+   ambient_spec = env*env*(metal+1);
+   
+  return float4(occ*lightcolor.xyz*col.xyz*(diff + spec)+ambient_spec, 1); 
+  
+}

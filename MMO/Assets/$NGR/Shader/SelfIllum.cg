@@ -1,0 +1,25 @@
+#include "MRTbuffer.cg"
+
+
+#ifndef FLOW_LIGHT
+#define FLOW_LIGHT 0
+#endif
+
+float4 _Time01;
+float4 _UVMove;
+float4 selfillum_frag(v2f i) : COLOR0
+{
+
+	float4 Diff = 0;
+
+
+
+	float2 uv_offset2 = _UVMove.xy*_Time01.xx;
+	float4 paint_weight = tex2D(_PainterTex,i.uv.xy);
+	float4 paint_weight2 = tex2D(_PainterTex,i.uv.xy+uv_offset2);
+	float4 p_color = _PaintColor0*paint_weight.x;
+	Diff.xyz = p_color;//*paint_weight2.y;
+
+
+	return Diff*(sin(_Time.y*_UVMove.w)*0.5+0.5)*_UVMove.z;
+}

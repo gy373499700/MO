@@ -1,0 +1,8 @@
+fileFormatVersion: 2
+guid: 479e718ec65223d40bf9fdd5f2d1135a
+ShaderImporter:
+  defaultTextures:
+  - _Cube: {fileID: 8900000, guid: af9f6c77bc4291145b99578e90e9ea6b, type: 3}
+  userData: 
+  assetBundleName: $ngr.unity3d
+  assetBundleVariant: 

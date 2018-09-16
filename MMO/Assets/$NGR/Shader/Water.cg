@@ -1,0 +1,440 @@
+// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+
+// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+
+#ifndef USE_MESH_NORMAL
+#define USE_MESH_NORMAL 0
+#endif
+
+#ifndef WATER_REFLECT
+#define WATER_REFLECT 0
+#endif
+
+#ifndef WATER_WAVE
+#define WATER_WAVE 0
+#endif
+
+#ifndef GERSTNER_WAVE
+#define GERSTNER_WAVE 1
+#endif
+
+#ifndef USE_FOG
+#define USE_FOG 1
+#endif
+
+#include "UnityCG.cginc"
+#include "LightCommon.cg"
+			
+			sampler2D	_Depth;
+			sampler2D	_LastFrame;
+			sampler2D   _NormalTex;
+			samplerCUBE _Sky;
+			sampler2D   _ReflectionTex;
+			float4		_Color;
+			float4		_DeepColor;
+			float4		_FarCorner;
+			float4		_FogParam;
+			float3		FogColor;
+			float4		_AmbientColor;
+			float4x4	_WorldMatrix;
+			float4		_WorldUp;
+			float4		_WaterWaveScale;
+			float4      _WaveDir;
+			float4		_MainLightDir;
+			float4		_MainLightColor;
+			float4 _TimeCalc;
+			//gerstner
+			half		_GerstnerIntensity;
+	uniform float4		_GAmplitude;
+	uniform float4		_GFrequency;
+	uniform float4		_GSteepness;
+	uniform float4		_GSpeed;
+	uniform float4		_GDirectionAB;
+	uniform float4		_GDirectionCD;
+	uniform float4		_planeInfo;
+			//CEWave
+	uniform float4		_OceanParams0;
+	uniform float		_AnimGenParams;
+	uniform float4		_FlowDir;
+
+			struct v2f{
+				float4 pos 			: SV_POSITION;
+				
+				float4 proj_pos		: TEXCOORD0;
+				float3 normal		: TEXCOORD1;
+				float3 worldpos		: TEXCOORD2;
+				float4 viewpos		: TEXCOORD3;
+			};
+
+			half3 GerstnerOffset4(half2 xzVtx, half4 steepness, half4 amp, half4 freq, half4 speed, half4 dirAB, half4 dirCD)
+			{
+				half3 offsets;
+
+				half4 AB = steepness.xxyy * amp.xxyy * dirAB.xyzw;
+				half4 CD = steepness.zzww * amp.zzww * dirCD.xyzw;
+
+				half4 dotABCD = freq.xyzw * half4(dot(dirAB.xy, xzVtx), dot(dirAB.zw, xzVtx), dot(dirCD.xy, xzVtx), dot(dirCD.zw, xzVtx));
+				half4 TIME = _TimeCalc;//_Time.yyyy * speed;
+
+				half4 COS = cos(dotABCD + TIME);
+				half4 SIN = sin(dotABCD + TIME);
+
+				offsets.x = dot(COS, half4(AB.xz, CD.xz));
+				offsets.z = dot(COS, half4(AB.yw, CD.yw));
+				offsets.y = dot(SIN, amp);
+
+				return offsets;
+			}
+
+			half3 GerstnerNormal4(half2 xzVtx, half4 amp, half4 freq, half4 speed, half4 dirAB, half4 dirCD)
+			{
+				half3 nrml = half3(0, 2.0, 0);
+				half4 AB = freq.xxyy * amp.xxyy * dirAB.xyzw;
+				half4 CD = freq.zzww * amp.zzww * dirCD.xyzw;
+
+				half4 dotABCD = freq.xyzw * half4(dot(dirAB.xy, xzVtx), dot(dirAB.zw, xzVtx), dot(dirCD.xy, xzVtx), dot(dirCD.zw, xzVtx));
+				half4 TIME = _TimeCalc;//_Time.yyyy * speed;
+				
+				half4 COS = cos(dotABCD + TIME);
+
+				nrml.x -= dot(COS, half4(AB.xz, CD.xz));
+				nrml.z -= dot(COS, half4(AB.yw, CD.yw));
+
+				nrml.xz *= _GerstnerIntensity;
+				nrml = normalize(nrml);
+
+				return nrml;
+			}
+
+			void GerstnerWave(out half3 offs, out half3 nrml,
+				half3 tileableVtx, half4 amplitude,
+				half4 frequency, half4 steepness,
+				half4 speed, half4 directionAB, half4 directionCD)
+			{
+				#if WATER_WAVE == 1
+				offs = GerstnerOffset4(tileableVtx.xz, steepness, amplitude, frequency, speed, directionAB, directionCD);
+				nrml = GerstnerNormal4(tileableVtx.xz + offs.xz, amplitude, frequency, speed, directionAB,directionCD);
+				#else
+				offs = half3(0,0,0);
+				nrml = half3(0,1,0);
+				#endif
+			}
+			 
+			void CEWave(out half3 offs, half3 vPos)
+			{
+				offs = float3(0, 0, 0);
+				const float fAnimAmplitudeScale = 1.0 / 5.0;
+
+				float fPhaseTest = length(vPos.xy);
+
+				const float4 vFrequencies = 5 * _OceanParams0.z * float4(0.233, 0.455, 0.6135, -0.1467);  
+				const float4 vPhases = _OceanParams0.w * float4(0.1, 0.159, 0.557, 0.2199);
+				const float4 vAmplitudes = _OceanParams0.x * float4(1, 0.5, 0.25, 0.5);
+
+				float4 vWaveFreq = vFrequencies * _Time.yyyy * _AnimGenParams;                                   // 1 inst
+
+				float4 vCosPhase = (fPhaseTest + vPos.x)* vPhases;                                    // 1 inst
+				float4 vCosWave = cos(vWaveFreq * _FlowDir.x + vCosPhase);                               // 8 inst
+
+				float4 vSinPhase = (fPhaseTest + vPos.y)* vPhases;                                    // 1 inst
+				float4 vSinWave = sin(vWaveFreq * _FlowDir.y + vSinPhase);                               // 8 inst
+
+				float fAnimSum = dot(vCosWave, vAmplitudes) + dot(vSinWave, vAmplitudes);                 // 3 inst
+
+				offs= fAnimSum * fAnimAmplitudeScale;
+			}
+
+			float3 ComputeCENormal(float3 vPosOrigin, half3 curOffset)
+			{
+				float3 vNormal = float3(0,0,1);
+				float3 offs; 
+
+				float3 vPos1 = vPosOrigin.xyz + float3(1,0,0);				
+				CEWave(offs, vPos1);
+				vNormal.x = (vPosOrigin + curOffset).z - (vPos1 + offs).z;
+				
+				vPos1 = vPosOrigin.xyz + float3(0,1,0);				
+				CEWave(offs, vPos1);
+				vNormal.y = -((vPosOrigin + curOffset).z - (vPos1 + offs).z);
+
+				return vNormal;
+			}
+			
+
+			v2f vert(appdata_full v)
+			{
+				v2f o;
+				half3 nrml = float3(0,1,0);
+				float3 offset = float3(0,0,0);
+				float3 worldSpaceVertex = mul(unity_ObjectToWorld, (v.vertex)).xyz;
+				float3 vtxForAni = (worldSpaceVertex).xzz;	
+				float fWaveLerp = 1.0;
+				
+				#if WATER_WAVE == 1		
+					#if GERSTNER_WAVE == 1
+					//wave lerp
+					float xDis = abs(_planeInfo.x - v.vertex.x);
+					float yDis = abs(_planeInfo.y - v.vertex.y);
+					float width = _planeInfo.w / 2.0;
+					float height = width;
+					float xFactor = saturate(1-xDis/width);//saturate(1 - max(xDis - width * 0.9f, 0) / (width * 0.1));
+					float yFactor = saturate(1-yDis/width);//saturate(1 - max(yDis - height * 0.9f, 0) / (height * 0.1)); 
+					fWaveLerp = saturate(xFactor*yFactor*4.0f);
+					GerstnerWave(
+						offset, nrml, vtxForAni,
+						_GAmplitude,
+						_GFrequency,
+						_GSteepness,
+						_GSpeed,
+						_GDirectionAB,
+						_GDirectionCD
+					);
+					offset =  lerp( float3(0,0,0), offset, fWaveLerp);
+					nrml = lerp(  float3(0,1,0), nrml, fWaveLerp);
+
+					#else
+					CEWave(offset, vtxForAni);
+					nrml = ComputeCENormal(vtxForAni, offset);
+					#endif
+				o.pos		=	mul(UNITY_MATRIX_VP,float4(worldSpaceVertex + offset, 1.0f));
+				#else
+				o.pos		=	mul(UNITY_MATRIX_MVP,float4(v.vertex.xyz,1.0f));//*_LightPos.w);//*_LightPos.w+float4(_LightPos.xyz,0));
+				#endif
+				
+
+				o.normal	=	
+				#if WATER_WAVE == 1
+					#if GERSTNER_WAVE == 1
+						nrml;
+					#else
+						nrml.xzy;
+					#endif
+				#else
+				float3(0,1,0);//mul((float3x3)_WorldMatrix,v.normal);
+				#endif
+				o.worldpos	=	mul(_WorldMatrix,float4(v.vertex.xyz,1.0f));
+				o.viewpos = mul(UNITY_MATRIX_MV,float4(v.vertex.xyz,1.0f));
+				o.proj_pos	=	o.pos;
+				//Editor Only
+#if SHADER_API_GLES || SHADER_API_GLES3
+
+#else
+				//SHADER_API_METAL
+				o.proj_pos.y *= -1;
+#endif
+				o.viewpos.w = o.proj_pos.w;
+				o.proj_pos.zw = o.proj_pos.xy*0.5+o.proj_pos.w*0.5;
+
+				return o;
+			}
+			 float GetZ(float2 uv)
+			 {
+				float2 XY_Depth	=	float2(1.0f,0.003921568627451);
+				float4 depth_normal = tex2D(_Depth,uv);
+				return dot(XY_Depth,depth_normal.xy);
+			 }
+			float3 GetViewPos(float depth,float3 viewdir)
+			{//获取当前viewdir的位置 水下边的地的位置
+				return depth*viewdir*_FarCorner;
+
+			}
+			half GetFresnel(half NdotI, half bias, half power)
+			{
+				half facing = (1.0 - NdotI);
+				return saturate(bias + (1 - bias)*pow(facing, power));
+			}
+		#define MATH_PI 3.14159265f
+			float2 DirectionToUV(float3 dir)
+			{//将方向转换为球面图的uv，而非普通图，跟reflect 采样cubemap意思差不多
+				float2 uv = float2(atan(dir.z / dir.x) * 0.5f, acos(dir.y)) / MATH_PI + float2(dir.x>0, 0)*0.5;
+				uv.x -= floor(uv.x);
+				uv.y = 1 - uv.y;
+				return uv;
+			}
+
+			float4 frag(v2f i) : COLOR
+			{
+				//return (i.normal.x);
+				float4 pos = i.proj_pos/i.viewpos.w;
+
+				float2 uv = pos.zw;
+
+				float4 detail_uv = i.worldpos.xzxz*_WaterWaveScale.xxyy;
+				detail_uv += _WaveDir*_Time.xxxx*_WaterWaveScale.zzww*float4(1,1,2,2);
+
+				float3 a = tex2D(_NormalTex,detail_uv.xy).xzy;
+				float3 b = tex2D(_NormalTex,detail_uv.zw).xzy;
+
+				float3 N = (a+b)*0.5f-0.5f;
+				
+				#if USE_MESH_NORMAL == 1
+				N = normalize(i.normal + N);
+				#else
+				N = normalize(N);
+				#endif
+				
+				float3 FarPoint = float3(pos.xy,1)*_FarCorner;
+				
+				float3 depth_pos_origin = FarPoint*GetZ(uv);
+
+				#if WATER_REFLECT == 1
+				 float2 uv_offset =N.xz*float2(0.05,0.0)*_AmbientColor.w;
+				float2 sample_uv = uv+uv_offset;
+					#if WATER_WAVE == 1
+					float2 refl_uv = uv+uv_offset* _FlowDir.zw;
+					#else
+					float2 refl_uv = uv+uv_offset;
+					#endif
+				#else
+				float2 sample_uv = uv+N.xz*float2(0.05,0.01)*_AmbientColor.w;
+				#endif
+
+				
+
+				float refrect_z = GetZ(sample_uv);
+				float3 depth_pos = FarPoint*refrect_z;
+				if(depth_pos.z < -i.viewpos.z)
+				{
+					sample_uv = uv;
+					depth_pos = depth_pos_origin;
+				}
+				float world_y = dot(_WorldUp,float4(depth_pos,1));	
+
+				float4 lastColor = tex2D(_LastFrame,sample_uv);
+				
+
+				 
+				 
+				float len = depth_pos.z+i.viewpos.z ;
+				
+				float2 alpha_blend_val = saturate(len/_FogParam.yz);
+	
+				//float alpha = saturate(abs(len)/_FogParam.z);
+				//alpha y
+				//alpha len x
+				float ydepth = (i.worldpos.y-world_y)/_FogParam.x;
+				float4 fog   = lerp(_Color,_DeepColor,0.97f*max(0,saturate(ydepth)));
+
+
+				float blend = saturate(alpha_blend_val.x*1.5f);
+				float alphalen = alpha_blend_val.x;
+				
+				float3 E = normalize(_WorldSpaceCameraPos-i.worldpos);
+
+				//计算天空和反射图
+				#if WATER_REFLECT == 1
+				float4 refl = tex2D(_ReflectionTex, refl_uv)*blend;
+				#else
+				
+				float3 refl_dir = normalize(reflect(-E, N));
+				float4 sky = texCUBE(_Sky, refl_dir); 
+				float4 refl = _AmbientColor *sky*sky*2.0f;
+				#endif
+
+				
+
+				float3	H = normalize(_MainLightDir + E);
+				float	nh = max(0, dot(N, H));
+				float4	MainLightSpecular = pow(nh, 200)*_MainLightColor;
+
+	
+				float fNdotI = dot(E, N);
+				float fastFrenel = GetFresnel(abs(fNdotI),0.01f,5);
+				float4 refr_color = lerp(lastColor*(1 - ydepth), _DeepColor, alphalen)*lerp(half4(1, 1, 1, 1), fog, alpha_blend_val.y);
+
+				#if WATER_REFLECT == 1
+				return lerp(refr_color, max(float4(0,0,0,0), refl),saturate(fastFrenel)) + MainLightSpecular * blend;
+				#else
+				float4 refl_color = ( refl*fastFrenel+MainLightSpecular)*blend;
+				return   refr_color + max(float4(0,0,0,0), refl_color);
+				#endif
+			}
+			
+sampler2D _ShadowDepth;
+float4 invShadowViewport;
+float4x4 _ShadowView;
+float4x4 _ShadowProj;
+
+float4 MainColor;
+float4 MainDir;
+float4 AmbientColor;
+			struct forward_v2f{
+				float4 pos 			: SV_POSITION;
+				float4 uv			: TEXCOORD0;
+				float4 normal		: TEXCOORD1;
+				float4 wpos			: TEXCOORD2;
+			};
+			
+			forward_v2f forward_vert(appdata_full v)
+			{
+				forward_v2f o;
+				o.pos		=	mul(UNITY_MATRIX_MVP,v.vertex);
+				o.normal.xyz	=	normalize(mul((float3x3)unity_ObjectToWorld,v.normal));
+				o.wpos	=	mul(unity_ObjectToWorld,v.vertex);
+
+
+				float3 view_dir	=	normalize(o.wpos.xyz-_WorldSpaceCameraPos.xyz);
+				o.normal.w = view_dir.z;
+				o.uv.zw	=	view_dir.xy;
+				o.uv.xy = 0;
+				return o;
+			}
+
+			float4 forward_frag(forward_v2f i) : COLOR
+			{
+				float3 world_dir = (i.wpos.xyz-_WorldSpaceCameraPos.xyz);
+
+				float3 P = i.wpos.xyz;
+				float3 N = normalize(i.normal.xyz);
+				float3 E = normalize(world_dir);
+				float3 L = MainDir.xyz;
+
+				float3 a = tex2D(_NormalTex,i.wpos.xz*_WaterWaveScale.x+ _WaveDir.xy*_Time.x*_WaterWaveScale.z);
+				float3 b = tex2D(_NormalTex,i.wpos.xz*_WaterWaveScale.y+ _WaveDir.zw*_Time.x*2.0f*_WaterWaveScale.w);
+
+				float3 nor = ((a+b)-1)*0.5f;
+				nor.z = sqrt(1-max(0,dot(nor.xy,nor.xy)));
+				nor = normalize(nor.xzy);
+
+			
+				#if USE_MESH_NORMAL == 1
+				nor = normalize(N+nor);
+				#else
+
+				#endif
+
+				float length_E = saturate(length(world_dir)/20.0f)*0.8f+0.2f;
+				//length_E= pow(length_E,4.0f);
+
+				float3 refl_dir = normalize(reflect(E, nor));
+				//float2 refl_uv = DirectionToUV(refl_dir);
+				float4 sky = texCUBE(_Sky, refl_dir);
+				float4 refl = AmbientColor*sky*sky;
+
+				float3 H = normalize(_MainLightDir - E);
+				float nh = max(0, dot(nor, H));
+
+				float4 MainLSpec = pow(nh, 200)*_MainLightColor;
+
+
+				float fastFrenel = GetFresnel(dot(-E, nor),0.03f,5);
+				float4 refl_color = ( refl);
+
+				float val = 1;//saturate(fastFrenel+0.8f);
+								
+				float3 ret = refl.xyz*fastFrenel+MainLSpec.xyz;//*length_E;//lerp(0,+_DeepColor.xyz,fastFrenel);
+
+				#if USE_FOG == 1	
+				float dis = pow(saturate((length(world_dir)-_FogParam.x)/_FogParam.y),_FogParam.z);
+				return float4(lerp(ret,FogColor,dis), 1);
+				#else
+				return float4(ret, length_E);
+				#endif
+			}
+
+			

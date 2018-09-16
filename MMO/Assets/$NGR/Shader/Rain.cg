@@ -1,0 +1,176 @@
+#include "UnityCG.cginc"
+#include "LightCommon.cg"
+
+#ifndef LIGHT_COUNT
+#define LIGHT_COUNT 0
+#endif
+
+sampler2D	_Depth;
+sampler2D	_RainTex;
+samplerCUBE   _SkyTex;
+sampler2D   _LastFrame;
+sampler2D   _Diffuse;
+float4 invViewport_Radius;
+float4 farCorner;
+float4 lightdir;
+float4 lightcolor;
+float4 ambientcolor;
+float4	RainRoughness;
+
+float4x4 ViewToWorld;
+
+
+float4		_LPos0;
+float4		_LPos1;
+float4		_LPos2;
+float4		_LPos3;
+float4		_LPos4;
+float4		_LPos5;
+float4		_LColor0;
+float4		_LColor1;
+float4		_LColor2;
+float4		_LColor3;
+float4		_LColor4;
+float4		_LColor5;
+
+
+struct v2f {
+	float4 pos : SV_POSITION;
+	float2 uv : TEXCOORD0;
+	float4 viewpos  : TEXCOORD1;
+};
+
+	v2f vert(appdata_full v)
+	{
+		v2f o;
+
+#if SHADER_API_GLES || SHADER_API_GLES3
+		//Mobile
+		o.pos = float4(v.vertex.x * 2, v.vertex.y * 2, 1, 1);
+		o.uv = o.pos*0.5f + 0.5f;
+		o.viewpos = float4(o.pos.xy, 1.0f, 1)*farCorner;
+#else
+		//Editor Only 
+		o.pos = float4(v.vertex.x * 2, v.vertex.y * 2, 1, 1);
+		o.uv = o.pos*0.5f + 0.5f;
+		o.uv.y = 1 - o.uv.y;
+		o.viewpos = float4(o.pos.xy, 1.0f, 1)*farCorner;
+		o.viewpos.y *= -1;
+#endif
+
+
+		return o;
+	}
+
+#define MATH_PI 3.14159265f
+float2 DirectionToUV(float3 dir)
+{
+	float2 uv = float2(atan(dir.z / dir.x) * 0.5f, acos(dir.y)) / MATH_PI + float2(dir.x>0, 0)*0.5;
+	uv.x -= floor(uv.x);
+	uv.y = 1 - uv.y;
+	return uv;
+}
+float4 Lighting(float4 lpos, float4 lcolor, float3 E, float3 pos, float3 normal,float spec_power)
+{
+	float3 offset = lpos.xyz - pos;
+	float3 L = normalize(offset);
+	float len = length(offset);
+
+	float3 H = normalize(L+E);
+	float nh = max(0, dot(normal, H));
+
+	return float4(lcolor*pow(nh, spec_power)) *(1.0f / (len));
+	//return max(0,PBRDF(normal,L,E,diff.w).y)*lcolor*(1.0f/(len*len))*diff;//*lerp(diff,1,metal);
+}
+float4 DirectionLighting(float4 C, float3 E, float3 L, float3 N, float spec_power)
+{
+
+	float3 H = normalize(L + E);
+	float nh = max(0, dot(N, H));
+
+	return float4(C*pow(nh, spec_power));
+	//return max(0,PBRDF(normal,L,E,diff.w).y)*lcolor*(1.0f/(len*len))*diff;//*lerp(diff,1,metal);
+}
+
+float4 frag(v2f IN) : COLOR
+{
+	float2 proj_uv = IN.uv;
+	float4 viewdir = IN.viewpos;
+
+	float2 XY_Depth = float2(1.0f,0.003921568627451);
+
+	float4 depth = tex2D(_Depth,proj_uv);
+
+	float view_depth = dot(depth.xy,XY_Depth);
+	float3 normal = DecodeNormal(depth.zw);
+
+
+	float4 viewspace_pos = viewdir*view_depth;
+	float3 ViewEyeDir = normalize(viewspace_pos.xyz);
+
+	float4 worldpos = mul(ViewToWorld, float4(viewspace_pos.xyz, 1));
+	float3 worldnor = normalize(mul((float3x3)ViewToWorld, normal));
+	float3 world_view_dir = normalize(mul((float3x3)ViewToWorld, ViewEyeDir));
+
+	float2 rain_uv = frac(worldpos.xz*0.25f);
+	float4 rainbump = tex2D(_RainTex, rain_uv) * 2 - 1;
+
+	float4 diff = tex2D(_Diffuse, proj_uv);
+
+	float metal = diff.w >= 0.497f;
+	float roughness = saturate(1 - (diff.w*2.0f) + metal);
+	diff.xyz *= 1 + metal * 3;
+
+	roughness = lerp(0, roughness, RainRoughness.x);
+	diff.xyz = lerp(1,diff.xyz, RainRoughness.x);
+
+
+	float3 N = normalize(lerp(worldnor,rainbump.xzy,max(0,worldnor.y)*(1-RainRoughness.x)));
+	float3 L = -lightdir.xyz;
+	float3 E = -world_view_dir;
+	float3 color = 0;
+	float   NE = dot(N, E);
+	float spec_power = 1+(1 - roughness)*200.0f;
+
+	color += DirectionLighting(lightcolor,E,L,N, spec_power)*tex2D(_LastFrame, proj_uv).w;
+
+	float3 dl_spec = 0;
+	#if LIGHT_COUNT == 1
+	dl_spec += Lighting(_LPos0, _LColor0, E, worldpos.xyz, N,spec_power);
+	#elif LIGHT_COUNT == 2
+	dl_spec += Lighting(_LPos0, _LColor0, E, worldpos.xyz, N,spec_power);
+	dl_spec += Lighting(_LPos1, _LColor1, E, worldpos.xyz, N,spec_power);
+	#elif LIGHT_COUNT == 3
+	dl_spec += Lighting(_LPos0, _LColor0, E, worldpos.xyz, N,spec_power);
+	dl_spec += Lighting(_LPos1, _LColor1, E, worldpos.xyz, N,spec_power);
+	dl_spec += Lighting(_LPos2, _LColor2, E, worldpos.xyz, N,spec_power);
+	#elif LIGHT_COUNT == 4
+	dl_spec += Lighting(_LPos0, _LColor0, E, worldpos.xyz, N,spec_power);
+	dl_spec += Lighting(_LPos1, _LColor1, E, worldpos.xyz, N,spec_power);
+	dl_spec += Lighting(_LPos2, _LColor2, E, worldpos.xyz, N,spec_power);
+	dl_spec += Lighting(_LPos3, _LColor3, E, worldpos.xyz, N,spec_power);
+	#elif LIGHT_COUNT == 5
+	dl_spec += Lighting(_LPos0, _LColor0, E, worldpos.xyz, N,spec_power);
+	dl_spec += Lighting(_LPos1, _LColor1, E, worldpos.xyz, N,spec_power);
+	dl_spec += Lighting(_LPos2, _LColor2, E, worldpos.xyz, N,spec_power);
+	dl_spec += Lighting(_LPos3, _LColor3, E, worldpos.xyz, N,spec_power);
+	dl_spec += Lighting(_LPos4, _LColor4, E, worldpos.xyz, N,spec_power);
+	#elif LIGHT_COUNT == 6
+	dl_spec += Lighting(_LPos0, _LColor0, E, worldpos.xyz, N,spec_power);
+	dl_spec += Lighting(_LPos1, _LColor1, E, worldpos.xyz, N,spec_power);
+	dl_spec += Lighting(_LPos2, _LColor2, E, worldpos.xyz, N,spec_power);
+	dl_spec += Lighting(_LPos3, _LColor3, E, worldpos.xyz, N,spec_power);
+	dl_spec += Lighting(_LPos4, _LColor4, E, worldpos.xyz, N,spec_power);
+	dl_spec += Lighting(_LPos5, _LColor5, E, worldpos.xyz, N,spec_power);
+	#endif
+	
+
+	float alpha = pow(1 - abs(NE), 5)+0.1f;
+
+	float3 refl = reflect(world_view_dir, N);
+	if (NE > 0)
+	{
+		color += ambientcolor*texCUBE(_SkyTex, refl)*alpha;// *10.0f*(2 - rainbump.y);
+	}
+	return  float4((color.xyz + dl_spec)*diff.xyz*max(0, worldnor.y), 0);// alpha*0.5f + 0.5f);// color.xyzz*max(0, worldnor.y);// float4(lightcolor.xyz*spec, worldnor.y);
+}

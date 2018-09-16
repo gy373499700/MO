@@ -3023,6 +3023,7 @@ public class RenderPipeline : MonoBehaviour
 
         mat_downsample_glow.SetPass(1);
         Graphics.DrawMeshNow(Quad, Matrix4x4.identity, 0);
+
         //blur x
 
 

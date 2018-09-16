@@ -1,0 +1,155 @@
+			#ifndef SAMPLER_NUM
+			#define SAMPLER_NUM 8
+			#endif
+			const static float2 kernel2x2[4] = {
+
+				float2(0,0),
+				float2(1,0),
+				float2(0,1),
+				float2(1,1)
+			};
+			float CalcShadow(float2 uv, float z,float2 XY_Depth,float3 invVP,sampler2D _ShadowDepth)
+			{
+				float origin_z = dot(tex2D(_ShadowDepth, uv).xy,XY_Depth);
+				return origin_z>z;
+			}
+			float CalcShadow2(float2 uv, float z,float2 XY_Depth,float3 invVP,sampler2D _ShadowDepth)
+			{
+				float2 shadow_depth;
+				shadow_depth.x = dot(tex2D(_ShadowDepth,uv).xy,XY_Depth);
+				shadow_depth.y = dot(tex2D(_ShadowDepth,uv+float2(0,invVP.y)).xy,XY_Depth);
+				shadow_depth-=z;
+				shadow_depth = shadow_depth>0;
+				float lerp_val = frac(uv.y/invVP.x);
+
+				return lerp(shadow_depth.x, shadow_depth.y, lerp_val);
+			}
+
+			float CalcShadow2x2(float2 uv, float z,float2 XY_Depth,float3 invVP,sampler2D _ShadowDepth)
+			{
+				float4 UV[2];
+				float4 _DEPTH[2];
+				float4 dot_val;
+				
+				UV[0].xy = kernel2x2[0];
+				UV[0].zw = kernel2x2[1];
+				UV[1].xy = kernel2x2[2];
+				UV[1].zw = kernel2x2[3];
+
+				UV[0] = UV[0] * invVP.xyxy + uv.xyxy;
+				UV[1] = UV[1] * invVP.xyxy + uv.xyxy;
+
+				_DEPTH[0].xy = tex2D(_ShadowDepth, UV[0].xy).xy;
+				_DEPTH[0].zw = tex2D(_ShadowDepth, UV[0].zw).xy;
+				_DEPTH[1].xy = tex2D(_ShadowDepth, UV[1].xy).xy;
+				_DEPTH[1].zw = tex2D(_ShadowDepth, UV[1].zw).xy;
+
+				dot_val.x = dot(_DEPTH[0].xy, XY_Depth.xy);
+				dot_val.y = dot(_DEPTH[0].zw, XY_Depth.xy);
+				dot_val.z = dot(_DEPTH[1].xy, XY_Depth.xy);
+				dot_val.w = dot(_DEPTH[1].zw, XY_Depth.xy);
+
+				dot_val -= z;
+
+				dot_val = dot_val > 0;
+
+				float2 lerp_val = frac(uv/invVP.x);
+				float2 temp = lerp(dot_val.xy, dot_val.zw, lerp_val.y);
+
+				return lerp(temp.x, temp.y, lerp_val.x);
+
+				
+			}
+			const static float2 kernel3x3[9]=
+			{
+				float2(-1,-1),
+				float2(0,-1),
+				float2(1,-1),
+
+				float2(-1,0),
+				float2(0,0),
+				float2(1,0),
+
+				float2(-1,1),
+				float2(0,1),
+				float2(1,1),
+			};
+			float CalcLerp2X2(float2 uv,float4 dot_val)
+			{
+				float2 lerp_val = frac(uv*1024.0f);
+				float2 temp = lerp(dot_val.xy, dot_val.zw, lerp_val.y);
+
+				return lerp(temp.x, temp.y, lerp_val.x);
+			}
+			float CalcShadow3X3(float2 uv, float z, float2 XY_Depth,float3 invVP,sampler2D _ShadowDepth)
+			{
+				float _depth[9];
+				for (int i = 0; i < 9; i++)
+				{
+					float2 temp = kernel3x3[i] * invVP.xyxy + uv.xyxy;
+					float2 temp_depth = tex2D(_ShadowDepth, temp).xy;
+					_depth[i] = dot(temp_depth, XY_Depth.xy)-z>0;
+				}
+
+				float ret = 0;
+				ret += CalcLerp2X2(uv + kernel3x3[0] * invVP.xy, float4(_depth[0], _depth[1], _depth[3], _depth[4]));
+				ret += CalcLerp2X2(uv + kernel3x3[1] * invVP.xy, float4(_depth[1], _depth[2], _depth[4], _depth[5]));
+				ret += CalcLerp2X2(uv + kernel3x3[3] * invVP.xy, float4(_depth[3], _depth[4], _depth[6], _depth[7]));
+				ret += CalcLerp2X2(uv + kernel3x3[4] * invVP.xy, float4(_depth[4], _depth[5], _depth[7], _depth[8]));
+				return ret*0.25f;
+			}
+			
+			const static float2 sample_kernel[12]={
+			
+				float2(0.1468021,-0.0443222),
+				float2(-0.1277367,-0.1922591),
+				float2(-0.1868983,0.2259212),
+				float2(0.3203003,0.1346417),
+				float2(0.04142855,-0.3941687),
+				float2(-0.433534,0.08270095),
+				float2(0.2239452,0.4283678),
+				float2(0.3736661,-0.3659216),
+				float2(-0.4912866,-0.2700863),
+				float2(-0.1240371,0.5835525),
+				float2(0.628885,-0.05280988),
+				float2(-0.2445607,-0.6176906),
+			};
+
+			float CalcShadowRotate(float2 uv, float depth,float2 XY_Depth,float3 invVP,sampler2D _ShadowDepth,float2x2 rot_2x2)
+			{
+				float4   tempUV;
+				float2   tempXY;
+   
+				float4 occ=0;
+				tempUV.zw = invVP.xy*(invVP.z);
+
+				float4 UV[2];
+				float4 dot_val = 0;
+				static float single_weight = 1.0f / SAMPLER_NUM;
+
+			  
+				//[loop]
+				for(int i=0;i<SAMPLER_NUM;i+=4){
+	
+					  UV[0].xy     =   mul(sample_kernel[i],rot_2x2);
+					  UV[0].zw     =   mul(sample_kernel[i+1],rot_2x2);
+					  UV[1].xy     =   mul(sample_kernel[i+2],rot_2x2);
+					  UV[1].zw     =   mul(sample_kernel[i+3],rot_2x2);
+      
+					  UV[0]=UV[0]*tempUV.zwzw+uv.xyxy;
+					  UV[1]=UV[1]*tempUV.zwzw+uv.xyxy;
+      
+
+      
+					  dot_val.x =   dot(tex2D(_ShadowDepth,UV[0].xy).xy,XY_Depth.xy);
+					  dot_val.y =   dot(tex2D(_ShadowDepth,UV[0].zw).xy,XY_Depth.xy);
+					  dot_val.z =   dot(tex2D(_ShadowDepth,UV[1].xy).xy,XY_Depth.xy);
+					  dot_val.w =   dot(tex2D(_ShadowDepth,UV[1].zw).xy,XY_Depth.xy);
+
+					  dot_val -= depth;
+
+					  occ += dot(dot_val>0, single_weight);//*dot(saturate(dot_val)*0.5+0.5,0.25);
+					  
+				}
+				return occ;
+			}

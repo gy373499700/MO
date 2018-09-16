@@ -1,0 +1,237 @@
+#include "UnityCG.cginc"
+#include "LightCommon.cg"
+
+#ifndef CAST_SHADOW
+#define CAST_SHADOW 0
+#endif
+
+#define SAMPLER_NUM 8
+
+sampler2D _Depth;
+//float4 _Depth_ST;
+sampler2D _Sample2x2;
+sampler2D _ShadowDepth;
+sampler2D _Random256;
+sampler2D _ShadowMask;
+
+float4 farCorner;
+struct v2f {
+	float4 pos : SV_POSITION;
+	float4 proj_pos : TEXCOORD0;
+	float4 viewpos  : TEXCOORD1;
+};
+
+v2f vert (appdata_img v)
+{
+	v2f o;
+	float4 pos= v.vertex;
+	#if SHADER_API_MOBILE
+	#if UNITY_UV_STARTS_AT_TOP
+	#else
+	pos.z*=-1;
+	#endif
+	#else
+	#if UNITY_UV_STARTS_AT_TOP
+	pos.z*=-1;
+	#endif
+	#endif
+	o.pos = mul (UNITY_MATRIX_MVP,pos);
+	o.proj_pos = o.pos;
+	
+	float4 p = mul (UNITY_MATRIX_MV, float4(v.vertex.xyz,1));
+	o.viewpos = p;//float4(o.uv,1.0f,1)*farCorner;
+	return o;
+}
+
+
+float4 invViewport_Radius;
+float4 mainInvViewport;
+float4x4  mainView_shadowView;
+float4x4  shadowProj;
+//float4 lightpos;
+float4 lightdir;
+float4 lightcolor;
+sampler2D _Diffuse;
+float4 LightSize;
+
+const static float2 sample_kernel[8]={
+			
+				float2(0.1468021,-0.0443222),
+				float2(-0.1277367,-0.1922591),
+				float2(-0.1868983,0.2259212),
+				float2(0.3203003,0.1346417),
+				float2(0.04142855,-0.3941687),
+				float2(-0.433534,0.08270095),
+				float2(0.2239452,0.4283678),
+				float2(0.3736661,-0.3659216),
+				//float2(-0.4912866,-0.2700863),
+				//float2(-0.1240371,0.5835525),
+				//float2(0.628885,-0.05280988),
+				//float2(-0.2445607,-0.6176906),
+			};
+
+float4 mask_frag( v2f IN) : COLOR
+{
+	return float4(0,1,0,0);
+}
+
+
+float4 frag( v2f IN) : COLOR
+{
+	//return float4(1,1,0,0);
+
+	float4 proj	=	IN.proj_pos/IN.proj_pos.w;
+#if UNITY_UV_STARTS_AT_TOP
+	proj.y *= -1;
+#endif
+
+
+	float2 proj_uv = proj.xy*0.5+0.5;
+
+	float4 viewdir	=	float4(proj.xy,1,1)*farCorner;
+
+   float2 halfPixel   =   0.5f*mainInvViewport.xy;
+   float2   uv=   proj_uv;//+halfPixel;
+
+   float4   rot   =  tex2D(_Sample2x2,proj_uv*0.5f/mainInvViewport.xy)*2-1;
+   float4   rand  = tex2D(_Random256,proj_uv/256/mainInvViewport.xy);
+
+   float2x2 rot_2x2 = float2x2(rot.xyzw);
+
+   float2 XY_Depth = float2(1.0f,0.003921568627451);
+
+   float4 depth = tex2D(_Depth,proj_uv);
+
+   //return depth;
+   float view_depth = dot(depth.xy,XY_Depth);
+  float3 normal = DecodeNormal(depth.zw);
+
+   float4 viewspace_pos = viewdir*view_depth;
+
+   float3 LightDirection = normalize(lightdir.xyz-viewspace_pos.xyz*lightdir.w);
+   //float bias = (1-abs(dot(normal,LightDirection)))*mainInvViewport.w+0.01f;
+
+   float4 shadowpos = mul(mainView_shadowView,float4(viewspace_pos.xyz +normal*mainInvViewport.w ,1));
+   shadowpos/=shadowpos.w;
+   
+
+   float4 proj_pos = mul(shadowProj,shadowpos);
+   proj_pos/=proj_pos.w;
+   float2 absxy = abs(proj_pos.xy);
+   if(absxy.x > 1.0f || absxy.y > 1.0f )
+   {
+	return 0;
+   }
+
+   
+   float2 shadowuv = proj_pos.xy*0.5f+0.5f;
+   if(lightdir.w>0.5f)
+   {
+#if SHADER_API_MOBILE
+	#if UNITY_UV_STARTS_AT_TOP
+		shadowuv.xy = 1 - shadowuv.xy;
+	#else
+		shadowuv.x = 1-shadowuv.x;   
+	#endif
+#else
+ #if UNITY_UV_STARTS_AT_TOP
+			   shadowuv.x = 1-shadowuv.x;
+ #endif
+#endif
+   }
+   else
+   {
+
+#if SHADER_API_MOBILE
+	#if UNITY_UV_STARTS_AT_TOP
+
+	#else
+			   shadowuv.y = 1 - shadowuv.y;
+	#endif
+#else
+ #if UNITY_UV_STARTS_AT_TOP
+			   shadowuv.y = 1-shadowuv.y;
+ #endif
+#endif
+   }
+   float4 mask = tex2D(_ShadowMask,shadowuv);
+   //return tex2D(_ShadowDepth,shadowuv);
+
+   #if CAST_SHADOW == 1
+
+   
+   //shadowpos.z -= bias;
+   XY_Depth*=invViewport_Radius.w;
+
+   float2 currentShadowDepth = tex2D(_ShadowDepth,shadowuv).xy;
+   float z =   dot(currentShadowDepth,XY_Depth.xy);
+   float4 retOcc	=	0;//0.1f*max(0,saturate(z>shadowpos.z));
+
+   float sample_scale = max(0,shadowpos.z-z)/z;
+
+   //#elif CAST_SHADOW == 2
+
+   //XY_Depth*=invViewport_Radius.w;
+   shadowuv+=(rand.xy*2-1)*invViewport_Radius.xy*0.5f;//*sample_scale;
+   //calc bias
+   //shadowpos.z -= mainInvViewport.w;
+
+   float4   tempUV;
+   float2   tempXY;
+
+   
+
+   
+   tempUV.zw   =   invViewport_Radius.xy*(invViewport_Radius.z+LightSize.x*sample_scale+shadowpos.z*0.4f);
+   float2 off[4];
+   float4 UV[2];
+   float4 _DEPTH[2];
+   float4 dot_val = 0;
+   float single_weight = 1.0f/SAMPLER_NUM;
+   //[loop]
+   for(int i=0;i<SAMPLER_NUM;i+=4){
+	  off[0] = sample_kernel[i];
+	  off[1] = sample_kernel[i+1];
+	  off[2] = sample_kernel[i+2];
+	  off[3] = sample_kernel[i+3];
+	  UV[0].xy     =   mul(rot_2x2,off[0].xy);
+	  UV[0].zw     =   mul(rot_2x2,off[1].xy);
+	  UV[1].xy     =   mul(rot_2x2,off[2].xy);
+	  UV[1].zw     =   mul(rot_2x2,off[3].xy);
+
+	  UV[0]=UV[0]*tempUV.zwzw+shadowuv.xyxy;
+	  UV[1]=UV[1]*tempUV.zwzw+shadowuv.xyxy;
+
+	  _DEPTH[0].xy = tex2D(_ShadowDepth,UV[0].xy).xy;
+	  _DEPTH[0].zw = tex2D(_ShadowDepth,UV[0].zw).xy;
+	  _DEPTH[1].xy = tex2D(_ShadowDepth,UV[1].xy).xy;
+	  _DEPTH[1].zw = tex2D(_ShadowDepth,UV[1].zw).xy;
+
+	  dot_val.x =   dot(_DEPTH[0].xy,XY_Depth.xy);
+	  dot_val.y =   dot(_DEPTH[0].zw,XY_Depth.xy);
+	  dot_val.z =   dot(_DEPTH[1].xy,XY_Depth.xy);
+	  dot_val.w =   dot(_DEPTH[1].zw,XY_Depth.xy);
+
+	  retOcc.x += dot(max(0,saturate(dot_val>shadowpos.z)),single_weight);
+	  retOcc.y += dot(1-saturate(max(0,shadowpos.z-dot_val)/dot_val),single_weight);
+
+   }
+   float occ = retOcc.x*retOcc.y;
+   #else
+   float occ=1;
+   #endif
+   
+   float4 col = tex2D(_Diffuse,proj_uv);
+   float3 e = -normalize(viewspace_pos);
+
+   float3 diff = lightcolor*col;
+   float metal = col.w>=0.497f;
+   float roughness = saturate(1-(col.w*2.0f-metal));
+   float3 spec = lightcolor*(col+col*metal * 3);
+
+   PBR(roughness,LightDirection,e,normal,diff,spec);
+
+   return  mask*float4(occ*(diff*(1 - metal) + spec), 0);
+}
+
+

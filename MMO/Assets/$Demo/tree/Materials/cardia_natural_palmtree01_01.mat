@@ -93,10 +93,10 @@ Material:
       second: 0.5
     - first:
         name: _GrassFreq
-      second: 10
+      second: 2.87
     - first:
         name: _GrassStrength
-      second: 1.49
+      second: 1.03
     - first:
         name: _Metal
       second: 0.88

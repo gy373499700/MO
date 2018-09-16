@@ -1,0 +1,162 @@
+// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+
+#ifndef MRT
+#define MRT 0
+#endif
+
+#ifndef USE_SHADOW
+#define USE_SHADOW 1
+#endif
+
+
+#include "UnityCG.cginc"
+#include "LightCommon.cg"
+struct appdata
+{
+	float4 vertex : POSITION;
+	float3 normal:NORMAL;
+	float2 uv : TEXCOORD0;
+};
+
+
+
+sampler2D _MainTex;
+sampler2D _EyeTex;
+sampler2D _MouseTex;
+
+float4 _MainTex_ST;
+
+float4 _LeftEyeTex_Src;
+float4 _RightEyeTex_Src;
+float4 _MouseTex_Src;
+
+float4 _LeftEyeTex_ST_Dest;
+//float4 _RightEyeTex_ST_Dest;
+float4 _Color;
+float4 _MouseTex_ST_Dest;
+float _SmoothBase;
+float _Metal;
+
+
+sampler2D _ShadowDepth;
+float4 invShadowViewport;
+float4x4 _ShadowView;
+float4x4 _ShadowProj;
+
+float4 MainColor;
+float4 MainDir;
+float4 AmbientColor;
+
+float4 SampleTex(sampler2D tex, float4 area,float2 uv,float4 dstarea)
+{
+	if (uv.x<area.x || uv.x > area.x + area.z || uv.y<area.y || uv.y>area.y + area.w)
+	{
+		return 0;
+	}
+	else
+	{
+		float2 real_uv = (uv - area.xy) / area.zw;
+		float2 dst_uv = real_uv*dstarea.zw + dstarea.xy;
+		return tex2D(tex, dst_uv);
+		//return float4(real_uv.xy,0,1);
+	}
+}
+float4 SampleRightTex(sampler2D tex, float4 area, float2 uv, float4 dstarea)
+{
+	if (uv.x<area.x || uv.x > area.x + area.z || uv.y<area.y || uv.y>area.y + area.w)
+	{
+		return 0;
+	}
+	else
+	{
+		float2 real_uv = (uv - area.xy) / area.zw;
+		real_uv.x = 1 - real_uv.x;
+		float2 dst_uv = real_uv*dstarea.zw + dstarea.xy;
+		return tex2D(tex, dst_uv);
+		//return float4(real_uv.xy,0,1);
+	}
+}
+
+struct v2f{
+	float4 pos 			: SV_POSITION;
+	float4 uv 			: TEXCOORD0;
+	float4 normal		: TEXCOORD1;
+	float4 wpos			: TEXCOORD2;
+	float4 sview		: TEXCOORD3;
+};
+
+v2f vert (appdata v)
+{
+	v2f o;
+	o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+	o.uv.xy = TRANSFORM_TEX(v.uv, _MainTex);
+
+	o.wpos = mul(unity_ObjectToWorld, v.vertex);
+	o.normal.xyz = normalize(mul((float3x3)unity_ObjectToWorld, v.normal.xyz));
+	
+
+	float4 shadow_pos = mul(_ShadowView,o.wpos+float4(o.normal.xyz*0.07f,0));
+	float4 shadowproj = mul(_ShadowProj,shadow_pos);
+	shadowproj/=shadowproj.w;
+	if(abs(shadowproj.x)>1.0f || abs(shadowproj.y)>1.0f)
+	{
+		shadow_pos.z = 0.0f;
+	}
+		#if SHADER_API_GLES|| SHADER_API_GLES3
+
+		#else
+			shadowproj.y*=-1;
+		#endif
+
+	o.sview.xy = shadowproj.xy*0.5+0.5;
+	o.sview.z = shadow_pos.z;
+	o.sview.w = 0;
+
+	float3 view_dir	=	normalize(o.wpos-_WorldSpaceCameraPos.xyz);
+	o.normal.w = view_dir.z;
+	o.uv.zw	=	view_dir.xy;
+
+	return o;
+}
+
+
+float4 frag (v2f i): COLOR0
+{
+
+	// sample the texture
+	float4 col = pow(tex2D(_MainTex, i.uv),2.2f);
+	
+	float2 fixed_uv = i.uv;
+	
+	float4	left = SampleTex(_EyeTex, _LeftEyeTex_Src, fixed_uv, _LeftEyeTex_ST_Dest);
+	float4	right = SampleRightTex(_EyeTex, _RightEyeTex_Src, fixed_uv, _LeftEyeTex_ST_Dest);
+	float4	mouse = SampleTex(_MouseTex, _MouseTex_Src, fixed_uv, _MouseTex_ST_Dest);
+	float3 dst = lerp(col.xyz, pow(left.xyz,2.2f), left.w);
+	dst = lerp(dst.xyz, pow(right.xyz, 2.2f), right.w);
+	dst = lerp(dst.xyz, pow(mouse.xyz,2.2f), mouse.w);
+
+
+	float3 P = i.wpos.xyz;
+	float3 N = normalize(i.normal.xyz);
+	float3 E = normalize(float3(i.uv.zw,i.normal.w));
+	float3 L = MainDir.xyz;
+	
+	#if USE_SHADOW == 1
+	
+	float2 shadowuv = i.sview.xy;
+	float2 XY_DEPTH = float2(1.0f,0.003921568627451)*invShadowViewport.w;
+	float2 shadow_depth=0;
+	shadow_depth.x = dot(tex2D(_ShadowDepth,shadowuv).xy,XY_DEPTH);
+	shadow_depth.y = dot(tex2D(_ShadowDepth,shadowuv+float2(0,invShadowViewport.y)).xy,XY_DEPTH);
+	shadow_depth-=i.sview.z;
+	shadow_depth = shadow_depth>0;
+	float lerp_val = frac(shadowuv.y/invShadowViewport.x);
+
+	float4 light = lerp(shadow_depth.x, shadow_depth.y, lerp_val)*MainColor*saturate(dot(-L,N));
+	#else
+	float4 light = MainColor*saturate(dot(-L,N));
+	#endif
+	float4 ambient = (N.y*0.5+0.5f)*AmbientColor;
+	
+	return (light+ambient)*float4(dst,1);
+}

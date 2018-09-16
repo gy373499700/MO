@@ -1,0 +1,149 @@
+// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+
+#ifndef MRT
+#define MRT 0
+#endif
+
+
+#include "UnityCG.cginc"
+#include "LightCommon.cg"
+struct appdata
+{
+	float4 vertex : POSITION;
+	float3 normal:NORMAL;
+	float2 uv : TEXCOORD0;
+};
+
+
+
+sampler2D _MainTex;
+sampler2D _EyeTex;
+sampler2D _MouseTex;
+
+float4 _MainTex_ST;
+
+float4 _LeftEyeTex_Src;
+float4 _RightEyeTex_Src;
+float4 _MouseTex_Src;
+
+float4 _LeftEyeTex_ST_Dest;
+//float4 _RightEyeTex_ST_Dest;
+float4 _Color;
+float4 _MouseTex_ST_Dest;
+float _SmoothBase;
+float _Metal;
+float _Shininess;
+float4 _LightDirection;
+
+float4 SampleTex(sampler2D tex, float4 area,float2 uv,float4 dstarea)
+{
+	if (uv.x<area.x || uv.x > area.x + area.z || uv.y<area.y || uv.y>area.y + area.w)
+	{
+		return 0;
+	}
+	else
+	{
+		float2 real_uv = (uv - area.xy) / area.zw;
+		float2 dst_uv = real_uv*dstarea.zw + dstarea.xy;
+		return tex2D(tex, dst_uv);
+		//return float4(real_uv.xy,0,1);
+	}
+}
+float4 SampleRightTex(sampler2D tex, float4 area, float2 uv, float4 dstarea)
+{
+	if (uv.x<area.x || uv.x > area.x + area.z || uv.y<area.y || uv.y>area.y + area.w)
+	{
+		return 0;
+	}
+	else
+	{
+		float2 real_uv = (uv - area.xy) / area.zw;
+		real_uv.x = 1 - real_uv.x;
+		float2 dst_uv = real_uv*dstarea.zw + dstarea.xy;
+		return tex2D(tex, dst_uv);
+		//return float4(real_uv.xy,0,1);
+	}
+}
+
+struct v2f
+{
+	float2 uv			: TEXCOORD0;
+	#if MRT == 1
+	float4 depth_normal	: TEXCOORD1;
+	#endif
+	float4 vertex		: SV_POSITION;
+	float3 normal		: TEXCOORD1;
+};
+
+v2f vert (appdata v)
+{
+	v2f o;
+	o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+	o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+	float3 normalDirection = normalize(mul((float3x3)unity_ObjectToWorld, v.normal.xyz));
+	o.normal = normalDirection;
+	#if MRT == 1
+	float3 viewpos = mul(UNITY_MATRIX_MV, v.vertex);
+	o.depth_normal.xyz = mul((float3x3)UNITY_MATRIX_MV, v.normal.xyz);
+	o.depth_normal.w	=	-viewpos.z*_ProjectionParams.w;
+	#endif
+	return o;
+}
+
+struct PS_OUTPUT
+{
+	float4 diffuse_roughness	: COLOR0;
+#if MRT == 1
+	float4 depth_normal			: COLOR1;
+#endif
+};
+float3 Light(float3 normalDirection, float3 lightDirection, float3 col)
+{
+
+	float3 diffuseReflection = col*max(0.0, dot(normalDirection, lightDirection));
+
+	float3 specularReflection;
+	if (dot(normalDirection, lightDirection) < 0.0)
+	{
+		specularReflection = col*float3(0, 0, 0);
+	}
+	else
+	{
+		specularReflection = col*pow(max(0.0, dot(reflect(-lightDirection, normalDirection), float3(0, 0, -1))), _Shininess);
+	}
+	//specularReflection = col*pow(max(0.0, dot(reflect(-lightDirection, normalDirection), float3(0, 0, -1))), _Shininess);
+	float3 light = specularReflection  + diffuseReflection + float3(1,1,1);
+
+	return light;
+}
+
+PS_OUTPUT frag (v2f i)
+{
+	//v2f i = convert2v2f(v);
+	PS_OUTPUT ret;
+	// sample the texture
+	fixed4 col = pow(tex2D(_MainTex, i.uv),2.2f);
+
+	float2 fixed_uv = i.uv;
+
+	float4	left = SampleTex(_EyeTex, _LeftEyeTex_Src, fixed_uv, _LeftEyeTex_ST_Dest);
+	float4	right = SampleRightTex(_EyeTex, _RightEyeTex_Src, fixed_uv, _LeftEyeTex_ST_Dest);
+	float4	mouse = SampleTex(_MouseTex, _MouseTex_Src, fixed_uv, _MouseTex_ST_Dest);
+	float3 dst = lerp(col.xyz, pow(left.xyz,2.2f), left.w);
+	dst = lerp(dst.xyz, pow(right.xyz, 2.2f), right.w);
+	dst = lerp(dst.xyz, pow(mouse.xyz,2.2f), mouse.w);
+	// apply fog
+	//UNITY_APPLY_FOG(i.fogCoord, col);
+
+	float3 light =Light(i.normal, normalize(float3(-1, -1, -1)), float3(121 / 255.0,168.0 / 255.0,208.0 / 255.0))*0.2;
+	light += Light(i.normal, normalize(float3(1, 1, -1)), float3(1, 231.0 / 255.0, 210.0 / 255.0))*0.45;
+	//ret.diffuse_roughness	=	fixed4(dst.xyz*light*_Color*2,0);
+	float4 c = pow(tex2D(_MainTex,fixed_uv),2.2)*_Color *fixed4(dst.xyz,0) * 2;
+	ret.diffuse_roughness	=	pow(c*float4(light, 1), 1/2.2)*1.5;
+	#if MRT == 1
+	//ret.depth_normal.xy =  EncodeDepth(i.depth_normal.w);
+	//ret.depth_normal.zw =  EncodeNormal(normalize(i.depth_normal.xyz));
+	#endif
+	
+	return ret;
+}

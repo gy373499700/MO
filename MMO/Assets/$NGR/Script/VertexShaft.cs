@@ -128,7 +128,7 @@ public class VertexShaft : MonoBehaviour {
         newViewPort = viewport_center;
         return newworld;
     }
-    public float CullDistance = 1;//裁剪距离
+    public float CullDistance = 50;//裁剪距离
     public static void DrawAllLightShit(Camera MainCamera, RenderTexture currentRenderTarget, Material mat_VertexShaft, RenderTexture gbuffer, Vector4 InvViewport, Mesh quad, Mesh sphere,Texture x2,Vector4 farcorner )
     {//点光源 体积光
         for (int i = 0; i < m_list.Count; i++)

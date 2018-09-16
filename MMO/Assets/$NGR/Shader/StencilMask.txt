@@ -1,0 +1,8 @@
+128 	Lighting							
+64	UIMask
+32	Hair
+16	RimLight
+8	SSS		
+4	SelfIlumm	
+2	ActorWhite		
+1	Metal
