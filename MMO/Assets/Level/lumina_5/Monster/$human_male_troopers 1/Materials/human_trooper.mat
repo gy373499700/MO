@@ -36,7 +36,7 @@ Material:
       second: 1
     - first:
         name: _Roughness
-      second: 1
+      second: 0.5169489
     - first:
         name: _SmoothBase
       second: 0

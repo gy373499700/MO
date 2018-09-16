@@ -7,10 +7,10 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: human_gilliam
-  m_Shader: {fileID: 4800000, guid: b749399d65e431a4aa4223fd2d306462, type: 3}
+  m_Shader: {fileID: 4800000, guid: a736240cdcd17fa43a62e8434865f20c, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 1000
   stringTagMap: {}
   m_SavedProperties:
     serializedVersion: 2
@@ -35,11 +35,17 @@ Material:
         name: _Metal
       second: 1
     - first:
+        name: _RimPower
+      second: 1
+    - first:
         name: _Roughness
       second: 1
     - first:
         name: _SmoothBase
       second: 0.326
+    - first:
+        name: _Smoothness
+      second: 0
     m_Colors:
     - first:
         name: _AddColor
@@ -47,3 +53,6 @@ Material:
     - first:
         name: _Color
       second: {r: 1, g: 1, b: 1, a: 1}
+    - first:
+        name: _RimColor
+      second: {r: 0, g: 1, b: 1, a: 1}
