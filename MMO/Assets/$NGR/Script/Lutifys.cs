@@ -29,7 +29,8 @@ public class Lutifys : MonoBehaviour {
     static void FetchLuts()
     {
         string path = Application.dataPath + "/$NGR/lutify.txt";
-        string content = File.ReadAllText(path);
+        TextAsset asset = Resources.Load("lutify") as TextAsset;
+        string content = asset.text;// File.ReadAllText(path);
         string[] lines = content.Split('\n');//youhua
         if (lines.Length == 0)
             UnityEngine.Debug.Log("lines.Length == 0");

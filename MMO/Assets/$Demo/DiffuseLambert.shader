@@ -22,7 +22,7 @@
 
 			#include "CommonBRDF.cg"
 			#include "UnityCG.cginc"
-			#define PI 3.14159265f
+			//#define PI 3.14159265f
 			
 			struct appdata
 			{
