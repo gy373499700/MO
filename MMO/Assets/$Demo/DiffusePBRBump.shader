@@ -44,7 +44,7 @@
 				float3 view	: TEXCOORD3;
 				float4 sview	: TEXCOORD4;
 				float4 wpos			: TEXCOOR4;
-				float3 normal			: TEXCOOR3;
+				//float3 normal			: TEXCOOR3;
 			};
 			sampler2D _ShadowDepth;
 			sampler2D _SpecTex;

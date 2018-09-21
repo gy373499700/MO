@@ -51,6 +51,11 @@ public class MouseLook : MonoBehaviour {
             }
             else
             {
+                if (SceneRenderSetting._Setting && SceneRenderSetting._Setting.EnableReflect)
+                {
+                    transform.localRotation = Quaternion.identity;
+                    return;
+                }
                 rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
                 rotationY = Mathf.Clamp(rotationY, minimumY, maximumY);
 

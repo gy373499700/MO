@@ -13,7 +13,7 @@
 	SubShader
 	{
 		Tags { "RenderType"="OpaqueBump" }
-		LOD 100
+		LOD 100   
 		Pass
 		{//轮廓线渲染
 			Blend One One
@@ -52,7 +52,7 @@
 			float4 color = float4(0,0.05,0.05,1);
 			return color;
 		}
-			ENDCG
+		ENDCG
 		}
 		Pass
 		{ 
