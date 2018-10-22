@@ -277,9 +277,10 @@ public class BundleManager : Singleton<BundleManager>
             data = System.IO.File.ReadAllText(Application.streamingAssetsPath + "/AppVersion.txt");
         } 
         Version.LoadVersion(data);
+        Debug.Log(data);
         //version
         string MainBunldes = bundlePath + "Bundles";
-
+        Debug.Log(MainBunldes);
         AssetBundle manifestBundle = AssetBundle.LoadFromFile(MainBunldes);
         if (manifestBundle != null)
         {
@@ -303,7 +304,7 @@ public class BundleManager : Singleton<BundleManager>
             TFileInfo.LoadFileInfo(content, AllLoadedBundle);
         }else
         {
-            Debug.Log("No bunlde mode");
+            Debug.Log("No bunlde mode:" + MainBunldes);
         }
         //streamasset
   

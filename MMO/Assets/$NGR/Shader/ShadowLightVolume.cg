@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 #include "UnityCG.cginc"
 #include "LightCommon.cg"
 
@@ -36,7 +38,7 @@ v2f vert (appdata_img v)
 	pos.z*=-1;
 	#endif
 	#endif
-	o.pos = mul (UNITY_MATRIX_MVP,pos);
+	o.pos = UnityObjectToClipPos (pos);
 	o.proj_pos = o.pos;
 	float4 p = mul (UNITY_MATRIX_MV , float4(pos.xyz,1));
 	o.viewpos = p;

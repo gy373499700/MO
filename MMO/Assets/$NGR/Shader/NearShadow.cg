@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 #ifndef SHADOW_QUILITY
 #define SHADOW_QUILITY 0
 #endif
@@ -46,7 +48,7 @@ v2f vert(appdata_img v)
 	pos.z *= -1;
 #endif
 #endif
-	o.pos = mul(UNITY_MATRIX_MVP, pos);
+	o.pos = UnityObjectToClipPos(pos);
 	o.proj_pos = o.pos;
 	o.viewpos = o.pos;
 #if UNITY_UV_STARTS_AT_TOP

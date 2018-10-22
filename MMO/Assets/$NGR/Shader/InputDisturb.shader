@@ -72,7 +72,7 @@
 			struct v2f {
 				float4 pos : SV_POSITION;
 				float2 uv : TEXCOORD0;
-				float4 viewpos  : TEXCOORD1;
+			//	float4 viewpos  : TEXCOORD1;
 			};
 
 			v2f vert(appdata_full v)

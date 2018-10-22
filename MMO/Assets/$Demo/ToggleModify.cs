@@ -27,6 +27,7 @@ public class ToggleModify : MonoBehaviour {
         EnableDepth,
         EnableSSAOPro,
         EnableWaterReflect,
+        EnableWaterWave,
     }
     UIToggle toggle = null;
     public ToggleSelect m_toggle = ToggleSelect.None;
@@ -130,18 +131,40 @@ public class ToggleModify : MonoBehaviour {
         }
         else if (m_toggle == ToggleSelect.EnableSubWater)
         {
-            Water water = GameObject.Find("SceneObject/Water").GetComponent<Water>();
-            toggle.value = water.enableSubWater;
+            Transform waterp = GameObject.Find("SceneObject").transform;
+            Water water = waterp.Find("Water").GetComponent<Water>();
+            Water water2 = waterp.Find("Water2").GetComponent<Water>();
+            if(water.gameObject.activeInHierarchy)
+                toggle.value = water.enableSubWater;
+            else
+                toggle.value = water2.enableSubWater;
         }
-        else if (m_toggle == ToggleSelect.EnableSubgausitic)
+        else if (m_toggle == ToggleSelect.EnableSubgausitic)    
         {
-            Water water = GameObject.Find("SceneObject/Water").GetComponent<Water>();
-            toggle.value = water.enableCausitic;
+            Transform waterp = GameObject.Find("SceneObject").transform;
+            Water water = waterp.Find("Water").GetComponent<Water>();
+            Water water2 = waterp.Find("Water2").GetComponent<Water>();
+            if (water.gameObject.activeInHierarchy)
+                toggle.value = water.enableCausitic;
+            else
+                toggle.value = water2.enableCausitic;
         }
         else if (m_toggle == ToggleSelect.EnableWaterReflect)
         {
-            Water water = GameObject.Find("SceneObject/Water").GetComponent<Water>();
-            toggle.value = water.enableRefl;
+            Transform waterp = GameObject.Find("SceneObject").transform;
+            Water water = waterp.Find("Water").GetComponent<Water>();
+            Water water2 = waterp.Find("Water2").GetComponent<Water>();
+            if (water.gameObject.activeInHierarchy)
+                toggle.value = water.enableRefl;
+            else
+                toggle.value = water2.enableRefl;
+        }
+        else if (m_toggle == ToggleSelect.EnableWaterWave)
+        {
+            Transform waterp = GameObject.Find("SceneObject").transform;
+            Water water = waterp.Find("Water2").GetComponent<Water>();
+           // Water water = GameObject.Find("SceneObject/Water2").GetComponent<Water>();
+            toggle.value = water.gameObject.activeInHierarchy== true?true:false;
         }
     }
     // Update is called once per frame
@@ -231,18 +254,45 @@ public class ToggleModify : MonoBehaviour {
         }
         else if (m_toggle == ToggleSelect.EnableSubWater)
         {
-            Water water = GameObject.Find("SceneObject/Water").GetComponent<Water>();
+            Transform waterp = GameObject.Find("SceneObject").transform;
+            Water water = waterp.Find("Water").GetComponent<Water>();
+            Water water2 = waterp.Find("Water2").GetComponent<Water>();
             water.enableSubWater=toggle.value;
+            water2.enableSubWater = toggle.value;
         }
         else if (m_toggle == ToggleSelect.EnableSubgausitic)
         {
-            Water water = GameObject.Find("SceneObject/Water").GetComponent<Water>();
+            Transform waterp = GameObject.Find("SceneObject").transform;
+            Water water = waterp.Find("Water").GetComponent<Water>();
+            Water water2 = waterp.Find("Water2").GetComponent<Water>();
             water.enableCausitic = toggle.value;
+            water2.enableCausitic = toggle.value;
         }
         else if (m_toggle == ToggleSelect.EnableWaterReflect)
         {
-            Water water = GameObject.Find("SceneObject/Water").GetComponent<Water>();
+            Transform waterp = GameObject.Find("SceneObject").transform;
+            Water water = waterp.Find("Water").GetComponent<Water>();
+            Water water2 = waterp.Find("Water2").GetComponent<Water>();
             water.enableRefl = toggle.value;
+            water2.enableRefl = toggle.value;
+        }
+        else if (m_toggle == ToggleSelect.EnableWaterWave)
+        {
+            Transform waterp = GameObject.Find("SceneObject").transform;
+            Water water = waterp.Find("Water").GetComponent<Water>();
+            Water water2 = waterp.Find("Water2").GetComponent<Water>();
+            if (toggle.value)
+            {
+                water.gameObject.SetActive(false);
+                water2.gameObject.SetActive(true);
+            }
+            else
+            {
+                water.gameObject.SetActive(true);
+                water2.gameObject.SetActive(false);
+            }
+         
+           // water.type = toggle.value? Water.WaterType.ocean: Water.WaterType.lake;
         }
     }
 }

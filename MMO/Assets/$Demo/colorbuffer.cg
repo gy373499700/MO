@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 // Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
 
 #include "UnityCG.cginc"
@@ -121,10 +123,10 @@ v2f vert(appdata_full v)
 	#else
 		#if TREE_LEAF == 1
 		float4 localpos = float4(CalcLeafPos(v.vertex.xyz,v.normal.xyz),1);
-		o.pos = mul(UNITY_MATRIX_MVP,localpos);
+		o.pos = UnityObjectToClipPos(localpos);
 		view_dir = normalize(mul(UNITY_MATRIX_MV,localpos).xyz);
 		#else
-		o.pos = mul(UNITY_MATRIX_MVP,v.vertex);
+		o.pos = UnityObjectToClipPos(v.vertex);
 		view_dir = normalize(mul(UNITY_MATRIX_MV,v.vertex).xyz);
 		#endif
 	#endif

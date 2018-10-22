@@ -1,4 +1,6 @@
-﻿Shader "Unlit/DiffusePBR"
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Unlit/DiffusePBR"
 {//old ds cooktorrrance
 	Properties
 	{
@@ -67,7 +69,7 @@
 			{
 				v2f o;
 
-				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.uv.xy = TRANSFORM_TEX(v.uv, _MainTex);
 
 				float4 veiw = mul(UNITY_MATRIX_MV, v.vertex);

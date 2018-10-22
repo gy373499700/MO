@@ -1,4 +1,6 @@
-﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
 // Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
 
 Shader "Unlit/VertexShaft"
@@ -60,7 +62,7 @@ Shader "Unlit/VertexShaft"
 
 				v.vertex.xyz += v.normal*0.1f;
 				v.vertex.xyz -= lightDir*factorvalue*_Offset;
-				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+				o.vertex = UnityObjectToClipPos(v.vertex);
 
 				return o; 
 			}
@@ -104,7 +106,7 @@ Shader "Unlit/VertexShaft"
 			struct appdata
 			{
 				float4 vertex : POSITION;
-				float2 uv : TEXCOORD0;
+				//float2 uv : TEXCOORD0;
 			};
 
 			struct v2f
@@ -116,7 +118,7 @@ Shader "Unlit/VertexShaft"
 			v2f vert(appdata v)
 			{
 				v2f o;
-				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+				o.vertex = UnityObjectToClipPos(v.vertex);
 
 				return o;
 			}
@@ -162,7 +164,7 @@ Shader "Unlit/VertexShaft"
 			v2f vert(appdata v)
 			{
 				v2f o;
-				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+				o.vertex = UnityObjectToClipPos(v.vertex);
 
 				return o;
 			}
@@ -273,7 +275,7 @@ Shader "Unlit/VertexShaft"
 				struct appdata
 				{
 					float4 vertex : POSITION;
-					float2 uv : TEXCOORD0;
+					//float2 uv : TEXCOORD0;
 				};
 
 				struct v2f

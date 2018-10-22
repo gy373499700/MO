@@ -18,6 +18,10 @@ public class PropertyModify : MonoBehaviour {
         LutifyColor,
         LutifyAphpa,
         ShadowLevel,
+        BloomLuminance,
+        BloomRadius,
+        BloomDownSize,
+        BloomTime,
     }
     public float RangeSize = 1f;
     UISlider slider = null;
@@ -70,7 +74,23 @@ public class PropertyModify : MonoBehaviour {
         }
         else if (property == Property.BloomIntensity)
         {
+            slider.value = SceneRenderSetting._Setting.BloomIntersity / RangeSize;
+        }
+        else if (property == Property.BloomLuminance)
+        {
             slider.value = SceneRenderSetting._Setting.BloomLuminance / RangeSize;
+        }
+        else if (property == Property.BloomRadius)
+        {
+            slider.value = SceneRenderSetting._Setting.GaussRadius / RangeSize;
+        }
+        else if (property == Property.BloomDownSize)
+        {
+            slider.value = SceneRenderSetting._Setting.GaussDownSize / RangeSize;
+        }
+        else if (property == Property.BloomTime)
+        {
+            slider.value = SceneRenderSetting._Setting.GaussTime / RangeSize;
         }
         else if (property == Property.SunShaftSize)
         {
@@ -129,7 +149,27 @@ public class PropertyModify : MonoBehaviour {
         }
         else if (property == Property.BloomIntensity)
         {
-            SceneRenderSetting._Setting.BloomLuminance = slider.value * RangeSize;
+             SceneRenderSetting._Setting.BloomIntersity = slider.value * RangeSize;
+        }
+        else if (property == Property.BloomLuminance)
+        {
+             SceneRenderSetting._Setting.BloomLuminance = slider.value * RangeSize;
+        }
+        else if (property == Property.BloomRadius)
+        {
+            SceneRenderSetting._Setting.GaussRadius = slider.value * RangeSize;
+        }
+        else if (property == Property.BloomDownSize)
+        {
+           SceneRenderSetting._Setting.GaussDownSize = (int)(slider.value * RangeSize);
+            if (SceneRenderSetting._Setting.GaussDownSize == 0)
+                SceneRenderSetting._Setting.GaussDownSize = 1;
+        }
+        else if (property == Property.BloomTime)
+        {
+            SceneRenderSetting._Setting.GaussTime = (int)(slider.value * RangeSize);
+            if (SceneRenderSetting._Setting.GaussTime == 0)
+                SceneRenderSetting._Setting.GaussTime = 1;
         }
         else if (property == Property.SunShaftSize)
         {

@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 Shader "SD/SoftParticle/EnergyBall_Blend"
 {
 	Properties 
@@ -72,7 +74,7 @@ Shader "SD/SoftParticle/EnergyBall_Blend"
 			v2f vert(appdata_full v)
 			{
 				v2f o;
-				o.pos = mul(UNITY_MATRIX_MVP,v.vertex);
+				o.pos = UnityObjectToClipPos(v.vertex);
 				o.uv.xy = TRANSFORM_TEX(v.texcoord,_MainTex);
 				o.uv.y	-=	_Speed*_Time.x;
 				o.uv.zw	=	TRANSFORM_TEX(v.texcoord,_Blend_Texture);

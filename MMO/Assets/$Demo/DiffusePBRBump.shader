@@ -1,4 +1,6 @@
-﻿Shader "Unlit/DiffusePBRBump"
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Unlit/DiffusePBRBump"
 {//old ds cooktorrrance
 	Properties
 	{
@@ -25,7 +27,7 @@
 
 			#include "CommonBRDF.cg" 
 			#include "UnityCG.cginc"
-#pragma multi_compile Shadow_Off Shadow_Low Shadow_Mid Shadow_High
+#pragma multi_compile   Shadow_Low Shadow_Mid Shadow_High
 			
 			struct appdata
 			{
@@ -43,7 +45,7 @@
 				float4 tangent		: TEXCOORD2;
 				float3 view	: TEXCOORD3;
 				float4 sview	: TEXCOORD4;
-				float4 wpos			: TEXCOOR4;
+				//float4 wpos			: TEXCOOR5;
 				//float3 normal			: TEXCOOR3;
 			};
 			sampler2D _ShadowDepth;
@@ -73,7 +75,7 @@
 				v2f o;
 				//float4 localpos = float4(CalcLeafPos(v.vertex.xyz, v.normal.xyz), 1);
 				//o.vertex = mul(UNITY_MATRIX_MVP, localpos);
-				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.uv.xy = TRANSFORM_TEX(v.uv, _MainTex);
 
 				float4 veiw = mul(UNITY_MATRIX_MV, v.vertex);
@@ -86,8 +88,8 @@
 				//o.tangent = v.tangent;
 				o.tangent = float4((normalize(mul((float3x3)UNITY_MATRIX_MV, v.tangent.xyz))), v.tangent.w);
 				float3 normal = normalize(mul(unity_ObjectToWorld, float4(v.normal, 0)).xyz);
-				o.wpos = mul(unity_ObjectToWorld, v.vertex);
-				float4 shadow_pos = mul(_ShadowView, o.wpos + float4(normal.xyz*0.07f, 0));
+				float4 wpos = mul(unity_ObjectToWorld, v.vertex);
+				float4 shadow_pos = mul(_ShadowView, wpos + float4(normal.xyz*0.07f, 0));
 				float4 shadowproj = mul(_ShadowProj, shadow_pos);
 				shadowproj /= shadowproj.w;
 				if (abs(shadowproj.x)>1.0f || abs(shadowproj.y)>1.0f)

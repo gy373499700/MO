@@ -1,4 +1,6 @@
-﻿Shader "GDShader/ScreenDisturbance" {
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "GDShader/ScreenDisturbance" {
 	Properties {
 
 		//_Depth ("Depth", 2D) = "white" {}
@@ -49,7 +51,7 @@
 			v2f vert(appdata_full v)
 			{
 				v2f o;
-				o.pos		=	mul(UNITY_MATRIX_MVP,float4(v.vertex.xyz,1.0f));
+				o.pos		=	UnityObjectToClipPos(float4(v.vertex.xyz,1.0f));
 				o.normal.xyz	=	mul((float3x3)UNITY_MATRIX_MV,v.normal);
 				o.viewpos	=	mul(UNITY_MATRIX_MV,float4(v.vertex.xyz,1.0f));
 				o.uv	=	float4(TRANSFORM_TEX(v.texcoord,_MainTex),o.pos.xy);

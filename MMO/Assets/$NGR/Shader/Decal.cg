@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 #include "UnityCG.cginc"
 
 #ifndef OUTPUT_DIFFUSE
@@ -22,7 +24,7 @@ struct v2f{
 v2f vert(appdata_full v)
 {
 	v2f o;
-	o.pos = mul(UNITY_MATRIX_MVP,float4(v.vertex.xyz,1.0f));//*_LightPos.w);//*_LightPos.w+float4(_LightPos.xyz,0));
+	o.pos = UnityObjectToClipPos(float4(v.vertex.xyz,1.0f));//*_LightPos.w);//*_LightPos.w+float4(_LightPos.xyz,0));
 	o.proj_pos	=	o.pos;
 	o.proj_pos.y *= _FarCorner.w;
 	return o;

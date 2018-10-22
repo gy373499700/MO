@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 #include "UnityCG.cginc"
 #include "LightCommon.cg"
 #include "CalcShadow.cg"
@@ -31,7 +33,7 @@ v2f vert(appdata_full v)
 	v2f o;
 
 
-	o.pos = mul(UNITY_MATRIX_MVP,v.vertex);
+	o.pos = UnityObjectToClipPos(v.vertex);
 	o.uv = TRANSFORM_TEX(v.texcoord,_MainTex);
 	o.normal = normalize(mul(UNITY_MATRIX_MV,float4(v.normal.xyz,0)).xyz);
 	o.viewpos = mul(UNITY_MATRIX_MV,v.vertex);

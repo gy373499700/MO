@@ -624,6 +624,7 @@ public class Water : MonoBehaviour {
                 }
                 else
                 {
+                    mat_ScreenWater.SetTexture("_CausticsTex", null);
                     mat_ScreenWater.DisableKeyword("USE_Caustics");
                 }
 

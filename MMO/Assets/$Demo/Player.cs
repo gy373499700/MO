@@ -27,7 +27,10 @@ public class Player :MonoBehaviour {
         }
 
     }
-	
+    public float maxZ = -2;
+    public float minZ = -5;
+    public float Z = 0f;
+    public float sensitive = 1f;
 	// Update is called once per frame
 	void Update () {
 
@@ -48,5 +51,14 @@ public class Player :MonoBehaviour {
             if (blur && blur.activeSelf)
                 blur.SetActive(false);
         }
-	}
+
+
+        var scaleFactor = Input.GetAxis("Mouse ScrollWheel");
+        if (scaleFactor != 0)
+        {
+            Z += scaleFactor * sensitive;
+            Z = Mathf.Clamp(Z, minZ, maxZ);
+            SceneRenderSetting._Setting.transform.localPosition = new Vector3(0, 0.5f, Z);
+        }
+    }
 }

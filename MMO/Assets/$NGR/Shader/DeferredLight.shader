@@ -1,4 +1,6 @@
-﻿Shader "GDShader/DeferredLight" {
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "GDShader/DeferredLight" {
 	Properties {
 		//_MainTex ("Base (RGB)", 2D) = "white" {}
 	}
@@ -44,7 +46,7 @@
 			v2f vert(appdata_full v)
 			{
 				v2f o;
-				o.pos = mul(UNITY_MATRIX_MVP,float4(v.vertex.xyz*_LightPos.w*2,1.0f));//*_LightPos.w);//*_LightPos.w+float4(_LightPos.xyz,0));
+				o.pos = UnityObjectToClipPos(float4(v.vertex.xyz*_LightPos.w*2,1.0f));//*_LightPos.w);//*_LightPos.w+float4(_LightPos.xyz,0));
 	
 				o.lightpos  =	_LightPos;
 				o.proj_pos	=	o.pos;

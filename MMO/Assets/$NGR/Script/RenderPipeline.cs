@@ -1925,7 +1925,11 @@ public class RenderPipeline : MonoBehaviour
             shadowCameraNear.RenderWithShader(ShadowDepthShader, "RenderType");
             NearStaticDepthRefresh = false;
         }
-
+        if (matDepthCombine == null)
+        {
+            Debug.LogError(1);
+            return;
+        }
         shadowCameraNear.targetTexture = null;
         shadowCameraNear.SetTargetBuffers(shadow_depth0.colorBuffer, shadow_depth0.depthBuffer);
         shadowCameraNear.clearFlags = CameraClearFlags.Depth;

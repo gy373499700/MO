@@ -1,0 +1,126 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1000011015818892}
+  m_IsPrefabParent: 1
+--- !u!1 &1000011015818892
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 4000010977361838}
+  - 114: {fileID: 114000013903057126}
+  m_Layer: 0
+  m_Name: Water2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4000010977361838
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011015818892}
+  m_LocalRotation: {x: 0.7071069, y: -0, z: -0, w: 0.70710677}
+  m_LocalPosition: {x: -25.799995, y: -2.23, z: -141.1}
+  m_LocalScale: {x: 450.3, y: 400.00037, z: 421.90036}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+--- !u!114 &114000013903057126
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011015818892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6eb8f38a6f40f64c82522db62c65241, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: {r: 0.38235295, g: 1, b: 0.9744421, a: 1}
+  deepcolor: {r: 0.0099481065, g: 0.40066817, b: 0.6764706, a: 0.5}
+  reflectColor: {r: 0.102941155, g: 1, b: 0.96288043, a: 1}
+  renderMesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+  _NormalTex: {fileID: 2800000, guid: 10552f228793e214f8a86b6f9d9f94ba, type: 3}
+  CausticsLerp: 0.378
+  _CausticsTex:
+  - {fileID: 2800000, guid: 8f73045fe260a1b41ae0ed08a11e457e, type: 3}
+  - {fileID: 2800000, guid: c8b867a657471694eae2acc00ea55976, type: 3}
+  - {fileID: 2800000, guid: 9eed4b32fc2c97740afc9605182cf083, type: 3}
+  - {fileID: 2800000, guid: 0216273286a10084fac53723c9ecacd1, type: 3}
+  - {fileID: 2800000, guid: 59269c1e312e40b448a947ea11cea0a5, type: 3}
+  - {fileID: 2800000, guid: 9d0549a3e382aaf4aaea898c0a9abf5a, type: 3}
+  - {fileID: 2800000, guid: d9c43f0d593dd934f8cf2def7af9f3b5, type: 3}
+  - {fileID: 2800000, guid: d34facf38d34f1f4db6826b932a74230, type: 3}
+  - {fileID: 2800000, guid: 405401a744f104e42a555150861e5e34, type: 3}
+  - {fileID: 2800000, guid: b59c3deaa7ab1444b87cb94c44c643b2, type: 3}
+  - {fileID: 2800000, guid: 121a9c48e4ac69646bbc67f6cd91a2f2, type: 3}
+  - {fileID: 2800000, guid: 07dd37a6193d0c142bd009e2c5bc7c77, type: 3}
+  - {fileID: 2800000, guid: bc3c0b0789d5d6341993be892eaa3cb7, type: 3}
+  - {fileID: 2800000, guid: 17b957b7c4a6063428d33b48d5d982d2, type: 3}
+  - {fileID: 2800000, guid: 20838e709e7126f46a68a17e7059f12d, type: 3}
+  - {fileID: 2800000, guid: b25dea0e72de7e04c90ca6c09a69d217, type: 3}
+  refract_scale: 1.41
+  water_fog_distance: 6
+  water_fog_y_depth: 2
+  water_refract_y_depth: 2
+  frenel_scale: 1.82
+  first_wave_scale: 0.1
+  first_wave_speed: 2
+  second_wave_scale: 0.6
+  second_wave_speed: 2
+  wave_dir: {x: 1.5, y: 2}
+  use_mesh_normal: 1
+  enableRefl: 0
+  enableReflShield: 0
+  cylinderList: []
+  sphereList: []
+  enableWave: 1
+  enableSubWater: 1
+  enableCausitic: 1
+  type: 0
+  ScreenDistort: 1
+  ScreenWaterMaxDis: 20
+  ScreenWaterMinDis: 10
+  subwaterPlaneFogSpeed: {x: 0.1, y: 0, z: 0}
+  subwaterFogNoise: {fileID: 0}
+  _GerstnerIntensity: 1
+  _GSpeed: {x: 2.33, y: 2.38, z: 2.7, w: 2.42}
+  _GAmplitude: {x: 0.13, y: 0.06, z: 0.12, w: 0.12}
+  _GFrequency: {x: 1.72, y: 1.02, z: 1.95, w: 1.46}
+  _GSteepness: {x: 1, y: 1, z: 1, w: 1}
+  _GDirectionAB: {x: 1, y: 0, z: 0.51, w: -1.39}
+  _GDirectionCD: {x: -0.29, y: 0.44, z: -0.77, w: 0.14}
+  _OceanParams0: {x: 1, y: 1, z: 1, w: 1}
+  _AnimGenParams: 1
+  _FlowDir: {x: 1, y: 1, z: 3, w: 4}
+  customMesh: 1
+  dirMode: 0
+  row: 70
+  column: 70
+  followMode: 2
+  bActiveFollowCam: 1
+  validSize: 50
+  extendEdge: 1
+  noWaveSize: 300
+  xMove: 1
+  yMove: 1
+  zMove: 0
+  reflectionPlaneOffset: 0.07
+  customWaterNormal: 0
+  waterNormal: {x: 0, y: 1, z: 0}
+  debugMesh: 0

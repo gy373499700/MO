@@ -1,4 +1,6 @@
-﻿Shader "GDShader/GI_FinalGather"
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "GDShader/GI_FinalGather"
 {
 	Properties
 	{
@@ -39,7 +41,7 @@
 			v2f vert (appdata_img v)
 			{
 				v2f o;
-				o.pos = mul (UNITY_MATRIX_MVP, v.vertex);
+				o.pos = UnityObjectToClipPos (v.vertex);
 				o.uv = v.texcoord;
 				o.corner = float4(v.texcoord*2-1,1,1)*farCorner;//0-1to-1 ,1 because of no drawmesh
 				return o;

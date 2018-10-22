@@ -1,4 +1,6 @@
-﻿Shader "Unlit/DiffusePBRBumpMainChar"
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Unlit/DiffusePBRBumpMainChar"
 {//old ds cooktorrrance
 	Properties
 	{
@@ -39,12 +41,12 @@
 
 		struct v2f {
 			float4  pos : SV_POSITION;
-			float4  color:COLOR;
+			//float4  color:COLOR;
 		};
 		v2f vert(appdata_t v)
 		{
 			v2f o;
-			o.pos = mul(UNITY_MATRIX_MVP,v.vertex);
+			o.pos = UnityObjectToClipPos(v.vertex);
 			return o;
 		}
 		float4 frag(v2f i) : COLOR
@@ -82,8 +84,8 @@
 				float4 tangent		: TEXCOORD2;
 				float3 view	: TEXCOORD3;
 				float4 sview	: TEXCOORD4;
-				float4 wpos			: TEXCOOR4;
-				float3 normal			: TEXCOOR3;
+				//float4 wpos			: TEXCOOR4;
+			//	float3 normal			: TEXCOOR3;
 			};
 			sampler2D _ShadowDepth;
 			sampler2D _SpecTex;
@@ -112,7 +114,7 @@
 				v2f o;
 				//float4 localpos = float4(CalcLeafPos(v.vertex.xyz, v.normal.xyz), 1);
 				//o.vertex = mul(UNITY_MATRIX_MVP, localpos);
-				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.uv.xy = TRANSFORM_TEX(v.uv, _MainTex);
 
 				float4 veiw = mul(UNITY_MATRIX_MV, v.vertex);
@@ -125,8 +127,8 @@
 				//o.tangent = v.tangent;
 				o.tangent = float4((normalize(mul((float3x3)UNITY_MATRIX_MV, v.tangent.xyz))), v.tangent.w);
 				float3 normal = normalize(mul(unity_ObjectToWorld, float4(v.normal, 0)).xyz);
-				o.wpos = mul(unity_ObjectToWorld, v.vertex);
-				float4 shadow_pos = mul(_ShadowView, o.wpos + float4(normal.xyz*0.07f, 0));
+				float4 wpos = mul(unity_ObjectToWorld, v.vertex);
+				float4 shadow_pos = mul(_ShadowView, wpos + float4(normal.xyz*0.07f, 0));
 				float4 shadowproj = mul(_ShadowProj, shadow_pos);
 				shadowproj /= shadowproj.w;
 				if (abs(shadowproj.x)>1.0f || abs(shadowproj.y)>1.0f)

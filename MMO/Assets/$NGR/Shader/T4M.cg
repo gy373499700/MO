@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 
 #ifndef T4M_AO
 #define T4M_AO 0
@@ -89,7 +91,7 @@ v2f vert(appdata_full v)
 	v2f o;
 	float3 view_dir = 0;
 
-	o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+	o.pos = UnityObjectToClipPos(v.vertex);
 	view_dir = normalize(mul(UNITY_MATRIX_MV, v.vertex).xyz);
 
 	o.pos.xy += _AAOffset.xy*o.pos.w;
@@ -166,7 +168,7 @@ mrt_v2f mrt_vert(appdata_full v)
 			mrt_v2f o;
 			float3 view_dir = 0;
 
-			o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+			o.pos = UnityObjectToClipPos(v.vertex);
 			float4 view_pos = mul(UNITY_MATRIX_MV, v.vertex);
 			view_dir = normalize(view_pos.xyz);
 

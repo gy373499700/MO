@@ -1,4 +1,6 @@
-﻿Shader "Unlit/ScreenRain"
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Unlit/ScreenRain"
 {
 	Properties
 	{
@@ -32,7 +34,7 @@
 	{
 		float2 uv : TEXCOORD0;
 		float4 pos : SV_POSITION;
-		float4 wpos : TEXCOORD1;
+		//float4 wpos : TEXCOORD1;
 		float4 proj_pos : TEXCOORD2;
 	};
 	sampler2D	_RainTexture;
@@ -46,7 +48,7 @@
 	{
 
 		v2f o;
-		o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+		o.pos = UnityObjectToClipPos(v.vertex);
 		o.uv = TRANSFORM_TEX(v.uv, _RainTexture);
 		o.proj_pos = o.pos;
 #if SHADER_API_GLES || SHADER_API_GLES3

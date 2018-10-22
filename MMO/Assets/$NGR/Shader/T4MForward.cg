@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 // Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
 
 
@@ -95,7 +97,7 @@ mrt_v2f mrt_vert(appdata_full v)
 		{
 			mrt_v2f o;
 
-			o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+			o.pos = UnityObjectToClipPos(v.vertex);
 
 
 			o.pos.xy += _AAOffset.xy*o.pos.w;

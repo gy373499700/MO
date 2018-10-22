@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 // Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
 
 // Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
@@ -203,7 +205,7 @@
 					#endif
 				o.pos		=	mul(UNITY_MATRIX_VP,float4(worldSpaceVertex + offset, 1.0f));
 				#else
-				o.pos		=	mul(UNITY_MATRIX_MVP,float4(v.vertex.xyz,1.0f));//*_LightPos.w);//*_LightPos.w+float4(_LightPos.xyz,0));
+				o.pos		=	UnityObjectToClipPos(float4(v.vertex.xyz,1.0f));//*_LightPos.w);//*_LightPos.w+float4(_LightPos.xyz,0));
 				#endif
 				
 
@@ -373,7 +375,7 @@ float4 AmbientColor;
 			forward_v2f forward_vert(appdata_full v)
 			{
 				forward_v2f o;
-				o.pos		=	mul(UNITY_MATRIX_MVP,v.vertex);
+				o.pos		=	UnityObjectToClipPos(v.vertex);
 				o.normal.xyz	=	normalize(mul((float3x3)unity_ObjectToWorld,v.normal));
 				o.wpos	=	mul(unity_ObjectToWorld,v.vertex);
 

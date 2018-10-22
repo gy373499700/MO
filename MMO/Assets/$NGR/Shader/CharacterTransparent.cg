@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 #include "UnityCG.cginc"
 
 
@@ -17,7 +19,7 @@ float4 _MainTex_ST;
 v2f vert(appdata v)
 {
 	v2f o;
-	o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+	o.vertex = UnityObjectToClipPos(v.vertex);
 //	float3 viewdir = normalize(ObjSpaceViewDir(v.vertex));
 //	float t = 1 - saturate(dot(viewdir,v.normal));
 //	o.color = _TColor*pow(t,_TPower);

@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 // Upgrade NOTE: replaced '_GUIClipTextureMatrix' with 'unity_GUIClipTextureMatrix'
 
 // Lutify - Unity Asset
@@ -36,7 +38,7 @@ float4 _FrameColor;
 v2f vert_preview(appdata_t v)
 {
 	v2f o;
-	o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+	o.vertex = UnityObjectToClipPos(v.vertex);
 	float4 eyePos = mul(UNITY_MATRIX_MV, v.vertex);
 	o.clipUV = mul(unity_GUIClipTextureMatrix, eyePos);
 	o.color = v.color;
