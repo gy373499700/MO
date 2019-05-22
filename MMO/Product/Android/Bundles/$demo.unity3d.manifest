@@ -1,0 +1,93 @@
+ManifestFileVersion: 0
+CRC: 3884897509
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 011a1642e3422a3503ca7b971c3ce2b8
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 19711c90f806c7fd7dc5cdd91d99d7b9
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 90
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 109
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: b6eb8f38a6f40f64c82522db62c65241, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+Assets:
+- Assets/$Demo/beach_sea_05.FBX
+- Assets/$Demo/caustics/c1_015.bmp
+- Assets/$Demo/DiffusePBRBump.shader
+- Assets/$Demo/grass.cg
+- Assets/$Demo/caustics/c1_004.bmp
+- Assets/$Demo/caustics/c1_003.bmp
+- Assets/$Demo/tree/cardia_natural_palmtree01_02.png
+- Assets/$Demo/caustics/gausitic.png
+- Assets/$Demo/DiffuseTreeLeaf.shader
+- Assets/$Demo/colorbuffer.cg
+- Assets/$Demo/caustics/c1_006.bmp
+- Assets/$Demo/DiffuseAnisoPBR.shader
+- Assets/$Demo/caustics/c1_008.bmp
+- Assets/$Demo/PBRShader.shader
+- Assets/$Demo/Materials/lambert1.mat
+- Assets/$Demo/tree/Materials/cardia_natural_palmtree01_01.mat
+- Assets/$Demo/CommonBRDF.cg
+- Assets/$Demo/BRDF.cg
+- Assets/$Demo/caustics/c1_012.bmp
+- Assets/$Demo/caustics/c1_002.bmp
+- Assets/$Demo/df_beach_grass01_01_NRM.png
+- Assets/$Demo/caustics/c1_013.bmp
+- Assets/$Demo/df_city_natural_flower02_01_t01.tga
+- Assets/$Demo/caustics/c1_009.bmp
+- Assets/$Demo/caustics/c1_014.bmp
+- Assets/$Demo/caustics/c1_011.bmp
+- Assets/$Demo/fog_noise.jpg
+- Assets/$Demo/water_noise.jpg
+- Assets/$Demo/RainDone.fbx
+- Assets/$Demo/df_beach_grass01_01.png
+- Assets/$Demo/Hair.mat
+- Assets/$Demo/Water.prefab
+- Assets/$Demo/caustics/c1_010.bmp
+- Assets/$Demo/df_city_natural_flower01_01_t01.png
+- Assets/$Demo/DiffuseLambert.shader
+- Assets/$Demo/tree/cardia_natural_palmtree01_02.FBX
+- Assets/$Demo/raintexture_05.tif
+- Assets/$Demo/DiffuseAnisoHair.shader
+- Assets/$Demo/caustics/c1_007.bmp
+- Assets/$Demo/DiffusePBRBumpTemp.shader
+- Assets/$Demo/grass.mat
+- Assets/$Demo/caustics/c1_016.bmp
+- Assets/$Demo/caustics/c1_005.bmp
+- Assets/$Demo/sky.jpg
+- Assets/$Demo/tree/Materials/cardia_natural_palmtree01_02.mat
+- Assets/$Demo/DiffusePBR.shader
+- Assets/$Demo/burn_noise.png
+- Assets/$Demo/tree/cardia_natural_palmtree01_01.png
+- Assets/$Demo/caustics/c1_001.bmp
+- Assets/$Demo/LightCommon.cg
+- Assets/$Demo/Materials/df_beach_sand01_01.mat
+- Assets/$Demo/DiffuseOITGrass.shader
+Dependencies:
+- E:/Github/trunk/MMO/Bundles/$ngr.unity3d
+- E:/Github/trunk/MMO/Bundles/level/lumina_5/$mdl_lumina_1.unity3d

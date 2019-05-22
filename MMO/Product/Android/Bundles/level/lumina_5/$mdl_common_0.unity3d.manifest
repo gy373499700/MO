@@ -1,0 +1,41 @@
+ManifestFileVersion: 0
+CRC: 1147966936
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: dd1d94625c1df838d6d82ce6e4ca4c73
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: abdc221228d58d40c2a5eacc347a7bee
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 64
+  Script: {instanceID: 0}
+- Class: 90
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+Assets:
+- Assets/Level/lumina_5/$Mdl_common_0/collisionB.FBX
+- Assets/Level/lumina_5/$Mdl_common_0/Materials/Collision.mat
+- Assets/Level/lumina_5/$Mdl_common_0/collisionA.FBX
+- Assets/Level/lumina_5/$Mdl_common_0/collisionG.FBX
+- Assets/Level/lumina_5/$Mdl_common_0/collisionF.FBX
+- Assets/Level/lumina_5/$Mdl_common_0/collisionD.FBX
+- Assets/Level/lumina_5/$Mdl_common_0/collisionC.FBX
+- Assets/Level/lumina_5/$Mdl_common_0/collisionE.FBX
+Dependencies: []

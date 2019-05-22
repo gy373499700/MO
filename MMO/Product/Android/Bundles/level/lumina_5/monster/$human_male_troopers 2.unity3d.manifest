@@ -1,0 +1,43 @@
+ManifestFileVersion: 0
+CRC: 2288459955
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 824f905b6c9ce18874386c5b6ffaab84
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 43cce5ff9319da244aa39cdf95ed1b75
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 90
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+Assets:
+- Assets/Level/lumina_5/Monster/$human_male_troopers 2/human_male_troopers.FBX
+- Assets/Level/lumina_5/Monster/$human_male_troopers 2/human_male_troopers.prefab
+- Assets/Level/lumina_5/Monster/$human_male_troopers 2/Materials/human_trooper.mat
+- Assets/Level/lumina_5/Monster/$human_male_troopers 2/human_trooper.png
+- Assets/Level/lumina_5/Monster/$human_male_troopers 2/human_male_troopers_idle.FBX
+- Assets/Level/lumina_5/Monster/$human_male_troopers 2/human_male_troopers.controller
+Dependencies:
+- E:/Github/trunk/MMO/Bundles/$demo.unity3d
+- E:/Github/trunk/MMO/Bundles/level/lumina_5/monster/$human_male_troopers.unity3d

@@ -1,0 +1,144 @@
+ManifestFileVersion: 0
+CRC: 2932102400
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 55325ee4724157bd64869c1b1ab8c2bf
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 8dfa43883791053e1460bce78c619f8a
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 64
+  Script: {instanceID: 0}
+- Class: 90
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+Assets:
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/gray.tga
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_natural_rock_medium_p2.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/Materials/lumina_sky.mat
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/df_lumina_terrain_01.png
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/Materials/df_lumina_entrance_t04.mat
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/df_lumina_object_shopprop_N.tga
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_natural_rock_small_p3.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/df_lumina_entrance_t04.png
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/df_lumina_entrance_t02.png
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_natural_rock_medium_p1.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/df_lumina_bottom_road01.png
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_trim_base4_p2_01.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/df_lumina_natural_rock_01_N.tga
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_entrance.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/df_lumina_terrain_03_N.tga
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/Materials/df_lumina_trim_base01_b.mat
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/Materials/df_lumina_natural_rock_01b.mat
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/df_lumina_object_shopprop.png
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/df_lumina_stair_base01.png
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_object_fencesmall01_04.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_dixing_7F.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/lumina_sky_02.png
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_dixing_1F.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/Materials/df_lumina_construct_trimprop01.mat
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/df_lumina_object_human_wall_01_t01_N.tga
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_construct_trimadd_03.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/df_lumina_terrain_02.png
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_sky_02.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/Materials/New Material 1.mat
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/Materials/df_lumina_trim_base01.mat
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_dixing_zhanyi01_shuimian.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_object_human_barricade_01.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/df_lumina_terrain_03.png
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_trim_base4_p1_left.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/df_lumina_stair_base3_wood.png
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_dixing_zhanyi01.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/df_lumina_object_fencesmall01_01_N.tga
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/df_lumina_entrance_t06.png
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/Materials/df_lumina_entrance_t01.mat
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_stair_base2_p2_03.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/Materials/df_lumina_entrance_t02.mat
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/df_lumina_object_human_wall_01_t01.png
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_stair_base2_p1_01_col.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_trim_base4_p1_02.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/lumina_sky.png
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_object_human_wall_01.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/df_lumina_trim_base01.png
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_stair_base2_p2_02.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/Materials/lumina_sky_02.mat
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/Materials/df_lumina_terrain_03.mat
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/df_lumina_construct_trimprop01_N.tga
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/Materials/df_lumina_entrance_t06.mat
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_trim_convex_p2_01.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/df_lumina_stair_base01_N.tga
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_construct_campshop01_02.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/df_lumina_entrance_t01.png
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/Materials/df_lumina_water01.mat
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/Materials/df_lumina_stair_base01.mat
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/Activities_Lumina_all.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/Materials/df_lumina_natural_rock_02.mat
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/Materials/df_lumina_construct_campshop01_02.mat
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/Materials/df_lumina_natural_rock_01.mat
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/Materials/df_lumina_terrain_02.mat
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_object_fencesmall01_03.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_natural_rock_small_p2.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/Materials/df_lumina_bottom_road01.mat
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/df_lumina_construct_trimprop01.png
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/df_lumina_construct_campshop01_02_N.tga
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_object_fencesmall01_02.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/df_lumina_trim_base01_N.tga
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_construct_trimadd_02.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_sky.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_trim_base4_p1_01.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_stair_base2_p2_02_col.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/Materials/df_lumina_stair_base3_wood.mat
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_natural_rock_large01.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/Materials/df_lumina_object_fencesmall01_01.mat
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_trim_diagonal4_p1_01.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/Materials/df_lumina_object_human_wall_01_t01.mat
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_dixing_2F.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/df_lumina_water01.png
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_trim_convex_p1_01.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/Materials/df_lumina_terrain_01.mat
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/df_lumina_terrain_04.png
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_construct_campshop01_04.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/Camp_Lumina.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/df_lumina_natural_rock_01.png
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/Materials/df_lumina_object_shopprop.mat
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_trim_base4_p2_left.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_dixing_zhanyi02.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/df_lumina_construct_campshop01_02.png
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_trim_diagonal4_p2_01.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_construct_campshop01_03.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_natural_rock_small_p1.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/df_lumina_entrance_t03.png
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/Materials/New Material.mat
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_construct_trimadd_01.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/df_lumina_object_fencesmall01_01.png
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_stair_base2_p1_01.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_object_fencesmall01_01.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/Materials/df_lumina_terrain_04.mat
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/df_lumina_natural_rock_02.png
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_trim_base4_p2_02.FBX
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/Materials/df_lumina_entrance_t03.mat
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/Terrain_N.png
+- Assets/Level/lumina_5/$Mdl_lumina_1/Texture/df_lumina_natural_rock_02_N.tga
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/Materials/Collision.mat
+- Assets/Level/lumina_5/$Mdl_lumina_1/Models/lumina_dixing_zhanyi02_03.fbx
+Dependencies:
+- E:/Github/trunk/MMO/Bundles/$demo.unity3d

@@ -1,0 +1,21 @@
+ManifestFileVersion: 0
+CRC: 2657948894
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: b0c0cf55bd81897d60448f49f83c7db5
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 7544ca7b0322e9e0718cec1fbe6e3737
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 238
+  Script: {instanceID: 0}
+Assets:
+- Assets/Level/lumina_5/$lumina_5F/LightingData.asset
+- Assets/Level/lumina_5/$lumina_5F/LightmapFar-0.exr
+- Assets/Level/lumina_5/$lumina_5F/Lightmap-0_comp_light.exr
+- Assets/Level/lumina_5/$lumina_5F/NavMesh.asset
+Dependencies: []

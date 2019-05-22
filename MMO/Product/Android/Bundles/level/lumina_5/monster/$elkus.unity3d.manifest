@@ -1,0 +1,41 @@
+ManifestFileVersion: 0
+CRC: 1757890899
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: e0b4afba78d40ff0d29365364021d40d
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: a1222556db7b839b6e55066608d8be9a
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 111
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 87032c679f8244d49a0e2c4248ec3b8c, type: 3}
+- Class: 137
+  Script: {instanceID: 0}
+Assets:
+- Assets/Level/lumina_5/Monster/$elkus/elkus_prefab.prefab
+- Assets/Level/lumina_5/Monster/$elkus/Materials/etc_elkus_01_M.mat
+- Assets/Level/lumina_5/Monster/$elkus/etc_elkus_02_M.png
+- Assets/Level/lumina_5/Monster/$elkus/elkus.FBX
+- Assets/Level/lumina_5/Monster/$elkus/elkus_idle01.FBX
+- Assets/Level/lumina_5/Monster/$elkus/etc_elkus_01_M.png
+- Assets/Level/lumina_5/Monster/$elkus/Materials/etc_elkus_02_M.mat
+Dependencies:
+- E:/Github/trunk/MMO/Bundles/$demo.unity3d

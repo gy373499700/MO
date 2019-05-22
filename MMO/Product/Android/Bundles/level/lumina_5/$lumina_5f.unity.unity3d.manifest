@@ -1,0 +1,229 @@
+ManifestFileVersion: 0
+CRC: 447024514
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 8397b7c8057cdeb55379f74f7a439d2e
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: e3374a08573958daed71978926ce10fc
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 20
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 54
+  Script: {instanceID: 0}
+- Class: 64
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 81
+  Script: {instanceID: 0}
+- Class: 82
+  Script: {instanceID: 0}
+- Class: 83
+  Script: {instanceID: 0}
+- Class: 89
+  Script: {instanceID: 0}
+- Class: 90
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 92
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 104
+  Script: {instanceID: 0}
+- Class: 108
+  Script: {instanceID: 0}
+- Class: 111
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: ae942c9068183dc40a9d01f648273726, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 1ef30541c366b6c4093b3ca0089b8ea2, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 858a20c1b21a3f94bb5b2d3b901c9aaf, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 5e1f6df1198ddcd4686e6c2c9439ee8d, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: b90fc8427bee38c478f5b2f6f0ae9580, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 15cc9c62605319f4a9b20b15918913fa, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 1d76ea9215a0d974f86f2468f280123d, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: d81807633ea807d4c8e3fff7e10c6000, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 61eccbd3220b45d4db65d3a596f93cc5, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 4cd29ed3c88282b4eb1b71d6d4580432, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: e9d0b5f3bbe925a408bd595c79d0bf63, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 2ad6aef3b6856394fb96be800efe66e4, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 1fdca5042b1d12a4890ec1bd4f04290d, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 0b4eb3a400afab046abb8471a9d746d6, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 3f093ad5830afe44aba6efa8b8a5d5b9, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 60bca8f58a0b8478e946e6e86658cb29, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 2c5ecb5660b11414fb042fb826e03b73, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: c8077b76001d36d489868d20d28bddb9, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 5626b02766b03a347a205e9276a867fa, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 446d504799d99174383957fca80713c8, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 2a92b5d748695fd44aac9feef17ba415, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: b6eb8f38a6f40f64c82522db62c65241, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 628377b82a35765438d9177dc38d2a3c, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: b3becab8b123e8648a20d9a463ef0835, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 28d827f8fab36884b901bbe4c3435f4a, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: a0fc17592e143dc4597134ed3d8779ee, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 7d44bc69c2ca5f943b845318866dc1bd, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 68ec2fe99d1108b9d0006a298d76c639, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: f02842fa4878db54f9587ff4de7d9f2d, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 33a082fa8a904284cafd86e49a71010c, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 4d0c51bb0b6e93049af5e88f93826e3b, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 10616d4ce51c5994086c006a7c1189e3, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: df649a5c42709b348bc24a4c552ff369, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 2e1a147c24165da4b8936f4a453da17e, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: b5f48ecc218d2db49baa9ac1bfe73ba9, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: cc9c436d5230b7d469626923c7c5396f, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 272b179dff124f74d807f0f3ed2377e7, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 6c20815eb3063c24290a61b7020a1836, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 9c57de5f555dc794db7c7aaacd169dd7, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 0ab79d7f243824f5d9826bd83522c8df, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: dfb5429f6dec1b2469ba3840e0919523, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 5bf7a0a987db39548b26f0ff22f80e90, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 5c711443352857240b0ba4f54cedb173, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 2e6cb50664821434d9ebe9c675e262b4, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 04d89f074c221ca4f98f84933fbdad11, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: df432504acfe22f41abaa16e3d3eb8c9, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: f181c45dd3fdd98449032c3da0efd32f, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 59af0f10cea26dc4c85ce8feb7898960, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: cd27de893cdfd664c9db37e30a3f0da1, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: a75f74a29d2d5aa41bd7d4765cd3df28, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 21a1987683cbe294ea107ce375daacd7, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 54a550b1365335d4295d089dbe57b87c, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 2a0398826c70bae4cac2c54b5ce5372a, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: e90cfbd0a94113f4baa4b7ac0ba44282, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 88f34c5db40f1364b97267e285c6cb6d, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 91e6c4b970ff5a243b9433fd3c2b98c4, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: ec57eb4bb980b3c4eb895966067d0da9, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 2bb14912ec6377c4f96f05010f9a5ce1, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: e9c498319d8dd494e89cb94a05ab5448, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 8cf8a74da1ba07845a2207b40faee817, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: ba51befa76e8b404593deb406533c84b, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: a40416e65dd3bb24eb55b7338f83c2d2, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 124
+  Script: {instanceID: 0}
+- Class: 128
+  Script: {instanceID: 0}
+- Class: 131
+  Script: {instanceID: 0}
+- Class: 135
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+- Class: 143
+  Script: {instanceID: 0}
+- Class: 157
+  Script: {instanceID: 0}
+- Class: 195
+  Script: {instanceID: 0}
+- Class: 196
+  Script: {instanceID: 0}
+- Class: 215
+  Script: {instanceID: 0}
+- Class: 238
+  Script: {instanceID: 0}
+Assets:
+- Assets/Level/lumina_5/$lumina_5F.unity
+Dependencies:
+- E:/Github/trunk/MMO/Bundles/$demo.unity3d
+- E:/Github/trunk/MMO/Bundles/lutify/luts/$standard.unity3d
+- E:/Github/trunk/MMO/Bundles/$ngr.unity3d
+- E:/Github/trunk/MMO/Bundles/level/lumina_5/$mdl_lumina_1.unity3d
+- E:/Github/trunk/MMO/Bundles/level/lumina_5/monster/$barrel01.unity3d
+- E:/Github/trunk/MMO/Bundles/level/lumina_5/monster/$caterpillar_imp.unity3d
+- E:/Github/trunk/MMO/Bundles/level/lumina_5/monster/$human_male_troopers 3.unity3d
+- E:/Github/trunk/MMO/Bundles/level/lumina_5/monster/$elkus.unity3d
+- E:/Github/trunk/MMO/Bundles/level/lumina_5/monster/$human_gilliam.unity3d
+- E:/Github/trunk/MMO/Bundles/level/lumina_5/monster/$human_male_troopers.unity3d
+- E:/Github/trunk/MMO/Bundles/level/lumina_5/monster/$human_male_troopers 2.unity3d
+- E:/Github/trunk/MMO/Bundles/level/lumina_5/$lumina_5f.unity3d
+- E:/Github/trunk/MMO/Bundles/level/lumina_5/monster/$human_male_troopers 1.unity3d
+- E:/Github/trunk/MMO/Bundles/level/lumina_5/$mdl_common_0.unity3d
+- E:/Github/trunk/MMO/Bundles/$font.unity3d

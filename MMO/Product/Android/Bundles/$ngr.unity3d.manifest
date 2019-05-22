@@ -1,0 +1,254 @@
+ManifestFileVersion: 0
+CRC: 2358238853
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: bb4676127820c9edb04d028bd46e9902
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 9dc17192c8fe218718e6dd6aa8ba2ae7
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 20
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 49
+  Script: {instanceID: 0}
+- Class: 89
+  Script: {instanceID: 0}
+- Class: 109
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 02ea6b5f27514324ba410e623836b382, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 198
+  Script: {instanceID: 0}
+- Class: 199
+  Script: {instanceID: 0}
+Assets:
+- Assets/$NGR/Texture/sun.png
+- Assets/$NGR/Shader/SelfIllumCopy.shader
+- Assets/$NGR/Materials/ds3.mat
+- Assets/$NGR/Shader/heightfog.cg
+- Assets/$NGR/Cubemaps/cityspec.cubemap.png
+- Assets/$NGR/Shader/ReflectShader.shader
+- Assets/$NGR/Texture/cloud.png
+- Assets/$NGR/Shader/ShadowLight.cg
+- Assets/$NGR/Shader/PlaneFog.shader
+- Assets/$NGR/Materials/matGenCubemap.mat
+- Assets/$NGR/Shader/CharacterTransparent.shader
+- Assets/$NGR/Shader/forward.cg
+- Assets/$NGR/Shader/Rain.cg
+- Assets/$NGR/Shader/DiffuseFace.cg
+- Assets/$NGR/Shader/SelfIllum.cg
+- Assets/$NGR/Shader/PointLight.cg
+- Assets/$NGR/Shader/SoftParticleAlphaBlend.shader
+- Assets/$NGR/Shader/InputDisturb.shader
+- Assets/$NGR/Texture/water_normal.jpg
+- Assets/$NGR/mat/pbr10.mat
+- Assets/$NGR/mat/pbr3.mat
+- Assets/$NGR/Shader/DeferredLight.shader
+- Assets/$NGR/Shader/DiffuseFaceInUI.shader
+- Assets/$NGR/Cubemaps/Pirate.jpg
+- Assets/$NGR/Shader/DiffuseAlphaDisappearTemplate.shader
+- Assets/$NGR/Shader/DiffuseBumpColorTemplate.shader
+- Assets/$NGR/Shader/ToneMapping.shader
+- Assets/$NGR/Texture/rain13.jpg
+- Assets/$NGR/Texture/random256_2.png
+- 'Assets/$NGR/Materials/Material #1.mat'
+- Assets/$NGR/Shader/grass.cg
+- Assets/$NGR/Shader/AddToTarget.shader
+- Assets/$NGR/Shader/NonShadow.cg
+- Assets/$NGR/Shader/DebugRT.shader
+- Assets/$NGR/Shader/SSSSS_HighLight.shader
+- Assets/$NGR/Materials/DS.mat
+- Assets/$NGR/Shader/Copy.shader
+- Assets/$NGR/Shader/Glow_Blur.shader
+- Assets/$NGR/Shader/CheckerBoard.cg
+- Assets/$NGR/Shader/DeferredShadowLightVolume.shader
+- Assets/$NGR/Shader/HairAnisoSpec.cg
+- Assets/$NGR/Texture/shaft.png
+- Assets/$NGR/Materials/ds4.mat
+- Assets/$NGR/Shader/DiffuseOIT.shader
+- Assets/$NGR/Shader/deferred_lighting.cg
+- Assets/$NGR/Shader/GBuffer.shader
+- Assets/$NGR/Shader/colorbuffer.cg
+- Assets/$NGR/Shader/ScreenWater.shader
+- Assets/$NGR/Shader/ScreenSpaceSSS.shader
+- Assets/$NGR/Shader/FullScreenRain.shader
+- Assets/$NGR/Shader/DiffuseColorPainterTemplate.shader
+- Assets/$NGR/Shader/DiffuseOITGrass.shader
+- Assets/$NGR/Shader/LightShaft.shader
+- Assets/$NGR/Texture/sky.jpg
+- Assets/$NGR/mat/grass.mat
+- Assets/$NGR/Materials/DeferredLight.mat
+- Assets/$NGR/Materials/CubeToSphere.mat
+- Assets/$NGR/Texture/rimlight.png
+- Assets/$NGR/mat/ground.mat
+- Assets/$NGR/Shader/ScreenDisturbance.shader
+- Assets/$NGR/Shader/RadialBlur.shader
+- Assets/$NGR/lutify.txt
+- Assets/$NGR/Materials/TestView.mat
+- Assets/$NGR/Texture/rain7.jpg
+- Assets/$NGR/Shader/DepthCombine.cg
+- Assets/$NGR/Materials/Materials/No Name.mat
+- Assets/$NGR/Shader/DeferredDecal.shader
+- Assets/$NGR/Texture/rain5.jpg
+- Assets/$NGR/Materials/NormalTest2.mat
+- Assets/$NGR/Shader/CalcShadow.cg
+- Assets/$NGR/Shader/DeferredShadowLight.shader
+- Assets/$NGR/Shader/gbuffer.cg
+- Assets/$NGR/Shader/ShadowMask.shader
+- Assets/$NGR/Shader/Lutify.shader
+- Assets/$NGR/mat/grass2.mat
+- Assets/$NGR/Shader/ForwardShder.shader
+- Assets/$NGR/Shader/DeferredLighting.shader
+- Assets/$NGR/Shader/NearShadow.cg
+- Assets/$NGR/Texture/Grass.psd
+- Assets/$NGR/Shader/DiffuseBumpTemplate.shader
+- Assets/$NGR/Shader/DiffuseAlphaTestTemplate.shader
+- Assets/$NGR/Shader/DiffuseMainCharFace.shader
+- Assets/$NGR/Cubemaps/forest.cubemap.png
+- Assets/$NGR/Shader/LightingBlur.shader
+- Assets/$NGR/Texture/shadowmask.png
+- Assets/$NGR/Shader/GenNormal.shader
+- Assets/$NGR/Texture/oit_3x3.png
+- Assets/$NGR/Shader/DiffuseColorTemplate.shader
+- Assets/$NGR/Shader/Glow_DownSample.shader
+- Assets/$NGR/Texture/rain6.jpg
+- Assets/$NGR/Shader/CubeShadowDepth.shader
+- Assets/$NGR/Shader/FXAA3Shader.shader
+- Assets/$NGR/Texture/rain1.jpg
+- Assets/$NGR/Shader/Cube6ToSphere.shader
+- Assets/$NGR/Shader/SoftParticleEnergyBall_Blend.shader
+- Assets/$NGR/Texture/2x2.png
+- Assets/$NGR/Shader/Bloom.shader
+- Assets/$NGR/Materials/SS.mat
+- Assets/$NGR/Materials/cylinder_plane.FBX
+- Assets/$NGR/Texture/rain2.jpg
+- Assets/$NGR/mat/pbr5.mat
+- Assets/$NGR/Cubemaps/Defaultdiff.cubemap.png
+- Assets/$NGR/Texture/rotate4x4.png
+- Assets/$NGR/Shader/shadowedobject.cg
+- Assets/$NGR/Texture/2x2_inv.tga
+- Assets/$NGR/Texture/rain_waterfall.png
+- Assets/$NGR/mat/pbr7.mat
+- Assets/$NGR/Shader/SSSSS.shader
+- Assets/$NGR/Texture/2x2.tga
+- Assets/$NGR/Shader/ShadowDepthBA.shader
+- Assets/$NGR/Shader/BlendFrame.shader
+- Assets/$NGR/mat/pbr9.mat
+- Assets/$NGR/Cubemaps/spec.cubemap.png
+- Assets/$NGR/Texture/water.jpg
+- Assets/$NGR/mat/pbr2.mat
+- Assets/$NGR/Texture/rain12.jpg
+- Assets/$NGR/Shader/T4M.cg
+- Assets/$NGR/Shader/QuadVS.cg
+- Assets/$NGR/Shader/BRDF.cg
+- Assets/$NGR/Shader/LightCommon.cg
+- Assets/$NGR/mat/pbr1.mat
+- Assets/$NGR/Texture/2x2step_inv.png
+- Assets/$NGR/Shader/DiffuseT4MAO.shader
+- Assets/$NGR/Texture/rain14.jpg
+- Assets/$NGR/Cubemaps/diffuse.cubemap.png
+- Assets/$NGR/Shader/ShaderMicro.txt
+- Assets/$NGR/Shader/DepthCombine.shader
+- Assets/$NGR/Texture/rotate_kernel.png
+- Assets/$NGR/Shader/DiffuseTreeLeaf.shader
+- Assets/$NGR/Texture/rain4.jpg
+- Assets/$NGR/Shader/GI_Blur.shader
+- Assets/$NGR/Shader/DiffuseBumpPainterTemplate.shader
+- Assets/$NGR/Materials/Ground.mat
+- Assets/$NGR/Texture/rain3.jpg
+- Assets/$NGR/Shader/ShadowDepth.shader
+- Assets/$NGR/Shader/PointLightSpecular.cg
+- Assets/$NGR/Shader/DiffuseHair.shader
+- Assets/$NGR/Effect/RainFall.prefab
+- Assets/$NGR/Texture/SKYSPEC.jpg
+- Assets/$NGR/Prefab/RenderPipeline.prefab
+- Assets/$NGR/Shader/HeightFog.shader
+- Assets/$NGR/Cubemaps/Default.cubemap.png
+- Assets/$NGR/Shader/Water.cg
+- Assets/$NGR/Materials/WaterMat.mat
+- Assets/$NGR/Shader/ScreenSpaceReflect.shader
+- Assets/$NGR/Texture/oit_2x2_inv.png
+- Assets/$NGR/Shader/ShadowedObject.shader
+- Assets/$NGR/Shader/DiffuseSky.shader
+- Assets/$NGR/mat/pbr6.mat
+- Assets/$NGR/Shader/RimLight.shader
+- Assets/$NGR/Shader/Decal.cg
+- Assets/$NGR/Cubemaps/citydiff.cubemap.png
+- Assets/$NGR/Shader/Glow_BlendToTarget.shader
+- Assets/$NGR/mat/pbr0.mat
+- Assets/$NGR/Texture/noise_kernel.png
+- Assets/$NGR/Shader/FaceForward.cg
+- Assets/$NGR/Shader/VertexShaft.shader
+- Assets/$NGR/Shader/DOF.shader
+- Assets/$NGR/Texture/rain0.jpg
+- Assets/$NGR/Texture/rain8.jpg
+- Assets/$NGR/Shader/MRTbuffer.cg
+- Assets/$NGR/Shader/DiffuseRoughness.shader
+- Assets/$NGR/Shader/GaussBlur.shader
+- Assets/$NGR/Shader/T4MForward.cg
+- Assets/$NGR/Shader/DiffuseSSS.shader
+- Assets/$NGR/Shader/SSAO2.shader
+- Assets/$NGR/Materials/waterfall.mat
+- Assets/$NGR/Shader/DiffuseColorTemplateSelfIllum.shader
+- Assets/$NGR/Shader/Quad.cg
+- Assets/$NGR/Shader/DiffuseT4M.shader
+- Assets/$NGR/Shader/DiffuseFace.shader
+- Assets/$NGR/mat/pbr4.mat
+- Assets/$NGR/mat/pbr8.mat
+- Assets/$NGR/Shader/MRT.shader
+- Assets/$NGR/Shader/AO.cg
+- Assets/$NGR/Texture/rain15.jpg
+- Assets/$NGR/Materials/DS2.mat
+- Assets/$NGR/Shader/SSAO.shader
+- Assets/$NGR/Shader/SSAOBlur.shader
+- Assets/$NGR/Cubemaps/forestdiff.cubemap.png
+- Assets/$NGR/Shader/SelfIllum.shader
+- Assets/$NGR/Shader/mipfog.shader
+- Assets/$NGR/Shader/Transparency.shader
+- Assets/$NGR/Texture/rain11.jpg
+- Assets/$NGR/Shader/UIMask.shader
+- Assets/$NGR/Shader/Twist.shader
+- Assets/$NGR/Shader/Combine.shader
+- Assets/$NGR/Texture/random256.png
+- Assets/$NGR/Shader/ShadowLightVolume.cg
+- Assets/$NGR/Shader/DiffuseBumpOIT.shader
+- Assets/$NGR/Shader/DiffuseT4MNormal.shader
+- Assets/$NGR/Shader/Water.shader
+- Assets/$NGR/Shader/GI_FinalGather.shader
+- Assets/$NGR/Shader/DiffuseFaceInUI.cg
+- Assets/$NGR/Shader/Lutify.cginc
+- Assets/$NGR/Shader/ShadowGen.shader
+- Assets/$NGR/Shader/ScreenRain.shader
+- Assets/$NGR/Shader/CharacterTransparent.cg
+- Assets/$NGR/Shader/UIModelLight.shader
+- Assets/$NGR/Texture/rain9.jpg
+- Assets/$NGR/Texture/oit_2x2.png
+- Assets/$NGR/Shader/CheckerBoard.shader
+- Assets/$NGR/Texture/rain10.jpg
+- Assets/$NGR/Shader/DiffuseBumpMainCharTemplate.shader
+- Assets/$NGR/Shader/SoftParticleEnergyBall.shader
+- Assets/$NGR/Shader/ActorWhiting.shader
+- Assets/$NGR/Materials/Sky.mat
+- Assets/$NGR/Shader/StencilMask.txt
+- Assets/$NGR/Texture/decal.png
+Dependencies: []

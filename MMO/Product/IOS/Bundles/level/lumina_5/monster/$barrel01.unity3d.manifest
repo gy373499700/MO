@@ -1,0 +1,39 @@
+ManifestFileVersion: 0
+CRC: 1411401756
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 023c5562108d3c69d6aebf2b8e1b1825
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 749a0e905db539514a6b2e5a3d5739aa
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 111
+  Script: {instanceID: 0}
+Assets:
+- Assets/Level/lumina_5/Monster/$barrel01/barrel01_skill01.FBX
+- Assets/Level/lumina_5/Monster/$barrel01/barerl01_M.png
+- Assets/Level/lumina_5/Monster/$barrel01/Materials/barerl01_M.mat
+- Assets/Level/lumina_5/Monster/$barrel01/barrel01_idle01.FBX
+- Assets/Level/lumina_5/Monster/$barrel01/barrel01.FBX
+Dependencies:
+- E:/Github/trunk/MMO/Bundles/$ngr.unity3d
